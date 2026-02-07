@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EA Bebauungsplan — Metallwerk Vorarlberg</title>
+
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary:   { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+            surface:   { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',700:'#334155',800:'#1e293b',900:'#0f172a',950:'#020617' },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Chart.js (UMD global) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
+  <!-- D3.js (UMD global) -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+
+  <!-- Vue 3 importmap -->
+  <script type="importmap">
+  {
+    "imports": {
+      "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+    }
+  }
+  </script>
+
+  <style>
+    [v-cloak] { display: none !important; }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+    /* Custom transitions */
+    .fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
+    .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+    /* Domain color swatch */
+    .domain-swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+    /* Maturity bar */
+    .maturity-bar { height: 8px; border-radius: 4px; transition: width .5s ease; }
+
+    /* TIME Quadrant grid lines */
+    .time-grid-line { stroke: #e2e8f0; stroke-width: 1; stroke-dasharray: 4,4; }
+
+    /* Matrix cell hover */
+    .matrix-cell:hover { transform: scale(1.15); z-index: 10; }
+    .matrix-cell { transition: transform .15s ease; }
+
+    /* Force graph link */
+    .dep-link { fill: none; stroke-opacity: 0.6; }
+    .dep-node text { font-size: 11px; pointer-events: none; }
+
+    /* Sidebar nav */
+    .nav-item { transition: background-color .15s ease, color .15s ease; }
+    .nav-item:hover { background-color: #e2e8f0; }
+    .nav-item.active { background-color: #dbeafe; color: #1d4ed8; font-weight: 600; }
+
+    /* Responsive sidebar */
+    @media (max-width: 1024px) {
+      .sidebar-collapsed { transform: translateX(-100%); }
+    }
+
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      .sidebar { display: none !important; }
+    }
+  </style>
+</head>
+<body class="h-full bg-surface-50 text-gray-800 antialiased">
+  <div id="app" v-cloak>
+    <app-layout></app-layout>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
