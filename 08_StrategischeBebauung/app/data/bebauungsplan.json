@@ -7,32 +7,136 @@
     "description": "Strategischer Bebauungsplan — Datenmodell für ein mittelständisches Industrieunternehmen"
   },
   "enums": {
-    "criticality": ["Mission-Critical", "Business-Critical", "Business-Operational", "Administrative"],
-    "timeQuadrant": ["Tolerate", "Invest", "Migrate", "Eliminate"],
-    "appType": ["SaaS", "On-Prem", "Custom", "PaaS"],
+    "criticality": [
+      "Mission-Critical",
+      "Business-Critical",
+      "Business-Operational",
+      "Administrative"
+    ],
+    "timeQuadrant": [
+      "Tolerate",
+      "Invest",
+      "Migrate",
+      "Eliminate"
+    ],
+    "appType": [
+      "SaaS",
+      "On-Prem",
+      "Custom",
+      "PaaS"
+    ],
     "capabilityMaturity": [
-      { "value": 1, "label": "Initial", "description": "Kaum vorhanden oder rein manuell (Excel, Papier)" },
-      { "value": 2, "label": "Managed", "description": "Grundfunktionalität vorhanden, aber fragmentiert" },
-      { "value": 3, "label": "Defined", "description": "Strukturiert umgesetzt, definierte Prozesse" },
-      { "value": 4, "label": "Measured", "description": "Automatisiert, integriert, KPI-gesteuert" },
-      { "value": 5, "label": "Optimized", "description": "Best-in-Class, kontinuierlich optimiert" }
+      {
+        "value": 1,
+        "label": "Initial",
+        "description": "Kaum vorhanden oder rein manuell (Excel, Papier)"
+      },
+      {
+        "value": 2,
+        "label": "Managed",
+        "description": "Grundfunktionalität vorhanden, aber fragmentiert"
+      },
+      {
+        "value": 3,
+        "label": "Defined",
+        "description": "Strukturiert umgesetzt, definierte Prozesse"
+      },
+      {
+        "value": 4,
+        "label": "Measured",
+        "description": "Automatisiert, integriert, KPI-gesteuert"
+      },
+      {
+        "value": 5,
+        "label": "Optimized",
+        "description": "Best-in-Class, kontinuierlich optimiert"
+      }
     ],
-    "capabilityCriticality": ["High", "Medium", "Low"],
-    "mappingRole": ["Primary", "Secondary"],
-    "projectCategory": ["Run / Pflicht", "Modernisierung", "Optimierung", "Innovation / Grow", "Infrastruktur"],
-    "projectStatus": ["green", "yellow", "red"],
-    "conformity": ["Konform", "Teilkonform", "Widerspricht"],
+    "capabilityCriticality": [
+      "High",
+      "Medium",
+      "Low"
+    ],
+    "mappingRole": [
+      "Primary",
+      "Secondary"
+    ],
+    "projectCategory": [
+      "Run / Pflicht",
+      "Modernisierung",
+      "Optimierung",
+      "Innovation / Grow",
+      "Infrastruktur"
+    ],
+    "projectStatus": [
+      "green",
+      "yellow",
+      "red"
+    ],
+    "conformity": [
+      "Konform",
+      "Teilkonform",
+      "Widerspricht"
+    ],
     "dependencyType": [
-      { "value": "T", "label": "Technische Abhängigkeit", "symbol": "→T" },
-      { "value": "D", "label": "Datenabhängigkeit", "symbol": "→D" },
-      { "value": "P", "label": "Plattformabhängigkeit", "symbol": "→P" },
-      { "value": "R", "label": "Ressourcenkonflikt", "symbol": "→R" },
-      { "value": "F", "label": "Fachliche Abhängigkeit", "symbol": "→F" },
-      { "value": "Z", "label": "Zeitliche Abhängigkeit", "symbol": "→Z" }
+      {
+        "value": "T",
+        "label": "Technische Abhängigkeit",
+        "symbol": "→T"
+      },
+      {
+        "value": "D",
+        "label": "Datenabhängigkeit",
+        "symbol": "→D"
+      },
+      {
+        "value": "P",
+        "label": "Plattformabhängigkeit",
+        "symbol": "→P"
+      },
+      {
+        "value": "R",
+        "label": "Ressourcenkonflikt",
+        "symbol": "→R"
+      },
+      {
+        "value": "F",
+        "label": "Fachliche Abhängigkeit",
+        "symbol": "→F"
+      },
+      {
+        "value": "Z",
+        "label": "Zeitliche Abhängigkeit",
+        "symbol": "→Z"
+      }
     ],
-    "appAction": ["einführen", "verändern", "ablösen"],
-    "kpiTrend": ["improving", "stable", "declining"],
-    "processStatus": ["active", "optimization", "transformation"]
+    "appAction": [
+      "einführen",
+      "verändern",
+      "ablösen"
+    ],
+    "kpiTrend": [
+      "improving",
+      "stable",
+      "declining"
+    ],
+    "processStatus": [
+      "active",
+      "optimization",
+      "transformation"
+    ],
+    "vendorStatus": [
+      "Active",
+      "Under Review",
+      "Phase-Out",
+      "New"
+    ],
+    "vendorCriticality": [
+      "Strategic",
+      "Important",
+      "Standard",
+      "Commodity"
+    ]
   },
   "domains": [
     {
@@ -45,52 +149,147 @@
       "strategicFocus": "Stabilität, Hybrid Cloud, Kosteneffizienz",
       "vision": "Hybrid Cloud First — alle non-critical Workloads in Azure bis 2028, Zero-Trust Security Baseline",
       "kpis": [
-        { "id": "KPI-D1-1", "name": "Cloud Workload %", "target": "60", "current": "25", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D1-2", "name": "Infrastructure Availability", "target": "99.9", "current": "99.5", "unit": "%", "trend": "stable" },
-        { "id": "KPI-D1-3", "name": "Mean Time to Recovery", "target": "2", "current": "4.5", "unit": "h", "trend": "improving" }
+        {
+          "id": "KPI-D1-1",
+          "name": "Cloud Workload %",
+          "target": "60",
+          "current": "25",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D1-2",
+          "name": "Infrastructure Availability",
+          "target": "99.9",
+          "current": "99.5",
+          "unit": "%",
+          "trend": "stable"
+        },
+        {
+          "id": "KPI-D1-3",
+          "name": "Mean Time to Recovery",
+          "target": "2",
+          "current": "4.5",
+          "unit": "h",
+          "trend": "improving"
+        }
       ],
       "capabilities": [
         {
-          "id": "1.1", "name": "Datacenter Management", "maturity": 3, "targetMaturity": 3, "criticality": "High",
+          "id": "1.1",
+          "name": "Datacenter Management",
+          "maturity": 3,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "1.1.1", "name": "Server & Compute Management" },
-            { "id": "1.1.2", "name": "Storage Management" },
-            { "id": "1.1.3", "name": "Netzwerk & Konnektivität" },
-            { "id": "1.1.4", "name": "Physical Security & Facility" }
+            {
+              "id": "1.1.1",
+              "name": "Server & Compute Management"
+            },
+            {
+              "id": "1.1.2",
+              "name": "Storage Management"
+            },
+            {
+              "id": "1.1.3",
+              "name": "Netzwerk & Konnektivität"
+            },
+            {
+              "id": "1.1.4",
+              "name": "Physical Security & Facility"
+            }
           ]
         },
         {
-          "id": "1.2", "name": "Cloud Platform Management", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "1.2",
+          "name": "Cloud Platform Management",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "1.2.1", "name": "Cloud Governance & Landing Zones" },
-            { "id": "1.2.2", "name": "Cloud Compute & Container Services" },
-            { "id": "1.2.3", "name": "Cloud Networking & Connectivity" },
-            { "id": "1.2.4", "name": "Cloud Cost Management (FinOps)" }
+            {
+              "id": "1.2.1",
+              "name": "Cloud Governance & Landing Zones"
+            },
+            {
+              "id": "1.2.2",
+              "name": "Cloud Compute & Container Services"
+            },
+            {
+              "id": "1.2.3",
+              "name": "Cloud Networking & Connectivity"
+            },
+            {
+              "id": "1.2.4",
+              "name": "Cloud Cost Management (FinOps)"
+            }
           ]
         },
         {
-          "id": "1.3", "name": "Hybrid Infrastructure", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "1.3",
+          "name": "Hybrid Infrastructure",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "1.3.1", "name": "Hybrid Connectivity (VPN, ExpressRoute)" },
-            { "id": "1.3.2", "name": "Identity & Access Management (Entra ID)" },
-            { "id": "1.3.3", "name": "Monitoring & Observability" }
+            {
+              "id": "1.3.1",
+              "name": "Hybrid Connectivity (VPN, ExpressRoute)"
+            },
+            {
+              "id": "1.3.2",
+              "name": "Identity & Access Management (Entra ID)"
+            },
+            {
+              "id": "1.3.3",
+              "name": "Monitoring & Observability"
+            }
           ]
         },
         {
-          "id": "1.4", "name": "IT Security & Compliance", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "1.4",
+          "name": "IT Security & Compliance",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "1.4.1", "name": "Endpoint Security" },
-            { "id": "1.4.2", "name": "Network Security" },
-            { "id": "1.4.3", "name": "Security Operations (SOC/SIEM)" },
-            { "id": "1.4.4", "name": "Backup & Disaster Recovery" }
+            {
+              "id": "1.4.1",
+              "name": "Endpoint Security"
+            },
+            {
+              "id": "1.4.2",
+              "name": "Network Security"
+            },
+            {
+              "id": "1.4.3",
+              "name": "Security Operations (SOC/SIEM)"
+            },
+            {
+              "id": "1.4.4",
+              "name": "Backup & Disaster Recovery"
+            }
           ]
         },
         {
-          "id": "1.5", "name": "IT Service Management", "maturity": 3, "targetMaturity": 4, "criticality": "Medium",
+          "id": "1.5",
+          "name": "IT Service Management",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "1.5.1", "name": "Incident & Problem Management" },
-            { "id": "1.5.2", "name": "Change & Release Management" },
-            { "id": "1.5.3", "name": "Asset & Configuration Management (CMDB)" }
+            {
+              "id": "1.5.1",
+              "name": "Incident & Problem Management"
+            },
+            {
+              "id": "1.5.2",
+              "name": "Change & Release Management"
+            },
+            {
+              "id": "1.5.3",
+              "name": "Asset & Configuration Management (CMDB)"
+            }
           ]
         }
       ]
@@ -105,44 +304,122 @@
       "strategicFocus": "Enablement, Adoption, Copilot-Readiness",
       "vision": "Intelligent Workplace — M365 Copilot-Ready, Knowledge Graph als Wissensbasis, Power Platform als Citizen-Dev-Plattform",
       "kpis": [
-        { "id": "KPI-D2-1", "name": "M365 Adoption Score", "target": "80", "current": "52", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D2-2", "name": "Citizen Dev Apps", "target": "30", "current": "8", "unit": "#", "trend": "improving" }
+        {
+          "id": "KPI-D2-1",
+          "name": "M365 Adoption Score",
+          "target": "80",
+          "current": "52",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D2-2",
+          "name": "Citizen Dev Apps",
+          "target": "30",
+          "current": "8",
+          "unit": "#",
+          "trend": "improving"
+        }
       ],
       "capabilities": [
         {
-          "id": "2.1", "name": "Modern Workplace", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "2.1",
+          "name": "Modern Workplace",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "2.1.1", "name": "Workplace Provisioning & Lifecycle" },
-            { "id": "2.1.2", "name": "Unified Communication (Teams Voice, Video)" },
-            { "id": "2.1.3", "name": "Email & Calendar (Exchange Online)" },
-            { "id": "2.1.4", "name": "Workplace Analytics & Adoption" }
+            {
+              "id": "2.1.1",
+              "name": "Workplace Provisioning & Lifecycle"
+            },
+            {
+              "id": "2.1.2",
+              "name": "Unified Communication (Teams Voice, Video)"
+            },
+            {
+              "id": "2.1.3",
+              "name": "Email & Calendar (Exchange Online)"
+            },
+            {
+              "id": "2.1.4",
+              "name": "Workplace Analytics & Adoption"
+            }
           ]
         },
         {
-          "id": "2.2", "name": "Collaboration & Content Management", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "2.2",
+          "name": "Collaboration & Content Management",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "2.2.1", "name": "Team Collaboration" },
-            { "id": "2.2.2", "name": "Document Management & Governance" },
-            { "id": "2.2.3", "name": "Intranet & Internal Communication" },
-            { "id": "2.2.4", "name": "Content Lifecycle Management" }
+            {
+              "id": "2.2.1",
+              "name": "Team Collaboration"
+            },
+            {
+              "id": "2.2.2",
+              "name": "Document Management & Governance"
+            },
+            {
+              "id": "2.2.3",
+              "name": "Intranet & Internal Communication"
+            },
+            {
+              "id": "2.2.4",
+              "name": "Content Lifecycle Management"
+            }
           ]
         },
         {
-          "id": "2.3", "name": "Enterprise Knowledge & Search", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "2.3",
+          "name": "Enterprise Knowledge & Search",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "2.3.1", "name": "Knowledge Graph & Taxonomy" },
-            { "id": "2.3.2", "name": "Enterprise Search (Microsoft Search)" },
-            { "id": "2.3.3", "name": "AI-Assisted Knowledge Access (M365 Copilot)" },
-            { "id": "2.3.4", "name": "Information Architecture & Metadata" }
+            {
+              "id": "2.3.1",
+              "name": "Knowledge Graph & Taxonomy"
+            },
+            {
+              "id": "2.3.2",
+              "name": "Enterprise Search (Microsoft Search)"
+            },
+            {
+              "id": "2.3.3",
+              "name": "AI-Assisted Knowledge Access (M365 Copilot)"
+            },
+            {
+              "id": "2.3.4",
+              "name": "Information Architecture & Metadata"
+            }
           ]
         },
         {
-          "id": "2.4", "name": "Citizen Development Platform", "maturity": 2, "targetMaturity": 4, "criticality": "Medium",
+          "id": "2.4",
+          "name": "Citizen Development Platform",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "2.4.1", "name": "Low-Code App Development (Power Apps)" },
-            { "id": "2.4.2", "name": "Business Process Automation (Power Automate)" },
-            { "id": "2.4.3", "name": "Data Visualization & Self-Service BI (Power BI)" },
-            { "id": "2.4.4", "name": "Platform Governance & CoE" }
+            {
+              "id": "2.4.1",
+              "name": "Low-Code App Development (Power Apps)"
+            },
+            {
+              "id": "2.4.2",
+              "name": "Business Process Automation (Power Automate)"
+            },
+            {
+              "id": "2.4.3",
+              "name": "Data Visualization & Self-Service BI (Power BI)"
+            },
+            {
+              "id": "2.4.4",
+              "name": "Platform Governance & CoE"
+            }
           ]
         }
       ]
@@ -157,52 +434,143 @@
       "strategicFocus": "CRM-Konsolidierung, CPQ, Kundenportal",
       "vision": "360°-Kundenblick — Durchgängiger Lead-to-Cash-Prozess mit Salesforce als Kern-CRM",
       "kpis": [
-        { "id": "KPI-D3-1", "name": "CRM Adoption Rate", "target": "95", "current": "72", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D3-2", "name": "Forecast Accuracy", "target": "85", "current": "60", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-D3-1",
+          "name": "CRM Adoption Rate",
+          "target": "95",
+          "current": "72",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D3-2",
+          "name": "Forecast Accuracy",
+          "target": "85",
+          "current": "60",
+          "unit": "%",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "3.1", "name": "CRM", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "3.1",
+          "name": "CRM",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "3.1.1", "name": "Kundenstammdatenverwaltung" },
-            { "id": "3.1.2", "name": "Kontakt- & Aktivitätenmanagement" },
-            { "id": "3.1.3", "name": "Kundensegmentierung & -klassifizierung" },
-            { "id": "3.1.4", "name": "Kundenportal & Self-Service" }
+            {
+              "id": "3.1.1",
+              "name": "Kundenstammdatenverwaltung"
+            },
+            {
+              "id": "3.1.2",
+              "name": "Kontakt- & Aktivitätenmanagement"
+            },
+            {
+              "id": "3.1.3",
+              "name": "Kundensegmentierung & -klassifizierung"
+            },
+            {
+              "id": "3.1.4",
+              "name": "Kundenportal & Self-Service"
+            }
           ]
         },
         {
-          "id": "3.2", "name": "Angebots- & Auftragswesen", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "3.2",
+          "name": "Angebots- & Auftragswesen",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "3.2.1", "name": "Angebotskalkulation & -erstellung" },
-            { "id": "3.2.2", "name": "Auftragserfassung & -bestätigung" },
-            { "id": "3.2.3", "name": "Konfiguration & Variantenmanagement (CPQ)" },
-            { "id": "3.2.4", "name": "Vertragsmanagement" }
+            {
+              "id": "3.2.1",
+              "name": "Angebotskalkulation & -erstellung"
+            },
+            {
+              "id": "3.2.2",
+              "name": "Auftragserfassung & -bestätigung"
+            },
+            {
+              "id": "3.2.3",
+              "name": "Konfiguration & Variantenmanagement (CPQ)"
+            },
+            {
+              "id": "3.2.4",
+              "name": "Vertragsmanagement"
+            }
           ]
         },
         {
-          "id": "3.3", "name": "Vertriebssteuerung", "maturity": 2, "targetMaturity": 4, "criticality": "Medium",
+          "id": "3.3",
+          "name": "Vertriebssteuerung",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "3.3.1", "name": "Pipeline- & Forecast-Management" },
-            { "id": "3.3.2", "name": "Gebiets- & Key-Account-Management" },
-            { "id": "3.3.3", "name": "Provisionsabrechnung" },
-            { "id": "3.3.4", "name": "Vertriebsreporting & KPIs" }
+            {
+              "id": "3.3.1",
+              "name": "Pipeline- & Forecast-Management"
+            },
+            {
+              "id": "3.3.2",
+              "name": "Gebiets- & Key-Account-Management"
+            },
+            {
+              "id": "3.3.3",
+              "name": "Provisionsabrechnung"
+            },
+            {
+              "id": "3.3.4",
+              "name": "Vertriebsreporting & KPIs"
+            }
           ]
         },
         {
-          "id": "3.4", "name": "Pricing & Konditionen", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "3.4",
+          "name": "Pricing & Konditionen",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "3.4.1", "name": "Preisfindung & Rabattmanagement" },
-            { "id": "3.4.2", "name": "Konditionsvereinbarungen" },
-            { "id": "3.4.3", "name": "Wettbewerbsanalyse (Pricing Intelligence)" }
+            {
+              "id": "3.4.1",
+              "name": "Preisfindung & Rabattmanagement"
+            },
+            {
+              "id": "3.4.2",
+              "name": "Konditionsvereinbarungen"
+            },
+            {
+              "id": "3.4.3",
+              "name": "Wettbewerbsanalyse (Pricing Intelligence)"
+            }
           ]
         },
         {
-          "id": "3.5", "name": "After-Sales & Service", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "3.5",
+          "name": "After-Sales & Service",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "3.5.1", "name": "Reklamationsmanagement" },
-            { "id": "3.5.2", "name": "Technischer Kundendienst / Field Service" },
-            { "id": "3.5.3", "name": "Ersatzteilmanagement" },
-            { "id": "3.5.4", "name": "Service-Level-Agreements (SLA)" }
+            {
+              "id": "3.5.1",
+              "name": "Reklamationsmanagement"
+            },
+            {
+              "id": "3.5.2",
+              "name": "Technischer Kundendienst / Field Service"
+            },
+            {
+              "id": "3.5.3",
+              "name": "Ersatzteilmanagement"
+            },
+            {
+              "id": "3.5.4",
+              "name": "Service-Level-Agreements (SLA)"
+            }
           ]
         }
       ]
@@ -217,54 +585,155 @@
       "strategicFocus": "MES-ERP-Integration, Shopfloor-Digitalisierung",
       "vision": "Smart Factory — Durchgängige MES-ERP-Integration, OEE >85%, Predictive Maintenance für Kernmaschinen",
       "kpis": [
-        { "id": "KPI-D4-1", "name": "OEE (Overall Equipment Effectiveness)", "target": "85", "current": "71", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D4-2", "name": "First Pass Yield", "target": "95", "current": "91", "unit": "%", "trend": "stable" },
-        { "id": "KPI-D4-3", "name": "Schedule Adherence", "target": "90", "current": "83", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-D4-1",
+          "name": "OEE (Overall Equipment Effectiveness)",
+          "target": "85",
+          "current": "71",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D4-2",
+          "name": "First Pass Yield",
+          "target": "95",
+          "current": "91",
+          "unit": "%",
+          "trend": "stable"
+        },
+        {
+          "id": "KPI-D4-3",
+          "name": "Schedule Adherence",
+          "target": "90",
+          "current": "83",
+          "unit": "%",
+          "trend": "improving"
+        }
       ],
       "capabilities": [
         {
-          "id": "4.1", "name": "Produktionsplanung (PPS)", "maturity": 4, "targetMaturity": 4, "criticality": "High",
+          "id": "4.1",
+          "name": "Produktionsplanung (PPS)",
+          "maturity": 4,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "4.1.1", "name": "Kapazitätsplanung" },
-            { "id": "4.1.2", "name": "Feinplanung & Reihenfolgeoptimierung" },
-            { "id": "4.1.3", "name": "Schichtplanung" },
-            { "id": "4.1.4", "name": "Material- & Bedarfsplanung (MRP)" }
+            {
+              "id": "4.1.1",
+              "name": "Kapazitätsplanung"
+            },
+            {
+              "id": "4.1.2",
+              "name": "Feinplanung & Reihenfolgeoptimierung"
+            },
+            {
+              "id": "4.1.3",
+              "name": "Schichtplanung"
+            },
+            {
+              "id": "4.1.4",
+              "name": "Material- & Bedarfsplanung (MRP)"
+            }
           ]
         },
         {
-          "id": "4.2", "name": "Fertigungssteuerung (MES)", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "4.2",
+          "name": "Fertigungssteuerung (MES)",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "4.2.1", "name": "Fertigungsauftragsmanagement" },
-            { "id": "4.2.2", "name": "Betriebsdatenerfassung (BDE)" },
-            { "id": "4.2.3", "name": "Maschinendatenerfassung (MDE)" },
-            { "id": "4.2.4", "name": "Rückmeldung & Fortschrittskontrolle" }
+            {
+              "id": "4.2.1",
+              "name": "Fertigungsauftragsmanagement"
+            },
+            {
+              "id": "4.2.2",
+              "name": "Betriebsdatenerfassung (BDE)"
+            },
+            {
+              "id": "4.2.3",
+              "name": "Maschinendatenerfassung (MDE)"
+            },
+            {
+              "id": "4.2.4",
+              "name": "Rückmeldung & Fortschrittskontrolle"
+            }
           ]
         },
         {
-          "id": "4.3", "name": "Qualitätsmanagement", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "4.3",
+          "name": "Qualitätsmanagement",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "4.3.1", "name": "Wareneingangsprüfung" },
-            { "id": "4.3.2", "name": "In-Prozess-Qualitätskontrolle (SPC)" },
-            { "id": "4.3.3", "name": "Endprüfung & Freigabe" },
-            { "id": "4.3.4", "name": "Reklamations- & CAPA-Management" },
-            { "id": "4.3.5", "name": "Audit- & Zertifizierungsmanagement" }
+            {
+              "id": "4.3.1",
+              "name": "Wareneingangsprüfung"
+            },
+            {
+              "id": "4.3.2",
+              "name": "In-Prozess-Qualitätskontrolle (SPC)"
+            },
+            {
+              "id": "4.3.3",
+              "name": "Endprüfung & Freigabe"
+            },
+            {
+              "id": "4.3.4",
+              "name": "Reklamations- & CAPA-Management"
+            },
+            {
+              "id": "4.3.5",
+              "name": "Audit- & Zertifizierungsmanagement"
+            }
           ]
         },
         {
-          "id": "4.4", "name": "Instandhaltung & Maintenance", "maturity": 1, "targetMaturity": 3, "criticality": "High",
+          "id": "4.4",
+          "name": "Instandhaltung & Maintenance",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "4.4.1", "name": "Präventive Instandhaltung" },
-            { "id": "4.4.2", "name": "Korrektive Instandhaltung" },
-            { "id": "4.4.3", "name": "Predictive Maintenance (Condition Monitoring)" },
-            { "id": "4.4.4", "name": "Ersatzteil- & Werkzeugverwaltung" }
+            {
+              "id": "4.4.1",
+              "name": "Präventive Instandhaltung"
+            },
+            {
+              "id": "4.4.2",
+              "name": "Korrektive Instandhaltung"
+            },
+            {
+              "id": "4.4.3",
+              "name": "Predictive Maintenance (Condition Monitoring)"
+            },
+            {
+              "id": "4.4.4",
+              "name": "Ersatzteil- & Werkzeugverwaltung"
+            }
           ]
         },
         {
-          "id": "4.5", "name": "Lean & Continuous Improvement", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "4.5",
+          "name": "Lean & Continuous Improvement",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "4.5.1", "name": "Shopfloor-Management" },
-            { "id": "4.5.2", "name": "KVP / Kaizen-Prozess" },
-            { "id": "4.5.3", "name": "OEE-Tracking & Verlustanalyse" }
+            {
+              "id": "4.5.1",
+              "name": "Shopfloor-Management"
+            },
+            {
+              "id": "4.5.2",
+              "name": "KVP / Kaizen-Prozess"
+            },
+            {
+              "id": "4.5.3",
+              "name": "OEE-Tracking & Verlustanalyse"
+            }
           ]
         }
       ]
@@ -279,53 +748,147 @@
       "strategicFocus": "E2E-Transparenz, Lieferantenintegration",
       "vision": "Transparente Supply Chain — E2E-Transparenz vom Lieferanten bis zum Kunden, S&OP-Integration",
       "kpis": [
-        { "id": "KPI-D5-1", "name": "P2P Cycle Time", "target": "30", "current": "48", "unit": "days", "trend": "improving" },
-        { "id": "KPI-D5-2", "name": "Touchless Invoice Rate", "target": "60", "current": "25", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-D5-1",
+          "name": "P2P Cycle Time",
+          "target": "30",
+          "current": "48",
+          "unit": "days",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D5-2",
+          "name": "Touchless Invoice Rate",
+          "target": "60",
+          "current": "25",
+          "unit": "%",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "5.1", "name": "Einkauf & Beschaffung", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "5.1",
+          "name": "Einkauf & Beschaffung",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "5.1.1", "name": "Strategischer Einkauf & Sourcing" },
-            { "id": "5.1.2", "name": "Operativer Einkauf" },
-            { "id": "5.1.3", "name": "Lieferantenmanagement & -bewertung" },
-            { "id": "5.1.4", "name": "Vertrags- & Konditionsmanagement" },
-            { "id": "5.1.5", "name": "E-Procurement & Katalogmanagement" }
+            {
+              "id": "5.1.1",
+              "name": "Strategischer Einkauf & Sourcing"
+            },
+            {
+              "id": "5.1.2",
+              "name": "Operativer Einkauf"
+            },
+            {
+              "id": "5.1.3",
+              "name": "Lieferantenmanagement & -bewertung"
+            },
+            {
+              "id": "5.1.4",
+              "name": "Vertrags- & Konditionsmanagement"
+            },
+            {
+              "id": "5.1.5",
+              "name": "E-Procurement & Katalogmanagement"
+            }
           ]
         },
         {
-          "id": "5.2", "name": "Lagerverwaltung & Bestandsmanagement", "maturity": 3, "targetMaturity": 3, "criticality": "High",
+          "id": "5.2",
+          "name": "Lagerverwaltung & Bestandsmanagement",
+          "maturity": 3,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "5.2.1", "name": "Warehouse Management System (WMS)" },
-            { "id": "5.2.2", "name": "Bestandsführung & Inventur" },
-            { "id": "5.2.3", "name": "Lagerplatzoptimierung" },
-            { "id": "5.2.4", "name": "Konsignationslager" }
+            {
+              "id": "5.2.1",
+              "name": "Warehouse Management System (WMS)"
+            },
+            {
+              "id": "5.2.2",
+              "name": "Bestandsführung & Inventur"
+            },
+            {
+              "id": "5.2.3",
+              "name": "Lagerplatzoptimierung"
+            },
+            {
+              "id": "5.2.4",
+              "name": "Konsignationslager"
+            }
           ]
         },
         {
-          "id": "5.3", "name": "Logistik & Distribution", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "5.3",
+          "name": "Logistik & Distribution",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "5.3.1", "name": "Versandabwicklung" },
-            { "id": "5.3.2", "name": "Transportmanagement (TMS)" },
-            { "id": "5.3.3", "name": "Zoll & Außenhandel" },
-            { "id": "5.3.4", "name": "Track & Trace" }
+            {
+              "id": "5.3.1",
+              "name": "Versandabwicklung"
+            },
+            {
+              "id": "5.3.2",
+              "name": "Transportmanagement (TMS)"
+            },
+            {
+              "id": "5.3.3",
+              "name": "Zoll & Außenhandel"
+            },
+            {
+              "id": "5.3.4",
+              "name": "Track & Trace"
+            }
           ]
         },
         {
-          "id": "5.4", "name": "Supply Chain Planning", "maturity": 2, "targetMaturity": 4, "criticality": "Medium",
+          "id": "5.4",
+          "name": "Supply Chain Planning",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "5.4.1", "name": "Demand Planning & Forecasting" },
-            { "id": "5.4.2", "name": "Sales & Operations Planning (S&OP)" },
-            { "id": "5.4.3", "name": "Supply Network Design" },
-            { "id": "5.4.4", "name": "Bestandsoptimierung" }
+            {
+              "id": "5.4.1",
+              "name": "Demand Planning & Forecasting"
+            },
+            {
+              "id": "5.4.2",
+              "name": "Sales & Operations Planning (S&OP)"
+            },
+            {
+              "id": "5.4.3",
+              "name": "Supply Network Design"
+            },
+            {
+              "id": "5.4.4",
+              "name": "Bestandsoptimierung"
+            }
           ]
         },
         {
-          "id": "5.5", "name": "Lieferantenintegration", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "5.5",
+          "name": "Lieferantenintegration",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "5.5.1", "name": "EDI & Datenaustausch" },
-            { "id": "5.5.2", "name": "Supplier Portal" },
-            { "id": "5.5.3", "name": "Vendor Managed Inventory (VMI)" }
+            {
+              "id": "5.5.1",
+              "name": "EDI & Datenaustausch"
+            },
+            {
+              "id": "5.5.2",
+              "name": "Supplier Portal"
+            },
+            {
+              "id": "5.5.3",
+              "name": "Vendor Managed Inventory (VMI)"
+            }
           ]
         }
       ]
@@ -340,50 +903,135 @@
       "strategicFocus": "PLM-ERP-Brücke, Änderungsmanagement",
       "vision": "Digital Engineering — Durchgängiger digitaler Faden von Design über PLM bis Fertigung",
       "kpis": [
-        { "id": "KPI-D6-1", "name": "Engineering Change Lead Time", "target": "5", "current": "12", "unit": "days", "trend": "improving" },
-        { "id": "KPI-D6-2", "name": "BOM Accuracy", "target": "99", "current": "94", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-D6-1",
+          "name": "Engineering Change Lead Time",
+          "target": "5",
+          "current": "12",
+          "unit": "days",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D6-2",
+          "name": "BOM Accuracy",
+          "target": "99",
+          "current": "94",
+          "unit": "%",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "6.1", "name": "Produktdesign & Konstruktion", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "6.1",
+          "name": "Produktdesign & Konstruktion",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "6.1.1", "name": "CAD / 3D-Modellierung" },
-            { "id": "6.1.2", "name": "Simulation & FEM-Analyse" },
-            { "id": "6.1.3", "name": "Rapid Prototyping / Additive Fertigung" },
-            { "id": "6.1.4", "name": "Design Review & Freigabe" }
+            {
+              "id": "6.1.1",
+              "name": "CAD / 3D-Modellierung"
+            },
+            {
+              "id": "6.1.2",
+              "name": "Simulation & FEM-Analyse"
+            },
+            {
+              "id": "6.1.3",
+              "name": "Rapid Prototyping / Additive Fertigung"
+            },
+            {
+              "id": "6.1.4",
+              "name": "Design Review & Freigabe"
+            }
           ]
         },
         {
-          "id": "6.2", "name": "Product Lifecycle Management (PLM)", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "6.2",
+          "name": "Product Lifecycle Management (PLM)",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "6.2.1", "name": "Stücklistenmanagement (BOM)" },
-            { "id": "6.2.2", "name": "Änderungsmanagement (ECR/ECO)" },
-            { "id": "6.2.3", "name": "Dokumentenmanagement (technische Doku)" },
-            { "id": "6.2.4", "name": "Konfigurationsmanagement" }
+            {
+              "id": "6.2.1",
+              "name": "Stücklistenmanagement (BOM)"
+            },
+            {
+              "id": "6.2.2",
+              "name": "Änderungsmanagement (ECR/ECO)"
+            },
+            {
+              "id": "6.2.3",
+              "name": "Dokumentenmanagement (technische Doku)"
+            },
+            {
+              "id": "6.2.4",
+              "name": "Konfigurationsmanagement"
+            }
           ]
         },
         {
-          "id": "6.3", "name": "Anforderungs- & Spezifikationsmanagement", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "6.3",
+          "name": "Anforderungs- & Spezifikationsmanagement",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "6.3.1", "name": "Requirements Engineering" },
-            { "id": "6.3.2", "name": "Normen- & Standardverwaltung" },
-            { "id": "6.3.3", "name": "Technische Spezifikationen" }
+            {
+              "id": "6.3.1",
+              "name": "Requirements Engineering"
+            },
+            {
+              "id": "6.3.2",
+              "name": "Normen- & Standardverwaltung"
+            },
+            {
+              "id": "6.3.3",
+              "name": "Technische Spezifikationen"
+            }
           ]
         },
         {
-          "id": "6.4", "name": "Test & Validation", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "6.4",
+          "name": "Test & Validation",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "6.4.1", "name": "Prüfplanung & -durchführung" },
-            { "id": "6.4.2", "name": "Testergebnisdokumentation" },
-            { "id": "6.4.3", "name": "Zulassung & Zertifizierung" }
+            {
+              "id": "6.4.1",
+              "name": "Prüfplanung & -durchführung"
+            },
+            {
+              "id": "6.4.2",
+              "name": "Testergebnisdokumentation"
+            },
+            {
+              "id": "6.4.3",
+              "name": "Zulassung & Zertifizierung"
+            }
           ]
         },
         {
-          "id": "6.5", "name": "Innovation & Portfolio Management", "maturity": 1, "targetMaturity": 2, "criticality": "Low",
+          "id": "6.5",
+          "name": "Innovation & Portfolio Management",
+          "maturity": 1,
+          "targetMaturity": 2,
+          "criticality": "Low",
           "subCapabilities": [
-            { "id": "6.5.1", "name": "Ideenmanagement / Innovation Pipeline" },
-            { "id": "6.5.2", "name": "Technologie-Scouting" },
-            { "id": "6.5.3", "name": "Produktportfolio-Steuerung" }
+            {
+              "id": "6.5.1",
+              "name": "Ideenmanagement / Innovation Pipeline"
+            },
+            {
+              "id": "6.5.2",
+              "name": "Technologie-Scouting"
+            },
+            {
+              "id": "6.5.3",
+              "name": "Produktportfolio-Steuerung"
+            }
           ]
         }
       ]
@@ -398,54 +1046,151 @@
       "strategicFocus": "Single Source of Truth, Planungsintegration",
       "vision": "Integrated Finance — Ein konsolidiertes Finanzreporting, durchgängige Planungsintegration, CSRD-Readiness",
       "kpis": [
-        { "id": "KPI-D7-1", "name": "Days to Close", "target": "5", "current": "8", "unit": "days", "trend": "improving" },
-        { "id": "KPI-D7-2", "name": "Forecast Variance", "target": "5", "current": "12", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-D7-1",
+          "name": "Days to Close",
+          "target": "5",
+          "current": "8",
+          "unit": "days",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D7-2",
+          "name": "Forecast Variance",
+          "target": "5",
+          "current": "12",
+          "unit": "%",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "7.1", "name": "Finanzbuchhaltung", "maturity": 4, "targetMaturity": 4, "criticality": "High",
+          "id": "7.1",
+          "name": "Finanzbuchhaltung",
+          "maturity": 4,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "7.1.1", "name": "Hauptbuchhaltung" },
-            { "id": "7.1.2", "name": "Debitorenbuchhaltung" },
-            { "id": "7.1.3", "name": "Kreditorenbuchhaltung" },
-            { "id": "7.1.4", "name": "Anlagenbuchhaltung" },
-            { "id": "7.1.5", "name": "Konzernkonsolidierung" }
+            {
+              "id": "7.1.1",
+              "name": "Hauptbuchhaltung"
+            },
+            {
+              "id": "7.1.2",
+              "name": "Debitorenbuchhaltung"
+            },
+            {
+              "id": "7.1.3",
+              "name": "Kreditorenbuchhaltung"
+            },
+            {
+              "id": "7.1.4",
+              "name": "Anlagenbuchhaltung"
+            },
+            {
+              "id": "7.1.5",
+              "name": "Konzernkonsolidierung"
+            }
           ]
         },
         {
-          "id": "7.2", "name": "Controlling", "maturity": 4, "targetMaturity": 4, "criticality": "High",
+          "id": "7.2",
+          "name": "Controlling",
+          "maturity": 4,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "7.2.1", "name": "Kostenstellenrechnung" },
-            { "id": "7.2.2", "name": "Kostenträgerrechnung / Produktkalkulation" },
-            { "id": "7.2.3", "name": "Profit-Center-Rechnung" },
-            { "id": "7.2.4", "name": "Deckungsbeitragsrechnung" }
+            {
+              "id": "7.2.1",
+              "name": "Kostenstellenrechnung"
+            },
+            {
+              "id": "7.2.2",
+              "name": "Kostenträgerrechnung / Produktkalkulation"
+            },
+            {
+              "id": "7.2.3",
+              "name": "Profit-Center-Rechnung"
+            },
+            {
+              "id": "7.2.4",
+              "name": "Deckungsbeitragsrechnung"
+            }
           ]
         },
         {
-          "id": "7.3", "name": "Planung & Budgetierung", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "7.3",
+          "name": "Planung & Budgetierung",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "7.3.1", "name": "Budgetplanung & Forecasting" },
-            { "id": "7.3.2", "name": "Investitionsplanung (CapEx)" },
-            { "id": "7.3.3", "name": "Liquiditätsplanung" },
-            { "id": "7.3.4", "name": "Szenarioanalysen" }
+            {
+              "id": "7.3.1",
+              "name": "Budgetplanung & Forecasting"
+            },
+            {
+              "id": "7.3.2",
+              "name": "Investitionsplanung (CapEx)"
+            },
+            {
+              "id": "7.3.3",
+              "name": "Liquiditätsplanung"
+            },
+            {
+              "id": "7.3.4",
+              "name": "Szenarioanalysen"
+            }
           ]
         },
         {
-          "id": "7.4", "name": "Reporting & Analytics", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "7.4",
+          "name": "Reporting & Analytics",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "7.4.1", "name": "Management Reporting / MIS" },
-            { "id": "7.4.2", "name": "Statutory Reporting" },
-            { "id": "7.4.3", "name": "ESG / Nachhaltigkeitsreporting (CSRD)" },
-            { "id": "7.4.4", "name": "Ad-hoc-Analysen & Dashboards" }
+            {
+              "id": "7.4.1",
+              "name": "Management Reporting / MIS"
+            },
+            {
+              "id": "7.4.2",
+              "name": "Statutory Reporting"
+            },
+            {
+              "id": "7.4.3",
+              "name": "ESG / Nachhaltigkeitsreporting (CSRD)"
+            },
+            {
+              "id": "7.4.4",
+              "name": "Ad-hoc-Analysen & Dashboards"
+            }
           ]
         },
         {
-          "id": "7.5", "name": "Treasury & Compliance", "maturity": 3, "targetMaturity": 3, "criticality": "Medium",
+          "id": "7.5",
+          "name": "Treasury & Compliance",
+          "maturity": 3,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "7.5.1", "name": "Zahlungsverkehr" },
-            { "id": "7.5.2", "name": "Bankanbindung" },
-            { "id": "7.5.3", "name": "Steuerliche Compliance" },
-            { "id": "7.5.4", "name": "Internes Kontrollsystem (IKS)" }
+            {
+              "id": "7.5.1",
+              "name": "Zahlungsverkehr"
+            },
+            {
+              "id": "7.5.2",
+              "name": "Bankanbindung"
+            },
+            {
+              "id": "7.5.3",
+              "name": "Steuerliche Compliance"
+            },
+            {
+              "id": "7.5.4",
+              "name": "Internes Kontrollsystem (IKS)"
+            }
           ]
         }
       ]
@@ -460,52 +1205,143 @@
       "strategicFocus": "Digitalisierung, integrierte HR-Suite",
       "vision": "Digital HR — Ablösung der Insellösungen durch integrierte HR-Plattform (SAP SuccessFactors), Employee Self-Service",
       "kpis": [
-        { "id": "KPI-D8-1", "name": "Time-to-Hire", "target": "45", "current": "68", "unit": "days", "trend": "stable" },
-        { "id": "KPI-D8-2", "name": "Onboarding Completeness", "target": "90", "current": "55", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-D8-1",
+          "name": "Time-to-Hire",
+          "target": "45",
+          "current": "68",
+          "unit": "days",
+          "trend": "stable"
+        },
+        {
+          "id": "KPI-D8-2",
+          "name": "Onboarding Completeness",
+          "target": "90",
+          "current": "55",
+          "unit": "%",
+          "trend": "improving"
+        }
       ],
       "capabilities": [
         {
-          "id": "8.1", "name": "Personaladministration", "maturity": 2, "targetMaturity": 3, "criticality": "High",
+          "id": "8.1",
+          "name": "Personaladministration",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "8.1.1", "name": "Personalstammdatenverwaltung" },
-            { "id": "8.1.2", "name": "Personalaktenführung (digital)" },
-            { "id": "8.1.3", "name": "Bescheinigungs- & Dokumentenwesen" },
-            { "id": "8.1.4", "name": "Organisationsmanagement (Organigramm)" }
+            {
+              "id": "8.1.1",
+              "name": "Personalstammdatenverwaltung"
+            },
+            {
+              "id": "8.1.2",
+              "name": "Personalaktenführung (digital)"
+            },
+            {
+              "id": "8.1.3",
+              "name": "Bescheinigungs- & Dokumentenwesen"
+            },
+            {
+              "id": "8.1.4",
+              "name": "Organisationsmanagement (Organigramm)"
+            }
           ]
         },
         {
-          "id": "8.2", "name": "Personalabrechnung & Zeitwirtschaft", "maturity": 2, "targetMaturity": 3, "criticality": "High",
+          "id": "8.2",
+          "name": "Personalabrechnung & Zeitwirtschaft",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "8.2.1", "name": "Lohn- & Gehaltsabrechnung" },
-            { "id": "8.2.2", "name": "Zeiterfassung & Abwesenheitsmanagement" },
-            { "id": "8.2.3", "name": "Schichtplanung (Produktion)" },
-            { "id": "8.2.4", "name": "Reisekostenmanagement" }
+            {
+              "id": "8.2.1",
+              "name": "Lohn- & Gehaltsabrechnung"
+            },
+            {
+              "id": "8.2.2",
+              "name": "Zeiterfassung & Abwesenheitsmanagement"
+            },
+            {
+              "id": "8.2.3",
+              "name": "Schichtplanung (Produktion)"
+            },
+            {
+              "id": "8.2.4",
+              "name": "Reisekostenmanagement"
+            }
           ]
         },
         {
-          "id": "8.3", "name": "Recruiting & Onboarding", "maturity": 2, "targetMaturity": 4, "criticality": "Medium",
+          "id": "8.3",
+          "name": "Recruiting & Onboarding",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "8.3.1", "name": "Bewerbermanagement (ATS)" },
-            { "id": "8.3.2", "name": "Stellenausschreibung & Employer Branding" },
-            { "id": "8.3.3", "name": "Onboarding-Prozess" },
-            { "id": "8.3.4", "name": "Assessment & Auswahlverfahren" }
+            {
+              "id": "8.3.1",
+              "name": "Bewerbermanagement (ATS)"
+            },
+            {
+              "id": "8.3.2",
+              "name": "Stellenausschreibung & Employer Branding"
+            },
+            {
+              "id": "8.3.3",
+              "name": "Onboarding-Prozess"
+            },
+            {
+              "id": "8.3.4",
+              "name": "Assessment & Auswahlverfahren"
+            }
           ]
         },
         {
-          "id": "8.4", "name": "Personalentwicklung & Talent Management", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "8.4",
+          "name": "Personalentwicklung & Talent Management",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "8.4.1", "name": "Mitarbeitergespräche & Zielvereinbarungen" },
-            { "id": "8.4.2", "name": "Kompetenzmanagement" },
-            { "id": "8.4.3", "name": "Nachfolgeplanung" },
-            { "id": "8.4.4", "name": "Learning Management (LMS)" }
+            {
+              "id": "8.4.1",
+              "name": "Mitarbeitergespräche & Zielvereinbarungen"
+            },
+            {
+              "id": "8.4.2",
+              "name": "Kompetenzmanagement"
+            },
+            {
+              "id": "8.4.3",
+              "name": "Nachfolgeplanung"
+            },
+            {
+              "id": "8.4.4",
+              "name": "Learning Management (LMS)"
+            }
           ]
         },
         {
-          "id": "8.5", "name": "HR Analytics & Strategie", "maturity": 1, "targetMaturity": 2, "criticality": "Low",
+          "id": "8.5",
+          "name": "HR Analytics & Strategie",
+          "maturity": 1,
+          "targetMaturity": 2,
+          "criticality": "Low",
           "subCapabilities": [
-            { "id": "8.5.1", "name": "Personalplanung & Workforce Planning" },
-            { "id": "8.5.2", "name": "HR KPIs & Dashboards" },
-            { "id": "8.5.3", "name": "Mitarbeiterbefragungen" }
+            {
+              "id": "8.5.1",
+              "name": "Personalplanung & Workforce Planning"
+            },
+            {
+              "id": "8.5.2",
+              "name": "HR KPIs & Dashboards"
+            },
+            {
+              "id": "8.5.3",
+              "name": "Mitarbeiterbefragungen"
+            }
           ]
         }
       ]
@@ -520,53 +1356,147 @@
       "strategicFocus": "Governance, EHS, PPM",
       "vision": "Integrated Governance — Zentrale Steuerung mit PPM, Risikomanagement und EHS-Digitalisierung",
       "kpis": [
-        { "id": "KPI-D9-1", "name": "EHS Incident Rate", "target": "0", "current": "3", "unit": "#/year", "trend": "improving" },
-        { "id": "KPI-D9-2", "name": "Compliance Audit Score", "target": "95", "current": "82", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-D9-1",
+          "name": "EHS Incident Rate",
+          "target": "0",
+          "current": "3",
+          "unit": "#/year",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D9-2",
+          "name": "Compliance Audit Score",
+          "target": "95",
+          "current": "82",
+          "unit": "%",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "9.1", "name": "Unternehmenssteuerung & Strategie", "maturity": 1, "targetMaturity": 3, "criticality": "High",
+          "id": "9.1",
+          "name": "Unternehmenssteuerung & Strategie",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "9.1.1", "name": "Strategisches Portfolio-Management" },
-            { "id": "9.1.2", "name": "Risikomanagement (Enterprise)" },
-            { "id": "9.1.3", "name": "Projektportfolio-Management (PPM)" },
-            { "id": "9.1.4", "name": "OKR / Zielmanagement" }
+            {
+              "id": "9.1.1",
+              "name": "Strategisches Portfolio-Management"
+            },
+            {
+              "id": "9.1.2",
+              "name": "Risikomanagement (Enterprise)"
+            },
+            {
+              "id": "9.1.3",
+              "name": "Projektportfolio-Management (PPM)"
+            },
+            {
+              "id": "9.1.4",
+              "name": "OKR / Zielmanagement"
+            }
           ]
         },
         {
-          "id": "9.2", "name": "Recht & Compliance", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "9.2",
+          "name": "Recht & Compliance",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "9.2.1", "name": "Vertragsmanagement (CLM)" },
-            { "id": "9.2.2", "name": "Datenschutz (DSGVO)" },
-            { "id": "9.2.3", "name": "Regulatorik & Normenmanagement" },
-            { "id": "9.2.4", "name": "Whistleblowing / Hinweisgebersystem" }
+            {
+              "id": "9.2.1",
+              "name": "Vertragsmanagement (CLM)"
+            },
+            {
+              "id": "9.2.2",
+              "name": "Datenschutz (DSGVO)"
+            },
+            {
+              "id": "9.2.3",
+              "name": "Regulatorik & Normenmanagement"
+            },
+            {
+              "id": "9.2.4",
+              "name": "Whistleblowing / Hinweisgebersystem"
+            }
           ]
         },
         {
-          "id": "9.3", "name": "Facility & Gebäudemanagement", "maturity": 2, "targetMaturity": 2, "criticality": "Low",
+          "id": "9.3",
+          "name": "Facility & Gebäudemanagement",
+          "maturity": 2,
+          "targetMaturity": 2,
+          "criticality": "Low",
           "subCapabilities": [
-            { "id": "9.3.1", "name": "Gebäudeverwaltung & Flächenmanagement" },
-            { "id": "9.3.2", "name": "Gebäudetechnik (GLT/BMS)" },
-            { "id": "9.3.3", "name": "Zutrittskontrolle & Sicherheit" },
-            { "id": "9.3.4", "name": "Energiemanagement" }
+            {
+              "id": "9.3.1",
+              "name": "Gebäudeverwaltung & Flächenmanagement"
+            },
+            {
+              "id": "9.3.2",
+              "name": "Gebäudetechnik (GLT/BMS)"
+            },
+            {
+              "id": "9.3.3",
+              "name": "Zutrittskontrolle & Sicherheit"
+            },
+            {
+              "id": "9.3.4",
+              "name": "Energiemanagement"
+            }
           ]
         },
         {
-          "id": "9.4", "name": "Environment, Health & Safety (EHS)", "maturity": 2, "targetMaturity": 4, "criticality": "High",
+          "id": "9.4",
+          "name": "Environment, Health & Safety (EHS)",
+          "maturity": 2,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "9.4.1", "name": "Arbeitssicherheit & Gefährdungsbeurteilungen" },
-            { "id": "9.4.2", "name": "Umweltmanagement" },
-            { "id": "9.4.3", "name": "Gefahrstoffmanagement" },
-            { "id": "9.4.4", "name": "Incident- & Unfallmanagement" }
+            {
+              "id": "9.4.1",
+              "name": "Arbeitssicherheit & Gefährdungsbeurteilungen"
+            },
+            {
+              "id": "9.4.2",
+              "name": "Umweltmanagement"
+            },
+            {
+              "id": "9.4.3",
+              "name": "Gefahrstoffmanagement"
+            },
+            {
+              "id": "9.4.4",
+              "name": "Incident- & Unfallmanagement"
+            }
           ]
         },
         {
-          "id": "9.5", "name": "Dokumentenmanagement & Archivierung", "maturity": 2, "targetMaturity": 3, "criticality": "Medium",
+          "id": "9.5",
+          "name": "Dokumentenmanagement & Archivierung",
+          "maturity": 2,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "9.5.1", "name": "Enterprise Content Management (ECM)" },
-            { "id": "9.5.2", "name": "Archivierung & Aufbewahrungsfristen" },
-            { "id": "9.5.3", "name": "Workflow & Freigabeprozesse" },
-            { "id": "9.5.4", "name": "Formular- & Template-Management" }
+            {
+              "id": "9.5.1",
+              "name": "Enterprise Content Management (ECM)"
+            },
+            {
+              "id": "9.5.2",
+              "name": "Archivierung & Aufbewahrungsfristen"
+            },
+            {
+              "id": "9.5.3",
+              "name": "Workflow & Freigabeprozesse"
+            },
+            {
+              "id": "9.5.4",
+              "name": "Formular- & Template-Management"
+            }
           ]
         }
       ]
@@ -581,45 +1511,130 @@
       "strategicFocus": "Datenstrategie, AI/ML, IoT",
       "vision": "Data-Driven Enterprise — Zentrale Datenplattform (Azure), Self-Service Analytics, AI/ML für Predictive Use Cases",
       "kpis": [
-        { "id": "KPI-D10-1", "name": "Data Quality Score", "target": "90", "current": "62", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D10-2", "name": "Self-Service BI Adoption", "target": "50", "current": "15", "unit": "%", "trend": "improving" },
-        { "id": "KPI-D10-3", "name": "AI/ML Use Cases in Production", "target": "5", "current": "0", "unit": "#", "trend": "stable" }
+        {
+          "id": "KPI-D10-1",
+          "name": "Data Quality Score",
+          "target": "90",
+          "current": "62",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D10-2",
+          "name": "Self-Service BI Adoption",
+          "target": "50",
+          "current": "15",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-D10-3",
+          "name": "AI/ML Use Cases in Production",
+          "target": "5",
+          "current": "0",
+          "unit": "#",
+          "trend": "stable"
+        }
       ],
       "capabilities": [
         {
-          "id": "10.1", "name": "Data Platform & Integration", "maturity": 1, "targetMaturity": 4, "criticality": "High",
+          "id": "10.1",
+          "name": "Data Platform & Integration",
+          "maturity": 1,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "10.1.1", "name": "Data Warehouse / Data Lakehouse" },
-            { "id": "10.1.2", "name": "ETL / ELT / Datenintegration" },
-            { "id": "10.1.3", "name": "Master Data Management (MDM)" },
-            { "id": "10.1.4", "name": "Data Governance & Data Quality" }
+            {
+              "id": "10.1.1",
+              "name": "Data Warehouse / Data Lakehouse"
+            },
+            {
+              "id": "10.1.2",
+              "name": "ETL / ELT / Datenintegration"
+            },
+            {
+              "id": "10.1.3",
+              "name": "Master Data Management (MDM)"
+            },
+            {
+              "id": "10.1.4",
+              "name": "Data Governance & Data Quality"
+            }
           ]
         },
         {
-          "id": "10.2", "name": "BI & Reporting", "maturity": 3, "targetMaturity": 4, "criticality": "High",
+          "id": "10.2",
+          "name": "BI & Reporting",
+          "maturity": 3,
+          "targetMaturity": 4,
+          "criticality": "High",
           "subCapabilities": [
-            { "id": "10.2.1", "name": "Standard-Reporting & Dashboards" },
-            { "id": "10.2.2", "name": "Self-Service Analytics" },
-            { "id": "10.2.3", "name": "Embedded Analytics" },
-            { "id": "10.2.4", "name": "Mobile BI" }
+            {
+              "id": "10.2.1",
+              "name": "Standard-Reporting & Dashboards"
+            },
+            {
+              "id": "10.2.2",
+              "name": "Self-Service Analytics"
+            },
+            {
+              "id": "10.2.3",
+              "name": "Embedded Analytics"
+            },
+            {
+              "id": "10.2.4",
+              "name": "Mobile BI"
+            }
           ]
         },
         {
-          "id": "10.3", "name": "Advanced Analytics & AI", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "10.3",
+          "name": "Advanced Analytics & AI",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "10.3.1", "name": "Predictive Analytics" },
-            { "id": "10.3.2", "name": "Machine Learning Operations (MLOps)" },
-            { "id": "10.3.3", "name": "NLP & Textanalyse" },
-            { "id": "10.3.4", "name": "Computer Vision" }
+            {
+              "id": "10.3.1",
+              "name": "Predictive Analytics"
+            },
+            {
+              "id": "10.3.2",
+              "name": "Machine Learning Operations (MLOps)"
+            },
+            {
+              "id": "10.3.3",
+              "name": "NLP & Textanalyse"
+            },
+            {
+              "id": "10.3.4",
+              "name": "Computer Vision"
+            }
           ]
         },
         {
-          "id": "10.4", "name": "Industrial IoT & Datenerfassung", "maturity": 1, "targetMaturity": 3, "criticality": "Medium",
+          "id": "10.4",
+          "name": "Industrial IoT & Datenerfassung",
+          "maturity": 1,
+          "targetMaturity": 3,
+          "criticality": "Medium",
           "subCapabilities": [
-            { "id": "10.4.1", "name": "Sensor-/Maschinendaten-Erfassung" },
-            { "id": "10.4.2", "name": "Edge Computing & Gateway" },
-            { "id": "10.4.3", "name": "Time-Series Data Management" },
-            { "id": "10.4.4", "name": "Digital Twin Data Layer" }
+            {
+              "id": "10.4.1",
+              "name": "Sensor-/Maschinendaten-Erfassung"
+            },
+            {
+              "id": "10.4.2",
+              "name": "Edge Computing & Gateway"
+            },
+            {
+              "id": "10.4.3",
+              "name": "Time-Series Data Management"
+            },
+            {
+              "id": "10.4.4",
+              "name": "Digital Twin Data Layer"
+            }
           ]
         }
       ]
@@ -640,7 +1655,10 @@
       "userCount": 320,
       "goLiveDate": "2019-04-01",
       "description": "Zentrales ERP-System für Finanzen, Controlling, Einkauf, Produktion, Lager, Vertrieb. Backbone aller Geschäftsprozesse.",
-      "scores": { "businessValue": 9, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 9,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-002",
@@ -656,7 +1674,10 @@
       "userCount": 45,
       "goLiveDate": "2022-01-15",
       "description": "CRM-System für Vertrieb. Pipeline-Management, Kundenstamm, Angebotsverfolgung. Phase 1 ausgerollt, Phase 2 in Planung.",
-      "scores": { "businessValue": 7, "technicalHealth": 9 }
+      "scores": {
+        "businessValue": 7,
+        "technicalHealth": 9
+      }
     },
     {
       "id": "APP-003",
@@ -672,7 +1693,10 @@
       "userCount": 150,
       "goLiveDate": "2020-06-01",
       "description": "Manufacturing Execution System. BDE/MDE, Fertigungssteuerung, Rückmeldung. Aktuell nur Werk 1, Erweiterung Werk 2 geplant.",
-      "scores": { "businessValue": 8, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 8,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-004",
@@ -688,7 +1712,10 @@
       "userCount": 60,
       "goLiveDate": "2017-03-01",
       "description": "Product Lifecycle Management. Stücklisten (eBOM/mBOM), ECR/ECO, Dokumentenmanagement. Version veraltet, Upgrade zurückgestellt.",
-      "scores": { "businessValue": 7, "technicalHealth": 5 }
+      "scores": {
+        "businessValue": 7,
+        "technicalHealth": 5
+      }
     },
     {
       "id": "APP-005",
@@ -704,7 +1731,10 @@
       "userCount": 850,
       "goLiveDate": "2021-01-01",
       "description": "Digitaler Arbeitsplatz: Exchange Online, Teams, OneDrive, Office Apps. Basis für Zusammenarbeit und Kommunikation.",
-      "scores": { "businessValue": 9, "technicalHealth": 9 }
+      "scores": {
+        "businessValue": 9,
+        "technicalHealth": 9
+      }
     },
     {
       "id": "APP-006",
@@ -720,7 +1750,10 @@
       "userCount": 600,
       "goLiveDate": "2021-01-01",
       "description": "Dokumentenmanagement, Intranet, Team-Sites. Im M365-Lizenzpaket enthalten. Governance noch unzureichend — Wildwuchs an Sites.",
-      "scores": { "businessValue": 7, "technicalHealth": 8 }
+      "scores": {
+        "businessValue": 7,
+        "technicalHealth": 8
+      }
     },
     {
       "id": "APP-007",
@@ -736,7 +1769,10 @@
       "userCount": 200,
       "goLiveDate": "2022-06-01",
       "description": "Self-Service BI und Management-Dashboards. Wird aktuell stark ausgebaut. Datenqualität aus SAP teilweise mangelhaft.",
-      "scores": { "businessValue": 8, "technicalHealth": 8 }
+      "scores": {
+        "businessValue": 8,
+        "technicalHealth": 8
+      }
     },
     {
       "id": "APP-008",
@@ -752,7 +1788,10 @@
       "userCount": 25,
       "goLiveDate": "2023-03-01",
       "description": "IT Service Management: Incidents, Changes, Problems, Asset Management. Erst kürzlich eingeführt, noch nicht voll ausgerollt.",
-      "scores": { "businessValue": 6, "technicalHealth": 9 }
+      "scores": {
+        "businessValue": 6,
+        "technicalHealth": 9
+      }
     },
     {
       "id": "APP-009",
@@ -768,7 +1807,10 @@
       "userCount": 30,
       "goLiveDate": "2020-09-01",
       "description": "HR-System: Personaladmin, Recruiting, Onboarding. Funktional ok, aber keine SAP-Integration. Ablösung durch SAP SuccessFactors geplant.",
-      "scores": { "businessValue": 6, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 6,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-010",
@@ -784,7 +1826,10 @@
       "userCount": 25,
       "goLiveDate": "2015-01-01",
       "description": "3D-CAD für Produktkonstruktion. Bewährt, aber Integration mit Teamcenter PLM ist manuell (Doppelerfassung Stücklisten).",
-      "scores": { "businessValue": 7, "technicalHealth": 6 }
+      "scores": {
+        "businessValue": 7,
+        "technicalHealth": 6
+      }
     },
     {
       "id": "APP-011",
@@ -800,7 +1845,10 @@
       "userCount": 15,
       "goLiveDate": "2022-01-01",
       "description": "Cloud-Plattform: Azure AD (Entra ID), Virtual Machines, Azure SQL, Storage. Cloud-Migration Wave 1 läuft.",
-      "scores": { "businessValue": 8, "technicalHealth": 9 }
+      "scores": {
+        "businessValue": 8,
+        "technicalHealth": 9
+      }
     },
     {
       "id": "APP-012",
@@ -816,7 +1864,10 @@
       "userCount": 8,
       "goLiveDate": "2018-06-01",
       "description": "Monitoring on-prem Infrastruktur. Deckt nicht Cloud-Workloads ab. Ablösung durch Azure Monitor + Sentinel geplant.",
-      "scores": { "businessValue": 5, "technicalHealth": 4 }
+      "scores": {
+        "businessValue": 5,
+        "technicalHealth": 4
+      }
     },
     {
       "id": "APP-013",
@@ -832,7 +1883,10 @@
       "userCount": 850,
       "goLiveDate": "2014-01-01",
       "description": "Zeiterfassung und Abwesenheitsmanagement. Veraltet, kein Support mehr. Ablösung durch SAP SuccessFactors Employee Central Payroll.",
-      "scores": { "businessValue": 4, "technicalHealth": 2 }
+      "scores": {
+        "businessValue": 4,
+        "technicalHealth": 2
+      }
     },
     {
       "id": "APP-014",
@@ -848,7 +1902,10 @@
       "userCount": 80,
       "goLiveDate": "2012-01-01",
       "description": "Sammlung von Excel-Dateien und VBA-Makros für Prüfprotokolle, CAPA-Tracking, Audit-Checklisten. Fehleranfällig, keine Revisionssicherheit. Ablösung durch SAP QM dringend.",
-      "scores": { "businessValue": 6, "technicalHealth": 1 }
+      "scores": {
+        "businessValue": 6,
+        "technicalHealth": 1
+      }
     },
     {
       "id": "APP-015",
@@ -864,7 +1921,10 @@
       "userCount": 3,
       "goLiveDate": "2019-01-01",
       "description": "Backup & Disaster Recovery für on-prem VMs und Datenbanken. Ergänzung durch Azure Backup für Cloud-Workloads nötig.",
-      "scores": { "businessValue": 5, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 5,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-016",
@@ -880,7 +1940,10 @@
       "userCount": 50,
       "goLiveDate": "2023-06-01",
       "description": "Power Apps, Power Automate, Power Pages. Aktuell ~15 aktive Apps, kein CoE, keine Governance. Wildwuchs droht.",
-      "scores": { "businessValue": 6, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 6,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-017",
@@ -896,7 +1959,10 @@
       "userCount": 200,
       "goLiveDate": "2019-06-01",
       "description": "Wiki und Wissensbasis. Parallel zu SharePoint — Fragmentierung der Inhalte. Konsolidierung nach SharePoint/Viva geplant.",
-      "scores": { "businessValue": 5, "technicalHealth": 7 }
+      "scores": {
+        "businessValue": 5,
+        "technicalHealth": 7
+      }
     },
     {
       "id": "APP-018",
@@ -912,62 +1978,253 @@
       "userCount": 5,
       "goLiveDate": "2016-01-01",
       "description": "Bankanbindung und Zahlungsverkehr. Läuft stabil, geringe strategische Relevanz.",
-      "scores": { "businessValue": 4, "technicalHealth": 6 }
+      "scores": {
+        "businessValue": 4,
+        "technicalHealth": 6
+      }
     }
   ],
   "capabilityMappings": [
-    { "capabilityId": "1.1", "applicationId": "APP-011", "role": "Primary" },
-    { "capabilityId": "1.2", "applicationId": "APP-011", "role": "Primary" },
-    { "capabilityId": "1.3", "applicationId": "APP-011", "role": "Primary" },
-    { "capabilityId": "1.3", "applicationId": "APP-012", "role": "Secondary" },
-    { "capabilityId": "1.4", "applicationId": "APP-011", "role": "Primary" },
-    { "capabilityId": "1.4", "applicationId": "APP-015", "role": "Secondary" },
-    { "capabilityId": "1.5", "applicationId": "APP-008", "role": "Primary" },
-    { "capabilityId": "2.1", "applicationId": "APP-005", "role": "Primary" },
-    { "capabilityId": "2.2", "applicationId": "APP-006", "role": "Primary" },
-    { "capabilityId": "2.2", "applicationId": "APP-005", "role": "Secondary" },
-    { "capabilityId": "2.3", "applicationId": "APP-017", "role": "Primary" },
-    { "capabilityId": "2.3", "applicationId": "APP-006", "role": "Secondary" },
-    { "capabilityId": "2.4", "applicationId": "APP-016", "role": "Primary" },
-    { "capabilityId": "3.1", "applicationId": "APP-002", "role": "Primary" },
-    { "capabilityId": "3.2", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "3.2", "applicationId": "APP-002", "role": "Secondary" },
-    { "capabilityId": "3.3", "applicationId": "APP-002", "role": "Primary" },
-    { "capabilityId": "3.4", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "4.1", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "4.1", "applicationId": "APP-003", "role": "Secondary" },
-    { "capabilityId": "4.2", "applicationId": "APP-003", "role": "Primary" },
-    { "capabilityId": "4.3", "applicationId": "APP-014", "role": "Primary" },
-    { "capabilityId": "4.3", "applicationId": "APP-001", "role": "Secondary" },
-    { "capabilityId": "5.1", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "5.2", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "5.3", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "5.4", "applicationId": "APP-001", "role": "Secondary" },
-    { "capabilityId": "6.1", "applicationId": "APP-010", "role": "Primary" },
-    { "capabilityId": "6.2", "applicationId": "APP-004", "role": "Primary" },
-    { "capabilityId": "6.2", "applicationId": "APP-010", "role": "Secondary" },
-    { "capabilityId": "7.1", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "7.2", "applicationId": "APP-001", "role": "Primary" },
-    { "capabilityId": "7.3", "applicationId": "APP-001", "role": "Secondary" },
-    { "capabilityId": "7.4", "applicationId": "APP-007", "role": "Primary" },
-    { "capabilityId": "7.4", "applicationId": "APP-001", "role": "Secondary" },
-    { "capabilityId": "7.5", "applicationId": "APP-018", "role": "Primary" },
-    { "capabilityId": "7.5", "applicationId": "APP-001", "role": "Secondary" },
-    { "capabilityId": "8.1", "applicationId": "APP-009", "role": "Primary" },
-    { "capabilityId": "8.2", "applicationId": "APP-013", "role": "Primary" },
-    { "capabilityId": "8.2", "applicationId": "APP-009", "role": "Secondary" },
-    { "capabilityId": "8.3", "applicationId": "APP-009", "role": "Primary" },
-    { "capabilityId": "9.5", "applicationId": "APP-006", "role": "Primary" },
-    { "capabilityId": "10.2", "applicationId": "APP-007", "role": "Primary" }
+    {
+      "capabilityId": "1.1",
+      "applicationId": "APP-011",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "1.2",
+      "applicationId": "APP-011",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "1.3",
+      "applicationId": "APP-011",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "1.3",
+      "applicationId": "APP-012",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "1.4",
+      "applicationId": "APP-011",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "1.4",
+      "applicationId": "APP-015",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "1.5",
+      "applicationId": "APP-008",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "2.1",
+      "applicationId": "APP-005",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "2.2",
+      "applicationId": "APP-006",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "2.2",
+      "applicationId": "APP-005",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "2.3",
+      "applicationId": "APP-017",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "2.3",
+      "applicationId": "APP-006",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "2.4",
+      "applicationId": "APP-016",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "3.1",
+      "applicationId": "APP-002",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "3.2",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "3.2",
+      "applicationId": "APP-002",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "3.3",
+      "applicationId": "APP-002",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "3.4",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "4.1",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "4.1",
+      "applicationId": "APP-003",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "4.2",
+      "applicationId": "APP-003",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "4.3",
+      "applicationId": "APP-014",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "4.3",
+      "applicationId": "APP-001",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "5.1",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "5.2",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "5.3",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "5.4",
+      "applicationId": "APP-001",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "6.1",
+      "applicationId": "APP-010",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "6.2",
+      "applicationId": "APP-004",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "6.2",
+      "applicationId": "APP-010",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "7.1",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "7.2",
+      "applicationId": "APP-001",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "7.3",
+      "applicationId": "APP-001",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "7.4",
+      "applicationId": "APP-007",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "7.4",
+      "applicationId": "APP-001",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "7.5",
+      "applicationId": "APP-018",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "7.5",
+      "applicationId": "APP-001",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "8.1",
+      "applicationId": "APP-009",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "8.2",
+      "applicationId": "APP-013",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "8.2",
+      "applicationId": "APP-009",
+      "role": "Secondary"
+    },
+    {
+      "capabilityId": "8.3",
+      "applicationId": "APP-009",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "9.5",
+      "applicationId": "APP-006",
+      "role": "Primary"
+    },
+    {
+      "capabilityId": "10.2",
+      "applicationId": "APP-007",
+      "role": "Primary"
+    }
   ],
   "projects": [
     {
       "id": "PRJ-001",
       "name": "SAP S/4HANA Upgrade 2025",
       "primaryDomain": 7,
-      "secondaryDomains": [4, 5, 3],
-      "capabilities": ["7.1", "7.2", "4.1", "5.1", "5.2", "3.2"],
-      "affectedApps": [{ "appId": "APP-001", "action": "verändern" }],
+      "secondaryDomains": [
+        4,
+        5,
+        3
+      ],
+      "capabilities": [
+        "7.1",
+        "7.2",
+        "4.1",
+        "5.1",
+        "5.2",
+        "3.2"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-001",
+          "action": "verändern"
+        }
+      ],
       "category": "Modernisierung",
       "budget": 480000,
       "start": "Q1/2026",
@@ -978,7 +2235,12 @@
       "projectLead": "Thomas Weber",
       "strategicContribution": "Basis für alle nachfolgenden SAP-Erweiterungen. Enabler-Projekt.",
       "timeReference": "Invest",
-      "e2eProcesses": ["O2C", "P2P", "P2Prod", "R2R"],
+      "e2eProcesses": [
+        "O2C",
+        "P2P",
+        "P2Prod",
+        "R2R"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -987,8 +2249,17 @@
       "name": "Salesforce Phase 2 Rollout",
       "primaryDomain": 3,
       "secondaryDomains": [],
-      "capabilities": ["3.1", "3.3", "3.4"],
-      "affectedApps": [{ "appId": "APP-002", "action": "verändern" }],
+      "capabilities": [
+        "3.1",
+        "3.3",
+        "3.4"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-002",
+          "action": "verändern"
+        }
+      ],
       "category": "Optimierung",
       "budget": 150000,
       "start": "Q2/2026",
@@ -999,7 +2270,9 @@
       "projectLead": "Maria Schmidt",
       "strategicContribution": "Vertriebscode-Abdeckung auf 100%, Forecast-Qualität verbessern",
       "timeReference": "Invest",
-      "e2eProcesses": ["O2C"],
+      "e2eProcesses": [
+        "O2C"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1007,9 +2280,19 @@
       "id": "PRJ-003",
       "name": "MES Erweiterung Werk 2",
       "primaryDomain": 4,
-      "secondaryDomains": [10],
-      "capabilities": ["4.2", "4.5"],
-      "affectedApps": [{ "appId": "APP-003", "action": "verändern" }],
+      "secondaryDomains": [
+        10
+      ],
+      "capabilities": [
+        "4.2",
+        "4.5"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-003",
+          "action": "verändern"
+        }
+      ],
       "category": "Innovation / Grow",
       "budget": 280000,
       "start": "Q1/2026",
@@ -1020,7 +2303,9 @@
       "projectLead": "Klaus Berger",
       "strategicContribution": "Durchgängige Fertigungssteuerung über beide Werke, OEE-Transparenz",
       "timeReference": "Invest",
-      "e2eProcesses": ["P2Prod"],
+      "e2eProcesses": [
+        "P2Prod"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1029,8 +2314,16 @@
       "name": "Cloud Migration Wave 1",
       "primaryDomain": 1,
       "secondaryDomains": [],
-      "capabilities": ["1.2", "1.3"],
-      "affectedApps": [{ "appId": "APP-011", "action": "verändern" }],
+      "capabilities": [
+        "1.2",
+        "1.3"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-011",
+          "action": "verändern"
+        }
+      ],
       "category": "Infrastruktur",
       "budget": 350000,
       "start": "Q1/2026",
@@ -1041,7 +2334,9 @@
       "projectLead": "Stefan Hofer",
       "strategicContribution": "Erste 15 Workloads in Azure, Basis für Hybrid Cloud Strategie",
       "timeReference": "Invest",
-      "e2eProcesses": ["R2F"],
+      "e2eProcesses": [
+        "R2F"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1050,8 +2345,15 @@
       "name": "Power Platform CoE Setup",
       "primaryDomain": 2,
       "secondaryDomains": [],
-      "capabilities": ["2.4"],
-      "affectedApps": [{ "appId": "APP-016", "action": "verändern" }],
+      "capabilities": [
+        "2.4"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-016",
+          "action": "verändern"
+        }
+      ],
       "category": "Optimierung",
       "budget": 80000,
       "start": "Q2/2026",
@@ -1062,7 +2364,9 @@
       "projectLead": "Anna Mayer",
       "strategicContribution": "Governance für Citizen Development, Shadow IT vermeiden",
       "timeReference": "Invest",
-      "e2eProcesses": ["R2F"],
+      "e2eProcesses": [
+        "R2F"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1070,9 +2374,19 @@
       "id": "PRJ-006",
       "name": "Identity Management (Entra ID)",
       "primaryDomain": 1,
-      "secondaryDomains": [2],
-      "capabilities": ["1.3", "1.4"],
-      "affectedApps": [{ "appId": "APP-011", "action": "verändern" }],
+      "secondaryDomains": [
+        2
+      ],
+      "capabilities": [
+        "1.3",
+        "1.4"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-011",
+          "action": "verändern"
+        }
+      ],
       "category": "Infrastruktur",
       "budget": 120000,
       "start": "Q1/2026",
@@ -1083,7 +2397,10 @@
       "projectLead": "Stefan Hofer",
       "strategicContribution": "Single Sign-On, Conditional Access, Zero Trust Basis",
       "timeReference": "Invest",
-      "e2eProcesses": ["R2F", "H2R"],
+      "e2eProcesses": [
+        "R2F",
+        "H2R"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1091,11 +2408,23 @@
       "id": "PRJ-007",
       "name": "Data Warehouse / BI Modernisierung",
       "primaryDomain": 10,
-      "secondaryDomains": [7],
-      "capabilities": ["10.1", "10.2", "7.4"],
+      "secondaryDomains": [
+        7
+      ],
+      "capabilities": [
+        "10.1",
+        "10.2",
+        "7.4"
+      ],
       "affectedApps": [
-        { "appId": "APP-007", "action": "verändern" },
-        { "appId": "APP-011", "action": "verändern" }
+        {
+          "appId": "APP-007",
+          "action": "verändern"
+        },
+        {
+          "appId": "APP-011",
+          "action": "verändern"
+        }
       ],
       "category": "Innovation / Grow",
       "budget": 250000,
@@ -1107,7 +2436,9 @@
       "projectLead": "Lisa Gruber",
       "strategicContribution": "Zentrale Datenbasis (Azure Synapse), Self-Service Analytics für Fachbereiche",
       "timeReference": "Invest",
-      "e2eProcesses": ["R2R"],
+      "e2eProcesses": [
+        "R2R"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1116,10 +2447,18 @@
       "name": "QM-Digitalisierung (Excel → SAP QM)",
       "primaryDomain": 4,
       "secondaryDomains": [],
-      "capabilities": ["4.3"],
+      "capabilities": [
+        "4.3"
+      ],
       "affectedApps": [
-        { "appId": "APP-001", "action": "verändern" },
-        { "appId": "APP-014", "action": "ablösen" }
+        {
+          "appId": "APP-001",
+          "action": "verändern"
+        },
+        {
+          "appId": "APP-014",
+          "action": "ablösen"
+        }
       ],
       "category": "Modernisierung",
       "budget": 180000,
@@ -1131,7 +2470,10 @@
       "projectLead": "Thomas Weber",
       "strategicContribution": "Excel-QM ablösen, Revisionssicherheit, ISO-Audit-Readiness",
       "timeReference": "Migrate",
-      "e2eProcesses": ["P2Prod", "O2C"],
+      "e2eProcesses": [
+        "P2Prod",
+        "O2C"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1139,11 +2481,22 @@
       "id": "PRJ-009",
       "name": "SharePoint Governance & Migration",
       "primaryDomain": 2,
-      "secondaryDomains": [9],
-      "capabilities": ["2.2", "9.5"],
+      "secondaryDomains": [
+        9
+      ],
+      "capabilities": [
+        "2.2",
+        "9.5"
+      ],
       "affectedApps": [
-        { "appId": "APP-006", "action": "verändern" },
-        { "appId": "APP-017", "action": "ablösen" }
+        {
+          "appId": "APP-006",
+          "action": "verändern"
+        },
+        {
+          "appId": "APP-017",
+          "action": "ablösen"
+        }
       ],
       "category": "Modernisierung",
       "budget": 90000,
@@ -1164,10 +2517,21 @@
       "name": "HR System Modernisierung (→ SAP SF)",
       "primaryDomain": 8,
       "secondaryDomains": [],
-      "capabilities": ["8.1", "8.2", "8.3", "8.4"],
+      "capabilities": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4"
+      ],
       "affectedApps": [
-        { "appId": "APP-009", "action": "ablösen" },
-        { "appId": "APP-013", "action": "ablösen" }
+        {
+          "appId": "APP-009",
+          "action": "ablösen"
+        },
+        {
+          "appId": "APP-013",
+          "action": "ablösen"
+        }
       ],
       "category": "Modernisierung",
       "budget": 200000,
@@ -1179,7 +2543,9 @@
       "projectLead": "Sandra Kofler",
       "strategicContribution": "Ganzheitliche HR-Plattform, SAP-Integration, End-of-Support Personio/SAGE",
       "timeReference": "Migrate",
-      "e2eProcesses": ["H2R"],
+      "e2eProcesses": [
+        "H2R"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1188,10 +2554,18 @@
       "name": "Cybersecurity Enhancement",
       "primaryDomain": 1,
       "secondaryDomains": [],
-      "capabilities": ["1.4"],
+      "capabilities": [
+        "1.4"
+      ],
       "affectedApps": [
-        { "appId": "APP-011", "action": "verändern" },
-        { "appId": "APP-012", "action": "ablösen" }
+        {
+          "appId": "APP-011",
+          "action": "verändern"
+        },
+        {
+          "appId": "APP-012",
+          "action": "ablösen"
+        }
       ],
       "category": "Run / Pflicht",
       "budget": 160000,
@@ -1203,7 +2577,9 @@
       "projectLead": "Stefan Hofer",
       "strategicContribution": "NIS2-Compliance, SOC/SIEM aufbauen (Azure Sentinel), Zabbix → Azure Monitor",
       "timeReference": "Invest",
-      "e2eProcesses": ["I2R"],
+      "e2eProcesses": [
+        "I2R"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     },
@@ -1211,9 +2587,19 @@
       "id": "PRJ-012",
       "name": "IoT Pilotprojekt Produktion",
       "primaryDomain": 10,
-      "secondaryDomains": [4],
-      "capabilities": ["10.4", "4.4"],
-      "affectedApps": [{ "appId": "APP-011", "action": "verändern" }],
+      "secondaryDomains": [
+        4
+      ],
+      "capabilities": [
+        "10.4",
+        "4.4"
+      ],
+      "affectedApps": [
+        {
+          "appId": "APP-011",
+          "action": "verändern"
+        }
+      ],
       "category": "Innovation / Grow",
       "budget": 120000,
       "start": "Q3/2026",
@@ -1224,122 +2610,614 @@
       "projectLead": "Klaus Berger",
       "strategicContribution": "Sensor-Daten von 5 Pilotmaschinen, Predictive Maintenance Proof-of-Concept",
       "timeReference": "Invest",
-      "e2eProcesses": ["P2Prod"],
+      "e2eProcesses": [
+        "P2Prod"
+      ],
       "mediaBreakRefs": [],
       "conformity": "Konform"
     }
   ],
   "projectDependencies": [
-    { "sourceProjectId": "PRJ-003", "targetProjectId": "PRJ-001", "type": "T", "description": "MES-Integration benötigt neue SAP-Schnittstellen aus dem Upgrade" },
-    { "sourceProjectId": "PRJ-007", "targetProjectId": "PRJ-001", "type": "D", "description": "DWH braucht saubere SAP-Extraktoren (CDS Views) aus dem neuen Release" },
-    { "sourceProjectId": "PRJ-008", "targetProjectId": "PRJ-001", "type": "T", "description": "SAP QM Modul benötigt S/4HANA 2025 Release" },
-    { "sourceProjectId": "PRJ-005", "targetProjectId": "PRJ-006", "type": "P", "description": "CoE benötigt Entra ID Conditional Access für Environment-Management" },
-    { "sourceProjectId": "PRJ-010", "targetProjectId": "PRJ-001", "type": "T", "description": "SAP SuccessFactors Integration benötigt S/4HANA Upgrade" },
-    { "sourceProjectId": "PRJ-009", "targetProjectId": "PRJ-006", "type": "P", "description": "SharePoint Governance baut auf Entra ID Gruppen auf" },
-    { "sourceProjectId": "PRJ-012", "targetProjectId": "PRJ-003", "type": "D", "description": "IoT-Daten sollen mit MES-Daten korreliert werden" },
-    { "sourceProjectId": "PRJ-012", "targetProjectId": "PRJ-007", "type": "D", "description": "Sensordaten fließen in Data Warehouse" },
-    { "sourceProjectId": "PRJ-004", "targetProjectId": "PRJ-006", "type": "T", "description": "Cloud Landing Zone braucht Entra ID als Identity Provider" },
-    { "sourceProjectId": "PRJ-011", "targetProjectId": "PRJ-006", "type": "T", "description": "Azure Sentinel/SOC benötigt Entra ID Integration" },
-    { "sourceProjectId": "PRJ-010", "targetProjectId": "PRJ-006", "type": "P", "description": "SuccessFactors SSO über Entra ID" },
-    { "sourceProjectId": "PRJ-003", "targetProjectId": "PRJ-004", "type": "P", "description": "MES Cloud-Anbindung läuft über Azure-Infrastruktur" }
+    {
+      "sourceProjectId": "PRJ-003",
+      "targetProjectId": "PRJ-001",
+      "type": "T",
+      "description": "MES-Integration benötigt neue SAP-Schnittstellen aus dem Upgrade"
+    },
+    {
+      "sourceProjectId": "PRJ-007",
+      "targetProjectId": "PRJ-001",
+      "type": "D",
+      "description": "DWH braucht saubere SAP-Extraktoren (CDS Views) aus dem neuen Release"
+    },
+    {
+      "sourceProjectId": "PRJ-008",
+      "targetProjectId": "PRJ-001",
+      "type": "T",
+      "description": "SAP QM Modul benötigt S/4HANA 2025 Release"
+    },
+    {
+      "sourceProjectId": "PRJ-005",
+      "targetProjectId": "PRJ-006",
+      "type": "P",
+      "description": "CoE benötigt Entra ID Conditional Access für Environment-Management"
+    },
+    {
+      "sourceProjectId": "PRJ-010",
+      "targetProjectId": "PRJ-001",
+      "type": "T",
+      "description": "SAP SuccessFactors Integration benötigt S/4HANA Upgrade"
+    },
+    {
+      "sourceProjectId": "PRJ-009",
+      "targetProjectId": "PRJ-006",
+      "type": "P",
+      "description": "SharePoint Governance baut auf Entra ID Gruppen auf"
+    },
+    {
+      "sourceProjectId": "PRJ-012",
+      "targetProjectId": "PRJ-003",
+      "type": "D",
+      "description": "IoT-Daten sollen mit MES-Daten korreliert werden"
+    },
+    {
+      "sourceProjectId": "PRJ-012",
+      "targetProjectId": "PRJ-007",
+      "type": "D",
+      "description": "Sensordaten fließen in Data Warehouse"
+    },
+    {
+      "sourceProjectId": "PRJ-004",
+      "targetProjectId": "PRJ-006",
+      "type": "T",
+      "description": "Cloud Landing Zone braucht Entra ID als Identity Provider"
+    },
+    {
+      "sourceProjectId": "PRJ-011",
+      "targetProjectId": "PRJ-006",
+      "type": "T",
+      "description": "Azure Sentinel/SOC benötigt Entra ID Integration"
+    },
+    {
+      "sourceProjectId": "PRJ-010",
+      "targetProjectId": "PRJ-006",
+      "type": "P",
+      "description": "SuccessFactors SSO über Entra ID"
+    },
+    {
+      "sourceProjectId": "PRJ-003",
+      "targetProjectId": "PRJ-004",
+      "type": "P",
+      "description": "MES Cloud-Anbindung läuft über Azure-Infrastruktur"
+    }
   ],
   "managementKPIs": [
-    { "id": "MKPI-1", "name": "Capability Coverage", "description": "% der Capabilities mit ausreichender IT-Unterstützung (Maturity ≥3)", "target": "85", "current": "52", "unit": "%", "trend": "improving", "category": "Architecture" },
-    { "id": "MKPI-2", "name": "Redundanz-Index", "description": "% der Capabilities mit >1 Primary-System", "target": "10", "current": "18", "unit": "%", "trend": "stable", "category": "Architecture" },
-    { "id": "MKPI-3", "name": "Architektur-Compliance", "description": "% der neuen Demands, die konform zum Bebauungsplan sind", "target": "90", "current": "75", "unit": "%", "trend": "improving", "category": "Governance" },
-    { "id": "MKPI-4", "name": "TIME Invest Ratio", "description": "% des IT-Budgets, das in Invest-Quadrant fließt", "target": "35", "current": "42", "unit": "%", "trend": "stable", "category": "Budget" },
-    { "id": "MKPI-5", "name": "Roadmap Progress", "description": "% der Roadmap-Items die on-track sind", "target": "75", "current": "67", "unit": "%", "trend": "improving", "category": "Execution" }
+    {
+      "id": "MKPI-1",
+      "name": "Capability Coverage",
+      "description": "% der Capabilities mit ausreichender IT-Unterstützung (Maturity ≥3)",
+      "target": "85",
+      "current": "52",
+      "unit": "%",
+      "trend": "improving",
+      "category": "Architecture"
+    },
+    {
+      "id": "MKPI-2",
+      "name": "Redundanz-Index",
+      "description": "% der Capabilities mit >1 Primary-System",
+      "target": "10",
+      "current": "18",
+      "unit": "%",
+      "trend": "stable",
+      "category": "Architecture"
+    },
+    {
+      "id": "MKPI-3",
+      "name": "Architektur-Compliance",
+      "description": "% der neuen Demands, die konform zum Bebauungsplan sind",
+      "target": "90",
+      "current": "75",
+      "unit": "%",
+      "trend": "improving",
+      "category": "Governance"
+    },
+    {
+      "id": "MKPI-4",
+      "name": "TIME Invest Ratio",
+      "description": "% des IT-Budgets, das in Invest-Quadrant fließt",
+      "target": "35",
+      "current": "42",
+      "unit": "%",
+      "trend": "stable",
+      "category": "Budget"
+    },
+    {
+      "id": "MKPI-5",
+      "name": "Roadmap Progress",
+      "description": "% der Roadmap-Items die on-track sind",
+      "target": "75",
+      "current": "67",
+      "unit": "%",
+      "trend": "improving",
+      "category": "Execution"
+    }
   ],
   "e2eProcesses": [
     {
-      "id": "O2C", "name": "Order-to-Cash", "owner": "Vertriebsleiter",
+      "id": "O2C",
+      "name": "Order-to-Cash",
+      "owner": "Vertriebsleiter",
       "description": "Vom Kundenauftrag über Fertigung und Versand bis zur Rechnungsstellung und Zahlungseingang",
-      "domains": [3, 4, 5, 7],
+      "domains": [
+        3,
+        4,
+        5,
+        7
+      ],
       "status": "optimization",
       "kpis": [
-        { "id": "KPI-O2C-1", "name": "Order-to-Delivery Time", "target": "5", "current": "8", "unit": "workdays", "trend": "improving" },
-        { "id": "KPI-O2C-2", "name": "Perfect Order Rate", "target": "95", "current": "88", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-O2C-1",
+          "name": "Order-to-Delivery Time",
+          "target": "5",
+          "current": "8",
+          "unit": "workdays",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-O2C-2",
+          "name": "Perfect Order Rate",
+          "target": "95",
+          "current": "88",
+          "unit": "%",
+          "trend": "stable"
+        }
       ]
     },
     {
-      "id": "P2P", "name": "Procure-to-Pay", "owner": "Supply Chain Manager",
+      "id": "P2P",
+      "name": "Procure-to-Pay",
+      "owner": "Supply Chain Manager",
       "description": "Von der Bedarfsanforderung über Bestellung und Wareneingang bis zur Rechnungsprüfung und Zahlung",
-      "domains": [5, 7],
+      "domains": [
+        5,
+        7
+      ],
       "status": "optimization",
       "kpis": [
-        { "id": "KPI-P2P-1", "name": "P2P Cycle Time", "target": "30", "current": "48", "unit": "days", "trend": "improving" },
-        { "id": "KPI-P2P-2", "name": "Touchless Invoice Rate", "target": "60", "current": "25", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-P2P-1",
+          "name": "P2P Cycle Time",
+          "target": "30",
+          "current": "48",
+          "unit": "days",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-P2P-2",
+          "name": "Touchless Invoice Rate",
+          "target": "60",
+          "current": "25",
+          "unit": "%",
+          "trend": "improving"
+        }
       ]
     },
     {
-      "id": "P2Prod", "name": "Plan-to-Produce", "owner": "Werksleiter",
+      "id": "P2Prod",
+      "name": "Plan-to-Produce",
+      "owner": "Werksleiter",
       "description": "Von der Produktionsplanung über Fertigungssteuerung bis zur Qualitätssicherung und Einlagerung",
-      "domains": [4, 5, 6],
+      "domains": [
+        4,
+        5,
+        6
+      ],
       "status": "transformation",
       "kpis": [
-        { "id": "KPI-P2P2-1", "name": "Schedule Adherence", "target": "90", "current": "83", "unit": "%", "trend": "improving" },
-        { "id": "KPI-P2P2-2", "name": "First Pass Yield", "target": "95", "current": "91", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-P2P2-1",
+          "name": "Schedule Adherence",
+          "target": "90",
+          "current": "83",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-P2P2-2",
+          "name": "First Pass Yield",
+          "target": "95",
+          "current": "91",
+          "unit": "%",
+          "trend": "stable"
+        }
       ]
     },
     {
-      "id": "H2R", "name": "Hire-to-Retire", "owner": "HR-Leiterin",
+      "id": "H2R",
+      "name": "Hire-to-Retire",
+      "owner": "HR-Leiterin",
       "description": "Vom Recruiting über Onboarding, Entwicklung bis zum Austritt",
-      "domains": [8],
+      "domains": [
+        8
+      ],
       "status": "transformation",
       "kpis": [
-        { "id": "KPI-H2R-1", "name": "Time-to-Hire", "target": "45", "current": "68", "unit": "days", "trend": "stable" },
-        { "id": "KPI-H2R-2", "name": "Onboarding Completeness", "target": "90", "current": "55", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-H2R-1",
+          "name": "Time-to-Hire",
+          "target": "45",
+          "current": "68",
+          "unit": "days",
+          "trend": "stable"
+        },
+        {
+          "id": "KPI-H2R-2",
+          "name": "Onboarding Completeness",
+          "target": "90",
+          "current": "55",
+          "unit": "%",
+          "trend": "improving"
+        }
       ]
     },
     {
-      "id": "R2R", "name": "Record-to-Report", "owner": "CFO",
+      "id": "R2R",
+      "name": "Record-to-Report",
+      "owner": "CFO",
       "description": "Von der Buchung über Monatsabschluss bis zum Management-Reporting und Konzernkonsolidierung",
-      "domains": [7, 10],
+      "domains": [
+        7,
+        10
+      ],
       "status": "optimization",
       "kpis": [
-        { "id": "KPI-R2R-1", "name": "Days to Close", "target": "5", "current": "8", "unit": "workdays", "trend": "improving" },
-        { "id": "KPI-R2R-2", "name": "Report Automation Rate", "target": "70", "current": "35", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-R2R-1",
+          "name": "Days to Close",
+          "target": "5",
+          "current": "8",
+          "unit": "workdays",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-R2R-2",
+          "name": "Report Automation Rate",
+          "target": "70",
+          "current": "35",
+          "unit": "%",
+          "trend": "improving"
+        }
       ]
     },
     {
-      "id": "I2R", "name": "Issue-to-Resolution", "owner": "CIO",
+      "id": "I2R",
+      "name": "Issue-to-Resolution",
+      "owner": "CIO",
       "description": "Vom IT-Incident über Troubleshooting bis zur Lösung und Ursachenanalyse",
-      "domains": [1],
+      "domains": [
+        1
+      ],
       "status": "active",
       "kpis": [
-        { "id": "KPI-I2R-1", "name": "Mean Time to Resolve", "target": "4", "current": "6.5", "unit": "h", "trend": "improving" },
-        { "id": "KPI-I2R-2", "name": "First Contact Resolution Rate", "target": "70", "current": "52", "unit": "%", "trend": "stable" }
+        {
+          "id": "KPI-I2R-1",
+          "name": "Mean Time to Resolve",
+          "target": "4",
+          "current": "6.5",
+          "unit": "h",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-I2R-2",
+          "name": "First Contact Resolution Rate",
+          "target": "70",
+          "current": "52",
+          "unit": "%",
+          "trend": "stable"
+        }
       ]
     },
     {
-      "id": "D2D", "name": "Design-to-Deliver", "owner": "Entwicklungsleiter",
+      "id": "D2D",
+      "name": "Design-to-Deliver",
+      "owner": "Entwicklungsleiter",
       "description": "Von der Produktidee über Engineering, Prototyping bis zur Serienfreigabe",
-      "domains": [6, 4],
+      "domains": [
+        6,
+        4
+      ],
       "status": "active",
       "kpis": [
-        { "id": "KPI-D2D-1", "name": "Time-to-Market", "target": "12", "current": "18", "unit": "months", "trend": "stable" },
-        { "id": "KPI-D2D-2", "name": "Engineering Change Lead Time", "target": "5", "current": "12", "unit": "days", "trend": "improving" }
+        {
+          "id": "KPI-D2D-1",
+          "name": "Time-to-Market",
+          "target": "12",
+          "current": "18",
+          "unit": "months",
+          "trend": "stable"
+        },
+        {
+          "id": "KPI-D2D-2",
+          "name": "Engineering Change Lead Time",
+          "target": "5",
+          "current": "12",
+          "unit": "days",
+          "trend": "improving"
+        }
       ]
     },
     {
-      "id": "R2F", "name": "Request-to-Fulfill (IT)", "owner": "CIO",
+      "id": "R2F",
+      "name": "Request-to-Fulfill (IT)",
+      "owner": "CIO",
       "description": "Von der IT-Anforderung über Bewertung, Umsetzung bis zur Bereitstellung",
-      "domains": [1, 2, 9],
+      "domains": [
+        1,
+        2,
+        9
+      ],
       "status": "optimization",
       "kpis": [
-        { "id": "KPI-R2F-1", "name": "IT Demand Fulfillment Time", "target": "30", "current": "52", "unit": "days", "trend": "improving" },
-        { "id": "KPI-R2F-2", "name": "IT Demand Compliance Rate", "target": "90", "current": "75", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-R2F-1",
+          "name": "IT Demand Fulfillment Time",
+          "target": "30",
+          "current": "52",
+          "unit": "days",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-R2F-2",
+          "name": "IT Demand Compliance Rate",
+          "target": "90",
+          "current": "75",
+          "unit": "%",
+          "trend": "improving"
+        }
       ]
     },
     {
-      "id": "S2S", "name": "Sense-to-Sustain (Data)", "owner": "CDO / CIO",
+      "id": "S2S",
+      "name": "Sense-to-Sustain (Data)",
+      "owner": "CDO / CIO",
       "description": "Von der Datenerfassung (IoT/Sensoren) über Integration und Analyse bis zur nachhaltigen Nutzung",
-      "domains": [10, 4],
+      "domains": [
+        10,
+        4
+      ],
       "status": "transformation",
       "kpis": [
-        { "id": "KPI-S2S-1", "name": "Data Pipeline Reliability", "target": "99", "current": "85", "unit": "%", "trend": "improving" },
-        { "id": "KPI-S2S-2", "name": "Analytics User Adoption", "target": "40", "current": "15", "unit": "%", "trend": "improving" }
+        {
+          "id": "KPI-S2S-1",
+          "name": "Data Pipeline Reliability",
+          "target": "99",
+          "current": "85",
+          "unit": "%",
+          "trend": "improving"
+        },
+        {
+          "id": "KPI-S2S-2",
+          "name": "Analytics User Adoption",
+          "target": "40",
+          "current": "15",
+          "unit": "%",
+          "trend": "improving"
+        }
       ]
+    }
+  ],
+  "vendors": [
+    {
+      "id": "VND-001",
+      "name": "SAP SE",
+      "category": "ERP / Business Applications",
+      "status": "Active",
+      "criticality": "Strategic",
+      "serviceLevel": "Premium",
+      "contractValue": 550000,
+      "contractEnd": "2027-12-31",
+      "contactPerson": "Account Manager SAP",
+      "vendorManager": "CIO",
+      "website": "https://www.sap.com",
+      "rating": 8,
+      "description": "Strategischer ERP-Partner für S/4HANA und SuccessFactors. Langfristige Partnerschaft für das zentrale Geschäftssystem."
+    },
+    {
+      "id": "VND-002",
+      "name": "Microsoft",
+      "category": "Cloud / Productivity",
+      "status": "Active",
+      "criticality": "Strategic",
+      "serviceLevel": "Enterprise",
+      "contractValue": 320000,
+      "contractEnd": "2026-06-30",
+      "contactPerson": "Microsoft Account Team",
+      "vendorManager": "Leiter IT-Infrastruktur",
+      "website": "https://www.microsoft.com",
+      "rating": 9,
+      "description": "Azure Cloud, Microsoft 365, Power Platform und Teams. Strategischer Cloud-Partner für die digitale Transformation."
+    },
+    {
+      "id": "VND-003",
+      "name": "Siemens Digital Industries Software",
+      "category": "PLM / Engineering",
+      "status": "Active",
+      "criticality": "Strategic",
+      "serviceLevel": "Premium",
+      "contractValue": 180000,
+      "contractEnd": "2027-03-31",
+      "contactPerson": "Siemens PLM Account Manager",
+      "vendorManager": "Leiter Engineering IT",
+      "website": "https://www.sw.siemens.com",
+      "rating": 7,
+      "description": "PLM-Lösung Teamcenter für Produktdatenmanagement und Engineering-Prozesse."
+    },
+    {
+      "id": "VND-004",
+      "name": "Salesforce",
+      "category": "CRM",
+      "status": "Active",
+      "criticality": "Important",
+      "serviceLevel": "Enterprise",
+      "contractValue": 95000,
+      "contractEnd": "2026-09-30",
+      "contactPerson": "Salesforce Account Executive",
+      "vendorManager": "Leiter Vertrieb IT",
+      "website": "https://www.salesforce.com",
+      "rating": 8,
+      "description": "CRM-Plattform für Vertrieb, Marketing und Kundenservice."
+    },
+    {
+      "id": "VND-005",
+      "name": "ServiceNow",
+      "category": "ITSM / Service Management",
+      "status": "Active",
+      "criticality": "Important",
+      "serviceLevel": "Standard",
+      "contractValue": 85000,
+      "contractEnd": "2026-12-31",
+      "contactPerson": "ServiceNow Account Manager",
+      "vendorManager": "IT Service Manager",
+      "website": "https://www.servicenow.com",
+      "rating": 7,
+      "description": "IT Service Management Plattform für Incident-, Change- und Problem-Management."
+    },
+    {
+      "id": "VND-006",
+      "name": "Atlassian",
+      "category": "Collaboration / DevOps",
+      "status": "Active",
+      "criticality": "Standard",
+      "serviceLevel": "Cloud Premium",
+      "contractValue": 25000,
+      "contractEnd": "2026-03-31",
+      "contactPerson": "Atlassian Partner",
+      "vendorManager": "Leiter Softwareentwicklung",
+      "website": "https://www.atlassian.com",
+      "rating": 8,
+      "description": "Jira und Confluence für Projektmanagement und Dokumentation."
+    },
+    {
+      "id": "VND-007",
+      "name": "MPDV Mikrolab",
+      "category": "MES / Manufacturing",
+      "status": "Active",
+      "criticality": "Important",
+      "serviceLevel": "Standard",
+      "contractValue": 75000,
+      "contractEnd": "2026-12-31",
+      "contactPerson": "MPDV Vertrieb",
+      "vendorManager": "Leiter Produktion IT",
+      "website": "https://www.mpdv.com",
+      "rating": 6,
+      "description": "Manufacturing Execution System (MES) für Fertigungssteuerung und Produktionsdatenerfassung."
+    },
+    {
+      "id": "VND-008",
+      "name": "Personio SE",
+      "category": "HR / People Management",
+      "status": "Active",
+      "criticality": "Standard",
+      "serviceLevel": "Professional",
+      "contractValue": 18000,
+      "contractEnd": "2026-06-30",
+      "contactPerson": "Personio Customer Success",
+      "vendorManager": "Leiter HR",
+      "website": "https://www.personio.de",
+      "rating": 7,
+      "description": "HR-Software für Personalverwaltung, Recruiting und Zeiterfassung."
+    },
+    {
+      "id": "VND-009",
+      "name": "Veeam Software",
+      "category": "Backup / Data Protection",
+      "status": "Active",
+      "criticality": "Standard",
+      "serviceLevel": "Standard",
+      "contractValue": 22000,
+      "contractEnd": "2026-09-30",
+      "contactPerson": "Veeam Reseller",
+      "vendorManager": "Leiter IT-Infrastruktur",
+      "website": "https://www.veeam.com",
+      "rating": 8,
+      "description": "Backup und Disaster Recovery für virtuelle und physische Infrastruktur."
+    },
+    {
+      "id": "VND-010",
+      "name": "Dassault Systèmes",
+      "category": "CAD / Simulation",
+      "status": "Active",
+      "criticality": "Important",
+      "serviceLevel": "Premium",
+      "contractValue": 120000,
+      "contractEnd": "2027-06-30",
+      "contactPerson": "Dassault Account Manager",
+      "vendorManager": "Leiter Engineering IT",
+      "website": "https://www.3ds.com",
+      "rating": 7,
+      "description": "CATIA und SOLIDWORKS für CAD-Design und Engineering-Simulation."
+    },
+    {
+      "id": "VND-011",
+      "name": "Zabbix LLC",
+      "category": "Monitoring",
+      "status": "Active",
+      "criticality": "Standard",
+      "serviceLevel": "Community",
+      "contractValue": 5000,
+      "contractEnd": "2026-12-31",
+      "contactPerson": "Zabbix Support",
+      "vendorManager": "Leiter IT-Infrastruktur",
+      "website": "https://www.zabbix.com",
+      "rating": 7,
+      "description": "Open-Source Monitoring-Lösung für Netzwerk- und Serverüberwachung."
+    },
+    {
+      "id": "VND-012",
+      "name": "SAGE",
+      "category": "Financial Software",
+      "status": "Phase-Out",
+      "criticality": "Commodity",
+      "serviceLevel": "Standard",
+      "contractValue": 12000,
+      "contractEnd": "2025-12-31",
+      "contactPerson": "SAGE Support",
+      "vendorManager": "Leiter Controlling",
+      "website": "https://www.sage.com",
+      "rating": 4,
+      "description": "Legacy-Kostenrechnung, wird durch SAP S/4HANA abgelöst."
+    },
+    {
+      "id": "VND-013",
+      "name": "Omikron Systemhaus",
+      "category": "Data Quality",
+      "status": "Under Review",
+      "criticality": "Commodity",
+      "serviceLevel": "Basic",
+      "contractValue": 8000,
+      "contractEnd": "2026-03-31",
+      "contactPerson": "Omikron Vertrieb",
+      "vendorManager": "Leiter Stammdaten",
+      "website": "https://www.omikron.net",
+      "rating": 5,
+      "description": "Datenqualitäts-Tool für Adress- und Stammdatenbereinigung."
+    },
+    {
+      "id": "VND-014",
+      "name": "Eigenentwicklung",
+      "category": "Custom Development",
+      "status": "Active",
+      "criticality": "Standard",
+      "serviceLevel": "Internal",
+      "contractValue": 0,
+      "contractEnd": "",
+      "contactPerson": "Leiter Softwareentwicklung",
+      "vendorManager": "CIO",
+      "website": "",
+      "rating": 6,
+      "description": "Interne Eigenentwicklungen und maßgeschneiderte Lösungen."
     }
   ]
 }

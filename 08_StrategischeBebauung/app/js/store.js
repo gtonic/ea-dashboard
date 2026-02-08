@@ -16,6 +16,7 @@ function createEmptyState () {
     projects: [],
     projectDependencies: [],
     managementKPIs: [],
+    vendors: [],
     e2eProcesses: [],
     enums: {}
   }
@@ -33,6 +34,7 @@ export const store = reactive({
 
   get totalApps () { return this.data.applications.length },
   get totalProjects () { return this.data.projects.length },
+  get totalVendors () { return (this.data.vendors || []).length },
 
   get totalCapabilities () {
     return this.data.domains.reduce((n, d) => n + d.capabilities.length, 0)
@@ -347,6 +349,43 @@ export const store = reactive({
     return (this.data.e2eProcesses || []).filter(p =>
       p.domains && p.domains.some(did => domainIds.has(did))
     )
+  },
+
+  // ── Vendor CRUD ──
+
+  vendorById (id) {
+    return (this.data.vendors || []).find(v => v.id === id)
+  },
+
+  addVendor (vendor) {
+    if (!this.data.vendors) this.data.vendors = []
+    vendor.id = vendor.id || 'VND-' + String(this.data.vendors.length + 1).padStart(3, '0')
+    this.data.vendors.push(vendor)
+  },
+
+  updateVendor (id, patch) {
+    const v = this.vendorById(id)
+    if (v) Object.assign(v, patch)
+  },
+
+  deleteVendor (id) {
+    if (!this.data.vendors) return
+    this.data.vendors = this.data.vendors.filter(v => v.id !== id)
+  },
+
+  /** Find all applications that reference this vendor (by vendor name match or vendorId) */
+  appsForVendor (vendorId) {
+    const vendor = this.vendorById(vendorId)
+    if (!vendor) return []
+    return this.data.applications.filter(a => a.vendor === vendor.name || a.vendorId === vendorId)
+  },
+
+  /** Find the vendor record for a given application */
+  vendorForApp (appId) {
+    const app = this.appById(appId)
+    if (!app) return null
+    if (app.vendorId) return this.vendorById(app.vendorId)
+    return (this.data.vendors || []).find(v => v.name === app.vendor)
   },
 
   // ── Management KPI CRUD ──

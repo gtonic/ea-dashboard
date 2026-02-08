@@ -32,6 +32,7 @@ COMPONENTS = [
     ('app-form.js',         'AppForm'),
     ('project-form.js',     'ProjectForm'),
     ('process-form.js',     'ProcessForm'),
+    ('vendor-form.js',      'VendorForm'),
     ('dashboard.js',        'DashboardView'),
     ('settings.js',         'SettingsView'),
     ('domain-list.js',      'DomainList'),
@@ -46,6 +47,8 @@ COMPONENTS = [
     ('dependency-graph.js', 'DependencyGraph'),
     ('process-list.js',     'ProcessList'),
     ('process-detail.js',   'ProcessDetail'),
+    ('vendor-list.js',      'VendorList'),
+    ('vendor-detail.js',    'VendorDetail'),
     ('maturity-gap.js',     'MaturityGap'),
     ('layout.js',           'AppLayout'),
 ]
@@ -147,6 +150,9 @@ app.component('process-list', ProcessList);
 app.component('process-detail', ProcessDetail);
 app.component('process-form', ProcessForm);
 app.component('maturity-gap', MaturityGap);
+app.component('vendor-list', VendorList);
+app.component('vendor-detail', VendorDetail);
+app.component('vendor-form', VendorForm);
 
 initRouter();
 loadData();
