@@ -25,6 +25,9 @@ import ProcessList from './components/process-list.js'
 import ProcessDetail from './components/process-detail.js'
 import ProcessForm from './components/process-form.js'
 import MaturityGap from './components/maturity-gap.js'
+import VendorList from './components/vendor-list.js'
+import VendorDetail from './components/vendor-detail.js'
+import VendorForm from './components/vendor-form.js'
 
 // Create app
 const app = createApp(Layout)
@@ -51,6 +54,9 @@ app.component('process-list', ProcessList)
 app.component('process-detail', ProcessDetail)
 app.component('process-form', ProcessForm)
 app.component('maturity-gap', MaturityGap)
+app.component('vendor-list', VendorList)
+app.component('vendor-detail', VendorDetail)
+app.component('vendor-form', VendorForm)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

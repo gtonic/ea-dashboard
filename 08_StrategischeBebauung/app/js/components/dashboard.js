@@ -122,6 +122,7 @@ export default {
       { label: 'Domains', value: store.data.domains.length, color: '#3b82f6' },
       { label: 'Capabilities', value: store.totalCapabilities, sub: store.totalSubCapabilities + ' L2' },
       { label: 'Applications', value: store.totalApps },
+      { label: 'Vendors', value: store.totalVendors },
       { label: 'Projects', value: store.totalProjects },
       { label: 'Avg Maturity', value: store.avgMaturity + '/5', color: store.avgMaturity >= 3 ? '#10b981' : '#f59e0b' },
       { label: 'Total Budget', value: '€' + (store.totalBudget / 1000).toFixed(0) + 'k', color: '#6366f1' }
