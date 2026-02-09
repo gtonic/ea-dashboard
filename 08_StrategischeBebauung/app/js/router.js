@@ -26,6 +26,7 @@ const routes = [
   { pattern: /^\/vendors\/(VND-\d+)$/,       component: 'vendor-detail',   paramNames: ['id'] },
   { pattern: /^\/demands$/,                   component: 'demand-list' },
   { pattern: /^\/demands\/(DEM-\d+)$/,        component: 'demand-detail',   paramNames: ['id'] },
+  { pattern: /^\/ai-usecases$/,                  component: 'ai-usecases-list' },
   { pattern: /^\/demand-pipeline$/,            component: 'demand-pipeline' },
   { pattern: /^\/budget-dashboard$/,            component: 'budget-dashboard' },
   { pattern: /^\/maturity-gap$/,            component: 'maturity-gap' },

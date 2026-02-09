@@ -53,6 +53,7 @@ COMPONENTS = [
     ('demand-detail.js',    'DemandDetail'),
     ('demand-form.js',      'DemandForm'),
     ('demand-pipeline.js',  'DemandPipeline'),
+    ('ai-usecases-list.js', 'AIUsecasesList'),
     ('budget-dashboard.js', 'BudgetDashboard'),
     ('roadmap.js',          'RoadmapView'),
     ('executive-summary.js','ExecutiveSummary'),
@@ -165,6 +166,7 @@ app.component('demand-list', DemandList);
 app.component('demand-detail', DemandDetail);
 app.component('demand-form', DemandForm);
 app.component('demand-pipeline', DemandPipeline);
+app.component('ai-usecases-list', AIUsecasesList);
 app.component('budget-dashboard', BudgetDashboard);
 app.component('roadmap-view', RoadmapView);
 app.component('executive-summary', ExecutiveSummary);
