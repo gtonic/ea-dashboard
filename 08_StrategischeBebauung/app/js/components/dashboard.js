@@ -124,6 +124,7 @@ export default {
       { label: 'Applications', value: store.totalApps },
       { label: 'Vendors', value: store.totalVendors },
       { label: 'Projects', value: store.totalProjects },
+      { label: 'Demands', value: store.totalDemands, color: '#8b5cf6' },
       { label: 'Avg Maturity', value: store.avgMaturity + '/5', color: store.avgMaturity >= 3 ? '#10b981' : '#f59e0b' },
       { label: 'Total Budget', value: '€' + (store.totalBudget / 1000).toFixed(0) + 'k', color: '#6366f1' }
     ])
