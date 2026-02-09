@@ -61,7 +61,10 @@ export default {
                 class="hover:bg-surface-50 cursor-pointer transition-colors"
                 @click="navigateTo('/demands/' + d.id)">
               <td class="px-4 py-3">
-                <div class="font-medium text-gray-900">{{ d.title }}</div>
+                <div class="font-medium text-gray-900 flex items-center gap-1.5">
+                  <span v-if="d.isAIUseCase" class="text-xs" title="AI Use Case">🤖</span>
+                  {{ d.title }}
+                </div>
                 <div class="text-xs text-gray-400">{{ d.id }} · {{ d.requestedBy }}</div>
               </td>
               <td class="px-4 py-3 hidden md:table-cell">

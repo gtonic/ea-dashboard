@@ -84,8 +84,42 @@ export default {
             </div>
           </div>
 
-          <!-- Step 3: Linking -->
+          <!-- Step 3: AI & EU AI Act -->
           <div v-show="step === 2" class="space-y-4">
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800 mb-4">
+              <strong>🤖 EU AI Act Klassifikation:</strong> Prüfen Sie, ob dieses Vorhaben einen KI-Anwendungsfall beinhaltet und ordnen Sie die Risikokategorie gemäß EU AI Act zu.
+            </div>
+            <div>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" v-model="form.isAIUseCase" class="rounded border-gray-300 h-5 w-5" />
+                <span class="text-sm font-medium text-gray-700">Dieses Vorhaben beinhaltet einen AI/KI-Anwendungsfall</span>
+              </label>
+            </div>
+            <div v-if="form.isAIUseCase" class="space-y-4 mt-2">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">EU AI Act Risikokategorie *</label>
+                <select v-model="form.aiRiskCategory" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                  <option v-for="r in (store.data.enums.aiRiskCategory || []).filter(r => r !== 'Kein AI-Usecase')" :key="r" :value="r">{{ r }}</option>
+                </select>
+              </div>
+              <div v-if="form.aiRiskCategory === 'Unannehmbares Risiko'" class="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-800">
+                ⚠️ <strong>Unannehmbares Risiko:</strong> Systeme dieser Kategorie sind gemäß EU AI Act verboten (z.B. Social Scoring, biometrische Echtzeitüberwachung). Dieses Vorhaben kann nicht umgesetzt werden.
+              </div>
+              <div v-if="form.aiRiskCategory === 'Hohes Risiko'" class="bg-orange-50 border border-orange-200 rounded-lg p-3 text-sm text-orange-800">
+                ⚠️ <strong>Hohes Risiko:</strong> Erfordert Konformitätsbewertung, CE-Kennzeichnung, Risikomanagement-System, Daten-Governance, technische Dokumentation und menschliche Aufsicht gemäß EU AI Act.
+              </div>
+              <div v-if="form.aiRiskCategory === 'Begrenztes Risiko'" class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+                ℹ️ <strong>Begrenztes Risiko:</strong> Transparenzpflichten beachten – Nutzer müssen informiert werden, dass sie mit einem KI-System interagieren (Art. 52 EU AI Act).
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">AI-Beschreibung & Begründung</label>
+                <textarea v-model="form.aiDescription" rows="4" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical" placeholder="Beschreiben Sie den KI-Anwendungsfall, die verwendete Technologie und die Begründung für die Risikokategorie…"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Linking -->
+          <div v-show="step === 3" class="space-y-4">
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Primäre Domäne</label>
               <select v-model.number="form.primaryDomain" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
@@ -142,7 +176,7 @@ export default {
   setup (props, { emit }) {
     const { ref, onMounted } = Vue
 
-    const steps = ['Business Beschreibung', 'Klassifikation', 'Verknüpfungen']
+    const steps = ['Business Beschreibung', 'Klassifikation', 'AI & EU AI Act', 'Verknüpfungen']
     const step = ref(0)
 
     const emptyChecklist = () => ({
@@ -164,6 +198,7 @@ export default {
       requestedBy: '', requestDate: new Date().toISOString().slice(0, 10),
       estimatedBudget: 0, primaryDomain: null,
       relatedDomains: [], relatedApps: [], relatedVendors: [],
+      isAIUseCase: false, aiRiskCategory: 'Kein AI-Usecase', aiDescription: '',
       checklistSecurity: emptyChecklist(),
       checklistLegal: emptyLegalChecklist(),
       checklistArchitecture: emptyArchChecklist()
@@ -182,6 +217,10 @@ export default {
 
     function save () {
       const data = { ...form.value }
+      if (!data.isAIUseCase) {
+        data.aiRiskCategory = 'Kein AI-Usecase'
+        data.aiDescription = ''
+      }
       if (props.editDemand) {
         store.updateDemand(props.editDemand.id, data)
       } else {

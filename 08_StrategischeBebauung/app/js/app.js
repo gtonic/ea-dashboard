@@ -31,6 +31,8 @@ import VendorForm from './components/vendor-form.js'
 import DemandList from './components/demand-list.js'
 import DemandDetail from './components/demand-detail.js'
 import DemandForm from './components/demand-form.js'
+import DemandPipeline from './components/demand-pipeline.js'
+import BudgetDashboard from './components/budget-dashboard.js'
 import RoadmapView from './components/roadmap.js'
 import ExecutiveSummary from './components/executive-summary.js'
 
@@ -65,6 +67,8 @@ app.component('vendor-form', VendorForm)
 app.component('demand-list', DemandList)
 app.component('demand-detail', DemandDetail)
 app.component('demand-form', DemandForm)
+app.component('demand-pipeline', DemandPipeline)
+app.component('budget-dashboard', BudgetDashboard)
 app.component('roadmap-view', RoadmapView)
 app.component('executive-summary', ExecutiveSummary)
 

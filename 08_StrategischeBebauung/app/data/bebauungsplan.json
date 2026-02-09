@@ -154,6 +154,17 @@
       "Hoch",
       "Mittel",
       "Niedrig"
+    ],
+    "aiRiskCategory": [
+      "Kein AI-Usecase",
+      "Minimales Risiko",
+      "Begrenztes Risiko",
+      "Hohes Risiko",
+      "Unannehmbares Risiko"
+    ],
+    "budgetType": [
+      "Run / Pflicht",
+      "Change / Grow"
     ]
   },
   "domains": [
@@ -3260,6 +3271,9 @@
         "VND-002"
       ],
       "businessCase": "Reduktion der Report-Erstellungszeit um 60%, Einsparung von 2 FTE in der IT für Reporting.",
+      "isAIUseCase": false,
+      "aiRiskCategory": "Kein AI-Usecase",
+      "aiDescription": "",
       "checklistSecurity": {
         "dataClassification": true,
         "accessControl": true,
@@ -3301,6 +3315,9 @@
         "VND-005"
       ],
       "businessCase": "Steigerung der Vertriebsproduktivität um 20%. Reduzierung der Nachbearbeitungszeit nach Kundenbesuchen.",
+      "isAIUseCase": false,
+      "aiRiskCategory": "Kein AI-Usecase",
+      "aiDescription": "",
       "checklistSecurity": {
         "dataClassification": true,
         "accessControl": true,
@@ -3344,6 +3361,9 @@
         "VND-001"
       ],
       "businessCase": "Einsparung von 3 FTE in der Buchhaltung. Reduzierung der Durchlaufzeit von 5 auf 1 Tag.",
+      "isAIUseCase": true,
+      "aiRiskCategory": "Begrenztes Risiko",
+      "aiDescription": "KI-basierte OCR und NLP zur automatischen Erkennung und Extraktion von Rechnungsdaten. Keine personenbezogene Entscheidung, aber Interaktion mit Finanzdaten.",
       "checklistSecurity": {
         "dataClassification": false,
         "accessControl": false,
@@ -3388,6 +3408,9 @@
         "VND-002"
       ],
       "businessCase": "Verbesserung der internen Kommunikation und Wissensvermittlung. Reduktion von E-Mail-Verkehr um 30%.",
+      "isAIUseCase": false,
+      "aiRiskCategory": "Kein AI-Usecase",
+      "aiDescription": "",
       "checklistSecurity": {
         "dataClassification": true,
         "accessControl": true,
@@ -3430,6 +3453,9 @@
       ],
       "relatedVendors": [],
       "businessCase": "Reduktion ungeplanter Stillstandszeiten um 40%. Voraussichtliche Einsparung: 200k/Jahr.",
+      "isAIUseCase": true,
+      "aiRiskCategory": "Minimales Risiko",
+      "aiDescription": "ML-basiertes Predictive Maintenance Modell zur Vorhersage von Maschinenzuständen. Keine personenbezogene Bewertung – rein technische Sensordatenanalyse.",
       "checklistSecurity": {
         "dataClassification": false,
         "accessControl": false,
@@ -3443,6 +3469,86 @@
         "contractReview": false,
         "licenseCheck": false,
         "notes": ""
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": false,
+        "integrationReview": false,
+        "technologyApproved": false,
+        "scalabilityCheck": false,
+        "notes": ""
+      }
+    },
+    {
+      "id": "DEM-006",
+      "title": "KI-basierte Qualitätskontrolle in der Fertigung",
+      "description": "Einsatz von Computer Vision zur automatischen optischen Qualitätsprüfung in der Produktion. Erkennung von Oberflächenfehlern in Echtzeit.",
+      "category": "Projekt (> 50k)",
+      "status": "In Bewertung",
+      "priority": "Hoch",
+      "requestedBy": "Qualitätsleiter",
+      "requestDate": "2026-01-25",
+      "estimatedBudget": 200000,
+      "primaryDomain": 4,
+      "relatedDomains": [10],
+      "relatedApps": ["APP-003"],
+      "relatedVendors": ["VND-003"],
+      "businessCase": "Reduktion der Ausschussrate um 35%. Einsparung von 150k/Jahr durch weniger Nacharbeit.",
+      "isAIUseCase": true,
+      "aiRiskCategory": "Hohes Risiko",
+      "aiDescription": "Computer Vision System zur automatischen Qualitätsbewertung von Produkten. Hohes Risiko gemäß EU AI Act Anhang III, da das System sicherheitsrelevante Produktkomponenten bewertet und automatische Aussortierung vornimmt.",
+      "checklistSecurity": {
+        "dataClassification": true,
+        "accessControl": false,
+        "encryptionReview": false,
+        "vulnerabilityScan": false,
+        "notes": "Kameradaten und Bilddaten müssen klassifiziert werden"
+      },
+      "checklistLegal": {
+        "dataPrivacy": false,
+        "gdprCompliance": false,
+        "contractReview": false,
+        "licenseCheck": false,
+        "notes": "EU AI Act Konformitätsbewertung erforderlich"
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": true,
+        "integrationReview": false,
+        "technologyApproved": false,
+        "scalabilityCheck": false,
+        "notes": "Integration in bestehendes MES zu prüfen"
+      }
+    },
+    {
+      "id": "DEM-007",
+      "title": "HR Chatbot für Mitarbeiteranfragen",
+      "description": "GenAI-basierter Chatbot zur Beantwortung von HR-Standardfragen (Urlaub, Gehaltsabrechnung, Benefits). Entlastung des HR-Teams.",
+      "category": "Bereichsvorhaben (< 50k)",
+      "status": "Eingereicht",
+      "priority": "Mittel",
+      "requestedBy": "HR-Leitung",
+      "requestDate": "2026-02-05",
+      "estimatedBudget": 45000,
+      "primaryDomain": 8,
+      "relatedDomains": [2],
+      "relatedApps": ["APP-005"],
+      "relatedVendors": ["VND-002"],
+      "businessCase": "Reduktion der HR-Ticketlast um 50%. 24/7 Verfügbarkeit für Standardanfragen.",
+      "isAIUseCase": true,
+      "aiRiskCategory": "Begrenztes Risiko",
+      "aiDescription": "GenAI-Chatbot der mit Mitarbeitern interagiert. Begrenztes Risiko gemäß EU AI Act Art. 52 – Transparenzpflicht: Nutzer müssen informiert werden, dass sie mit einem KI-System interagieren.",
+      "checklistSecurity": {
+        "dataClassification": false,
+        "accessControl": false,
+        "encryptionReview": false,
+        "vulnerabilityScan": false,
+        "notes": ""
+      },
+      "checklistLegal": {
+        "dataPrivacy": false,
+        "gdprCompliance": false,
+        "contractReview": false,
+        "licenseCheck": false,
+        "notes": "Datenschutz für Mitarbeiterdaten kritisch"
       },
       "checklistArchitecture": {
         "fitsEAStrategy": false,

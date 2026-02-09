@@ -12,7 +12,7 @@ Priorisierte Erweiterungen für CIO, PMO und Geschäftsleitung – gegliedert na
 #### ~~1. Strategie-Roadmap / Gantt-Timeline~~ ✅ Implementiert
 #### ~~2. Executive Summary / Management-Report (PDF-Export)~~ ✅ Implementiert
 
-#### 3. Budget- & Kosten-Dashboard
+#### ~~3. Budget- & Kosten-Dashboard~~ ✅ Implementiert
 Erweiterte Finanzübersicht für CIO/CFO:
 - **Run vs. Change-Budget** Aufteilung (Run/Pflicht vs. Innovation/Grow)
 - Kosten nach Domäne, Vendor, Applikationstyp
@@ -29,7 +29,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 
 ### 🟡 Mittlere Priorität – Steuerungsrelevant für PMO
 
-#### 5. Demand-to-Project Pipeline-Ansicht
+#### ~~5. Demand-to-Project Pipeline-Ansicht~~ ✅ Implementiert
 - Kanban-Board mit Demand-Status als Spalten
 - Konvertierung Demand → Projekt (mit Datenübernahme)
 - Pipeline-Funnel: Demands → Bewertung → Genehmigt → Projekt
@@ -95,6 +95,6 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | Phase | Features | Wert |
 |-------|----------|------|
 | **Phase 1** | ~~Strategie-Roadmap + Executive Summary PDF~~ | ✅ Implementiert |
-| **Phase 2** | Budget-Dashboard + Demand→Project Pipeline | PMO bekommt Steuerungsinstrument |
+| **Phase 2** | ~~Budget-Dashboard + Demand→Project Pipeline + AI/EU AI Act~~ | ✅ Implementiert |
 | **Phase 3** | Risiko-Heatmap + Datenqualität | Governance & Compliance |
 | **Phase 4** | Szenario-Planung + Ressourcen-Analyse | Strategische Planung next level |

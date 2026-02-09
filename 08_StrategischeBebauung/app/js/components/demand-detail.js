@@ -52,6 +52,29 @@ export default {
         </div>
       </div>
 
+      <!-- AI Use Case / EU AI Act -->
+      <div v-if="demand.isAIUseCase" class="bg-white rounded-xl border border-surface-200 p-5">
+        <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+          <span class="text-lg">🤖</span> AI Use Case – EU AI Act Klassifikation
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <div class="text-xs text-gray-500">Risikokategorie</div>
+            <span class="inline-block mt-1 text-xs px-2.5 py-1 rounded-full font-medium" :class="aiRiskClass(demand.aiRiskCategory)">{{ demand.aiRiskCategory }}</span>
+          </div>
+          <div class="md:col-span-2">
+            <div class="text-xs text-gray-500">AI-Beschreibung</div>
+            <div class="text-sm text-gray-700 mt-1">{{ demand.aiDescription || '—' }}</div>
+          </div>
+        </div>
+        <div v-if="demand.aiRiskCategory === 'Hohes Risiko'" class="mt-3 bg-orange-50 border border-orange-200 rounded-lg p-3 text-xs text-orange-800">
+          ⚠️ <strong>Pflichten gemäß EU AI Act:</strong> Konformitätsbewertung, CE-Kennzeichnung, Risikomanagement-System, Daten-Governance, technische Dokumentation, menschliche Aufsicht erforderlich.
+        </div>
+        <div v-if="demand.aiRiskCategory === 'Unannehmbares Risiko'" class="mt-3 bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-800">
+          🚫 <strong>Verboten gemäß EU AI Act:</strong> Dieses System fällt unter die verbotenen KI-Praktiken und darf nicht eingesetzt werden.
+        </div>
+      </div>
+
       <!-- Status Workflow -->
       <div class="bg-white rounded-xl border border-surface-200 p-5">
         <h3 class="text-sm font-semibold text-gray-700 mb-4">Status ändern</h3>
@@ -288,6 +311,16 @@ export default {
       return { 'Hoch': 'bg-red-100 text-red-700', 'Mittel': 'bg-yellow-100 text-yellow-700', 'Niedrig': 'bg-green-100 text-green-700' }[p] || 'bg-gray-100 text-gray-600'
     }
 
+    function aiRiskClass (r) {
+      return {
+        'Unannehmbares Risiko': 'bg-red-100 text-red-800',
+        'Hohes Risiko': 'bg-orange-100 text-orange-800',
+        'Begrenztes Risiko': 'bg-yellow-100 text-yellow-800',
+        'Minimales Risiko': 'bg-green-100 text-green-800',
+        'Kein AI-Usecase': 'bg-gray-100 text-gray-600'
+      }[r] || 'bg-gray-100 text-gray-600'
+    }
+
     function confirmDelete () {
       if (demand.value && confirm('Demand "' + demand.value.title + '" löschen? Dies kann nicht rückgängig gemacht werden.')) {
         store.deleteDemand(demand.value.id)
@@ -295,6 +328,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, confirmDelete }
+    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
   }
 }
