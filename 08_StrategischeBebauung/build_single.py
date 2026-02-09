@@ -49,6 +49,9 @@ COMPONENTS = [
     ('process-detail.js',   'ProcessDetail'),
     ('vendor-list.js',      'VendorList'),
     ('vendor-detail.js',    'VendorDetail'),
+    ('demand-list.js',      'DemandList'),
+    ('demand-detail.js',    'DemandDetail'),
+    ('demand-form.js',      'DemandForm'),
     ('maturity-gap.js',     'MaturityGap'),
     ('layout.js',           'AppLayout'),
 ]
@@ -153,6 +156,10 @@ app.component('maturity-gap', MaturityGap);
 app.component('vendor-list', VendorList);
 app.component('vendor-detail', VendorDetail);
 app.component('vendor-form', VendorForm);
+
+app.component('demand-list', DemandList);
+app.component('demand-detail', DemandDetail);
+app.component('demand-form', DemandForm);
 
 initRouter();
 loadData();

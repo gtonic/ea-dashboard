@@ -136,6 +136,24 @@
       "Important",
       "Standard",
       "Commodity"
+    ],
+    "demandCategory": [
+      "Idee",
+      "Bereichsvorhaben (< 50k)",
+      "Projekt (> 50k)"
+    ],
+    "demandStatus": [
+      "Eingereicht",
+      "In Bewertung",
+      "Genehmigt",
+      "Abgelehnt",
+      "In Umsetzung",
+      "Abgeschlossen"
+    ],
+    "demandPriority": [
+      "Hoch",
+      "Mittel",
+      "Niedrig"
     ]
   },
   "domains": [
@@ -3218,6 +3236,221 @@
       "website": "",
       "rating": 6,
       "description": "Interne Eigenentwicklungen und maßgeschneiderte Lösungen."
+    }
+  ],
+  "demands": [
+    {
+      "id": "DEM-001",
+      "title": "Einführung Power BI Self-Service Analytics",
+      "description": "Aufbau einer Self-Service BI-Plattform auf Basis von Power BI für Fachabteilungen. Ziel: Entlastung der IT von Ad-hoc-Reports und Empowerment der Business User.",
+      "category": "Projekt (> 50k)",
+      "status": "In Bewertung",
+      "priority": "Hoch",
+      "requestedBy": "Leiter Controlling",
+      "requestDate": "2025-11-15",
+      "estimatedBudget": 85000,
+      "primaryDomain": 10,
+      "relatedDomains": [
+        7
+      ],
+      "relatedApps": [
+        "APP-016"
+      ],
+      "relatedVendors": [
+        "VND-002"
+      ],
+      "businessCase": "Reduktion der Report-Erstellungszeit um 60%, Einsparung von 2 FTE in der IT für Reporting.",
+      "checklistSecurity": {
+        "dataClassification": true,
+        "accessControl": true,
+        "encryptionReview": false,
+        "vulnerabilityScan": false,
+        "notes": "Klärung Cloud-Speicherort für personenbezogene Daten erforderlich"
+      },
+      "checklistLegal": {
+        "dataPrivacy": true,
+        "gdprCompliance": false,
+        "contractReview": false,
+        "licenseCheck": true,
+        "notes": ""
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": true,
+        "integrationReview": true,
+        "technologyApproved": true,
+        "scalabilityCheck": false,
+        "notes": "Passt in die Microsoft-Strategie, Datenmodell muss abgestimmt werden"
+      }
+    },
+    {
+      "id": "DEM-002",
+      "title": "CRM Mobile App für Außendienst",
+      "description": "Mobile Salesforce-App für den Außendienst mit Offline-Fähigkeit. Schneller Zugriff auf Kundeninformationen und Besuchsberichte.",
+      "category": "Bereichsvorhaben (< 50k)",
+      "status": "Genehmigt",
+      "priority": "Mittel",
+      "requestedBy": "Vertriebsleiter",
+      "requestDate": "2025-10-20",
+      "estimatedBudget": 35000,
+      "primaryDomain": 3,
+      "relatedDomains": [],
+      "relatedApps": [
+        "APP-002"
+      ],
+      "relatedVendors": [
+        "VND-005"
+      ],
+      "businessCase": "Steigerung der Vertriebsproduktivität um 20%. Reduzierung der Nachbearbeitungszeit nach Kundenbesuchen.",
+      "checklistSecurity": {
+        "dataClassification": true,
+        "accessControl": true,
+        "encryptionReview": true,
+        "vulnerabilityScan": true,
+        "notes": "Mobile Device Management vorhanden"
+      },
+      "checklistLegal": {
+        "dataPrivacy": true,
+        "gdprCompliance": true,
+        "contractReview": true,
+        "licenseCheck": true,
+        "notes": "Im bestehenden Salesforce-Vertrag enthalten"
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": true,
+        "integrationReview": true,
+        "technologyApproved": true,
+        "scalabilityCheck": true,
+        "notes": "Vollständig geprüft und freigegeben"
+      }
+    },
+    {
+      "id": "DEM-003",
+      "title": "Automatisierung Rechnungseingang",
+      "description": "Einführung einer KI-gestützten Lösung zur automatischen Erfassung und Verarbeitung von Eingangsrechnungen.",
+      "category": "Projekt (> 50k)",
+      "status": "Eingereicht",
+      "priority": "Hoch",
+      "requestedBy": "Leiter Buchhaltung",
+      "requestDate": "2026-01-10",
+      "estimatedBudget": 120000,
+      "primaryDomain": 7,
+      "relatedDomains": [
+        5
+      ],
+      "relatedApps": [
+        "APP-001"
+      ],
+      "relatedVendors": [
+        "VND-001"
+      ],
+      "businessCase": "Einsparung von 3 FTE in der Buchhaltung. Reduzierung der Durchlaufzeit von 5 auf 1 Tag.",
+      "checklistSecurity": {
+        "dataClassification": false,
+        "accessControl": false,
+        "encryptionReview": false,
+        "vulnerabilityScan": false,
+        "notes": ""
+      },
+      "checklistLegal": {
+        "dataPrivacy": false,
+        "gdprCompliance": false,
+        "contractReview": false,
+        "licenseCheck": false,
+        "notes": ""
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": false,
+        "integrationReview": false,
+        "technologyApproved": false,
+        "scalabilityCheck": false,
+        "notes": ""
+      }
+    },
+    {
+      "id": "DEM-004",
+      "title": "Intranet Relaunch",
+      "description": "Neugestaltung des Unternehmensintranets basierend auf SharePoint Online mit modernem Design und verbesserter Suche.",
+      "category": "Bereichsvorhaben (< 50k)",
+      "status": "In Umsetzung",
+      "priority": "Niedrig",
+      "requestedBy": "HR-Leitung",
+      "requestDate": "2025-08-01",
+      "estimatedBudget": 40000,
+      "primaryDomain": 2,
+      "relatedDomains": [
+        8,
+        9
+      ],
+      "relatedApps": [
+        "APP-005"
+      ],
+      "relatedVendors": [
+        "VND-002"
+      ],
+      "businessCase": "Verbesserung der internen Kommunikation und Wissensvermittlung. Reduktion von E-Mail-Verkehr um 30%.",
+      "checklistSecurity": {
+        "dataClassification": true,
+        "accessControl": true,
+        "encryptionReview": true,
+        "vulnerabilityScan": true,
+        "notes": ""
+      },
+      "checklistLegal": {
+        "dataPrivacy": true,
+        "gdprCompliance": true,
+        "contractReview": true,
+        "licenseCheck": true,
+        "notes": ""
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": true,
+        "integrationReview": true,
+        "technologyApproved": true,
+        "scalabilityCheck": true,
+        "notes": ""
+      }
+    },
+    {
+      "id": "DEM-005",
+      "title": "IoT-Dashboard für Maschinenüberwachung",
+      "description": "Idee: Echtzeit-Dashboard zur Überwachung von Maschinenzuständen in der Produktion mit Predictive Maintenance Alerts.",
+      "category": "Idee",
+      "status": "Eingereicht",
+      "priority": "Mittel",
+      "requestedBy": "Produktionsleiter",
+      "requestDate": "2026-02-01",
+      "estimatedBudget": 0,
+      "primaryDomain": 4,
+      "relatedDomains": [
+        1,
+        10
+      ],
+      "relatedApps": [
+        "APP-003"
+      ],
+      "relatedVendors": [],
+      "businessCase": "Reduktion ungeplanter Stillstandszeiten um 40%. Voraussichtliche Einsparung: 200k/Jahr.",
+      "checklistSecurity": {
+        "dataClassification": false,
+        "accessControl": false,
+        "encryptionReview": false,
+        "vulnerabilityScan": false,
+        "notes": ""
+      },
+      "checklistLegal": {
+        "dataPrivacy": false,
+        "gdprCompliance": false,
+        "contractReview": false,
+        "licenseCheck": false,
+        "notes": ""
+      },
+      "checklistArchitecture": {
+        "fitsEAStrategy": false,
+        "integrationReview": false,
+        "technologyApproved": false,
+        "scalabilityCheck": false,
+        "notes": ""
+      }
     }
   ]
 }

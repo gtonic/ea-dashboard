@@ -18,6 +18,7 @@ function createEmptyState () {
     managementKPIs: [],
     vendors: [],
     e2eProcesses: [],
+    demands: [],
     enums: {}
   }
 }
@@ -386,6 +387,49 @@ export const store = reactive({
     if (!app) return null
     if (app.vendorId) return this.vendorById(app.vendorId)
     return (this.data.vendors || []).find(v => v.name === app.vendor)
+  },
+
+  // ── Demand CRUD ──
+
+  get totalDemands () { return (this.data.demands || []).length },
+
+  demandById (id) {
+    return (this.data.demands || []).find(d => d.id === id)
+  },
+
+  addDemand (demand) {
+    if (!this.data.demands) this.data.demands = []
+    demand.id = demand.id || 'DEM-' + String(this.data.demands.length + 1).padStart(3, '0')
+    this.data.demands.push(demand)
+  },
+
+  updateDemand (id, patch) {
+    const d = this.demandById(id)
+    if (d) Object.assign(d, patch)
+  },
+
+  deleteDemand (id) {
+    if (!this.data.demands) return
+    this.data.demands = this.data.demands.filter(d => d.id !== id)
+  },
+
+  demandsForDomain (domainId) {
+    return (this.data.demands || []).filter(d =>
+      d.primaryDomain === Number(domainId) ||
+      (d.relatedDomains && d.relatedDomains.includes(Number(domainId)))
+    )
+  },
+
+  demandsForApp (appId) {
+    return (this.data.demands || []).filter(d =>
+      d.relatedApps && d.relatedApps.includes(appId)
+    )
+  },
+
+  demandsForVendor (vendorId) {
+    return (this.data.demands || []).filter(d =>
+      d.relatedVendors && d.relatedVendors.includes(vendorId)
+    )
   },
 
   // ── Management KPI CRUD ──
