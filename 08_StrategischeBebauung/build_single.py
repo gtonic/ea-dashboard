@@ -52,6 +52,8 @@ COMPONENTS = [
     ('demand-list.js',      'DemandList'),
     ('demand-detail.js',    'DemandDetail'),
     ('demand-form.js',      'DemandForm'),
+    ('roadmap.js',          'RoadmapView'),
+    ('executive-summary.js','ExecutiveSummary'),
     ('maturity-gap.js',     'MaturityGap'),
     ('layout.js',           'AppLayout'),
 ]
@@ -160,6 +162,8 @@ app.component('vendor-form', VendorForm);
 app.component('demand-list', DemandList);
 app.component('demand-detail', DemandDetail);
 app.component('demand-form', DemandForm);
+app.component('roadmap-view', RoadmapView);
+app.component('executive-summary', ExecutiveSummary);
 
 initRouter();
 loadData();

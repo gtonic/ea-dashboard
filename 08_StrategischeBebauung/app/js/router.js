@@ -27,6 +27,8 @@ const routes = [
   { pattern: /^\/demands$/,                   component: 'demand-list' },
   { pattern: /^\/demands\/(DEM-\d+)$/,        component: 'demand-detail',   paramNames: ['id'] },
   { pattern: /^\/maturity-gap$/,            component: 'maturity-gap' },
+  { pattern: /^\/roadmap$/,                component: 'roadmap-view' },
+  { pattern: /^\/executive-summary$/,      component: 'executive-summary' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
 

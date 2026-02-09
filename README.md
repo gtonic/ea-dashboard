@@ -9,20 +9,8 @@ Priorisierte Erweiterungen für CIO, PMO und Geschäftsleitung – gegliedert na
 
 ### 🔴 Hohe Priorität – "CIO-Ready" Features
 
-#### 1. Strategie-Roadmap / Gantt-Timeline
-Interaktiver Gantt-Chart für die Projektlandschaft:
-- Swim-Lanes nach Domäne oder strategischem Thema
-- Abhängigkeiten als Pfeile zwischen Balken
-- Meilensteine und Heute-Linie
-- Farbcodierung nach Status (Ampel) und Konformität
-- Start/End-Quartale visuell dargestellt
-
-#### 2. Executive Summary / Management-Report (PDF-Export)
-Auto-generierter One-Pager für die GL-Sitzung:
-- Wichtigste KPIs, Ampelstatus, Budget-Übersicht
-- Top-5-Risiken, Top-5-Projekte, Handlungsbedarf
-- Export als PDF oder druckoptimierte Ansicht
-- Vergleich zum Vormonat/Vorquartal (Delta-Anzeige)
+#### ~~1. Strategie-Roadmap / Gantt-Timeline~~ ✅ Implementiert
+#### ~~2. Executive Summary / Management-Report (PDF-Export)~~ ✅ Implementiert
 
 #### 3. Budget- & Kosten-Dashboard
 Erweiterte Finanzübersicht für CIO/CFO:
@@ -106,7 +94,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 
 | Phase | Features | Wert |
 |-------|----------|------|
-| **Phase 1** | Strategie-Roadmap + Executive Summary PDF | CIO kann sofort damit arbeiten |
+| **Phase 1** | ~~Strategie-Roadmap + Executive Summary PDF~~ | ✅ Implementiert |
 | **Phase 2** | Budget-Dashboard + Demand→Project Pipeline | PMO bekommt Steuerungsinstrument |
 | **Phase 3** | Risiko-Heatmap + Datenqualität | Governance & Compliance |
 | **Phase 4** | Szenario-Planung + Ressourcen-Analyse | Strategische Planung next level |
