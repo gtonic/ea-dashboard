@@ -3913,7 +3913,13 @@ const store = reactive({
 
   addDemand (demand) {
     if (!this.data.demands) this.data.demands = []
-    demand.id = demand.id || 'DEM-' + String(this.data.demands.length + 1).padStart(3, '0')
+    if (!demand.id) {
+      const maxNum = this.data.demands.reduce((m, d) => {
+        const n = parseInt(d.id.replace('DEM-', ''), 10)
+        return isNaN(n) ? m : Math.max(m, n)
+      }, 0)
+      demand.id = 'DEM-' + String(maxNum + 1).padStart(3, '0')
+    }
     this.data.demands.push(demand)
   },
 
