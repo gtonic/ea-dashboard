@@ -31,6 +31,8 @@ import VendorForm from './components/vendor-form.js'
 import DemandList from './components/demand-list.js'
 import DemandDetail from './components/demand-detail.js'
 import DemandForm from './components/demand-form.js'
+import RoadmapView from './components/roadmap.js'
+import ExecutiveSummary from './components/executive-summary.js'
 
 // Create app
 const app = createApp(Layout)
@@ -63,6 +65,8 @@ app.component('vendor-form', VendorForm)
 app.component('demand-list', DemandList)
 app.component('demand-detail', DemandDetail)
 app.component('demand-form', DemandForm)
+app.component('roadmap-view', RoadmapView)
+app.component('executive-summary', ExecutiveSummary)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')
