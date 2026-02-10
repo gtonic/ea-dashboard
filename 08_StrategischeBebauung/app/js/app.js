@@ -37,6 +37,8 @@ import BudgetDashboard from './components/budget-dashboard.js'
 import RoadmapView from './components/roadmap.js'
 import ExecutiveSummary from './components/executive-summary.js'
 import IntegrationMap from './components/integration-map.js'
+import RiskHeatmap from './components/risk-heatmap.js'
+import DataQuality from './components/data-quality.js'
 
 // Create app
 const app = createApp(Layout)
@@ -75,6 +77,8 @@ app.component('budget-dashboard', BudgetDashboard)
 app.component('roadmap-view', RoadmapView)
 app.component('executive-summary', ExecutiveSummary)
 app.component('integration-map', IntegrationMap)
+app.component('risk-heatmap', RiskHeatmap)
+app.component('data-quality', DataQuality)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

@@ -31,6 +31,8 @@ const routes = [
   { pattern: /^\/demand-pipeline$/,            component: 'demand-pipeline' },
   { pattern: /^\/budget-dashboard$/,            component: 'budget-dashboard' },
   { pattern: /^\/maturity-gap$/,            component: 'maturity-gap' },
+  { pattern: /^\/risk-heatmap$/,           component: 'risk-heatmap' },
+  { pattern: /^\/data-quality$/,           component: 'data-quality' },
   { pattern: /^\/roadmap$/,                component: 'roadmap-view' },
   { pattern: /^\/executive-summary$/,      component: 'executive-summary' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
