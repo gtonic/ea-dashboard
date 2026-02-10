@@ -39,6 +39,7 @@ import ExecutiveSummary from './components/executive-summary.js'
 import IntegrationMap from './components/integration-map.js'
 import RiskHeatmap from './components/risk-heatmap.js'
 import DataQuality from './components/data-quality.js'
+import GlobalSearch from './components/global-search.js'
 
 // Create app
 const app = createApp(Layout)
@@ -79,6 +80,7 @@ app.component('executive-summary', ExecutiveSummary)
 app.component('integration-map', IntegrationMap)
 app.component('risk-heatmap', RiskHeatmap)
 app.component('data-quality', DataQuality)
+app.component('global-search', GlobalSearch)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

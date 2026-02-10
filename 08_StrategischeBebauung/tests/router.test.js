@@ -226,6 +226,13 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('project-heatmap')
   })
 
+  it('resolves /search path', () => {
+    window.location.hash = '#/search'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/search')
+    expect(router.component).toBe('global-search')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))
