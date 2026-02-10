@@ -7,15 +7,16 @@ export default {
   template: `
     <div class="flex h-screen overflow-hidden">
       <!-- Mobile Backdrop -->
-      <div v-if="store.sidebarOpen" class="fixed inset-0 bg-black/40 z-30 lg:hidden" @click="store.sidebarOpen = false"></div>
+      <div v-if="store.sidebarOpen" class="fixed inset-0 bg-black/40 z-30 lg:hidden" @click="store.sidebarOpen = false" aria-hidden="true"></div>
 
       <!-- Sidebar -->
       <aside class="sidebar no-print bg-white dark:bg-surface-900 border-r border-surface-200 dark:border-surface-700 flex flex-col transition-all duration-300
                     fixed inset-y-0 left-0 z-40 w-64 lg:static lg:z-auto"
-             :class="store.sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden'">
+             :class="store.sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-0 lg:overflow-hidden'"
+             role="navigation" aria-label="Main navigation">
         <!-- Logo / Brand -->
         <div class="h-16 flex items-center px-4 border-b border-surface-200 dark:border-surface-700 shrink-0">
-          <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center mr-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center mr-3" aria-hidden="true">
             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
             </svg>
@@ -27,66 +28,73 @@ export default {
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-2 pb-1">Domains</div>
+        <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5" id="sidebar-nav" aria-label="Sidebar navigation">
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-2 pb-1" id="nav-domains">Domains</div>
           <a v-for="item in navDomains" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Applications</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-apps">Applications</div>
           <a v-for="item in navApplications" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Demand</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-demand">Demand</div>
           <a v-for="item in navDemand" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Projects</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-projects">Projects</div>
           <a v-for="item in navProjects" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Misc</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-misc">Misc</div>
           <a v-for="item in navMisc" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Strategy & KPIs</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-strategy">Strategy & KPIs</div>
           <a v-for="item in navStrategy" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive(item.path) }">
-            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+             :class="{ active: isActive(item.path) }"
+             :aria-current="isActive(item.path) ? 'page' : undefined">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0" aria-hidden="true"></span>
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">System</div>
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1" id="nav-system">System</div>
           <a :href="linkTo('/settings')" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300"
-             :class="{ active: isActive('/settings') }">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+             :class="{ active: isActive('/settings') }"
+             :aria-current="isActive('/settings') ? 'page' : undefined">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             <span>Settings</span>
           </a>
         </nav>
@@ -100,10 +108,12 @@ export default {
       <!-- Main content area -->
       <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Header -->
-        <header class="h-16 bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-700 flex items-center px-4 gap-4 shrink-0 no-print">
+        <header class="h-16 bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-700 flex items-center px-4 gap-4 shrink-0 no-print" role="banner">
           <button @click="store.sidebarOpen = !store.sidebarOpen"
-                  class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-gray-500 dark:text-gray-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-gray-500 dark:text-gray-400"
+                  :aria-label="store.sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'"
+                  aria-controls="sidebar-nav">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
           </button>
@@ -111,8 +121,8 @@ export default {
           <div class="flex-1"></div>
           <a :href="linkTo('/search')"
              class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-800 text-gray-500 dark:text-gray-400 flex items-center gap-2 border border-surface-200 dark:border-surface-700 px-3"
-             title="Global Search">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+             title="Global Search" aria-label="Global Search">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
             <span class="text-xs text-gray-400 hidden sm:inline">Search…</span>
@@ -121,10 +131,10 @@ export default {
         </header>
 
         <!-- Page content -->
-        <main class="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 bg-surface-50 dark:bg-surface-950">
-          <div v-if="!store.loaded" class="flex items-center justify-center h-full">
+        <main class="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6 bg-surface-50 dark:bg-surface-950" role="main" aria-label="Page content">
+          <div v-if="!store.loaded" class="flex items-center justify-center h-full" role="status" aria-label="Loading">
             <div class="text-center">
-              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mx-auto mb-4"></div>
+              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-primary-600 mx-auto mb-4" aria-hidden="true"></div>
               <p class="text-gray-500">Loading data…</p>
             </div>
           </div>
@@ -153,11 +163,11 @@ export default {
     ]
     const navMisc = [
       { path: '/vendors', label: 'Vendors', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' },
+      { path: '/vendor-scorecard', label: 'Vendor Scorecard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>' },
       { path: '/ai-usecases', label: 'AI Use Cases', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.482 4.446A2.25 2.25 0 0115.378 21H8.622a2.25 2.25 0 01-2.14-1.554L5 14.5m14 0H5"/></svg>' }
     ]
     const navStrategy = [
       { path: '/budget-dashboard', label: 'Budget Dashboard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
-      { path: '/vendor-scorecard', label: 'Vendor Scorecard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>' },
       { path: '/risk-heatmap', label: 'Risk & Compliance', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>' },
       { path: '/data-quality', label: 'Data Quality', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>' },
       { path: '/resource-overlaps', label: 'Resource Overlaps', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11v6m-3-3h6"/></svg>' },
@@ -166,7 +176,9 @@ export default {
       { path: '/executive-summary', label: 'Executive Summary', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' },
       { path: '/processes', label: 'E2E Processes', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>' },
       { path: '/maturity-gap', label: 'Maturity Gap', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>' },
-      { path: '/capability-matrix', label: 'Cap-App Matrix', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>' }
+      { path: '/capability-matrix', label: 'Cap-App Matrix', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>' },
+      { path: '/capability-investment', label: 'Capability Investment', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>' },
+      { path: '/conformity-scorecard', label: 'Conformity Scorecard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' }
     ]
 
     const pageTitles = {
@@ -200,7 +212,9 @@ export default {
       'roadmap-view': 'Strategy Roadmap',
       'executive-summary': 'Executive Summary',
       'settings-view': 'Settings',
-      'global-search': 'Global Search'
+      'global-search': 'Global Search',
+      'capability-investment': 'Capability Investment Analyse',
+      'conformity-scorecard': 'Strategische Konformitäts-Scorecard'
     }
 
     const { computed } = Vue

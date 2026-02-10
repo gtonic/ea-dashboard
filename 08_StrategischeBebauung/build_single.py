@@ -65,6 +65,8 @@ COMPONENTS = [
     ('global-search.js',    'GlobalSearch'),
     ('resource-overlap.js', 'ResourceOverlap'),
     ('scenario-planner.js', 'ScenarioPlanner'),
+    ('capability-investment.js', 'CapabilityInvestment'),
+    ('conformity-scorecard.js', 'ConformityScorecard'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -184,6 +186,8 @@ app.component('data-quality', DataQuality);
 app.component('global-search', GlobalSearch);
 app.component('resource-overlap', ResourceOverlap);
 app.component('scenario-planner', ScenarioPlanner);
+app.component('capability-investment', CapabilityInvestment);
+app.component('conformity-scorecard', ConformityScorecard);
 
 initRouter();
 loadData();
