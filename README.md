@@ -1,9 +1,313 @@
-# vibe-app
-Vibe Coded APM as Static HTML App
+# EA Dashboard
+
+> **Enterprise Architecture Dashboard** — A strategic IT landscape planning tool ("Strategischer Bebauungsplan") for mid-sized industrial enterprises. Built as a standalone, single-file HTML application.
 
 ---
 
-## Verbesserungsvorschläge & Feature-Roadmap
+## Table of Contents
+
+- [Overview](#overview)
+- [Architecture](#architecture)
+- [Data Model](#data-model)
+- [Components](#components)
+- [Getting Started](#getting-started)
+- [Build](#build)
+- [Testing](#testing)
+- [Project Structure](#project-structure)
+- [Feature Roadmap](#feature-roadmap)
+
+---
+
+## Overview
+
+The EA Dashboard is an Application Portfolio Management (APM) tool designed for CIOs, PMOs, and enterprise architects. It provides strategic visibility into IT landscapes including application portfolios, capability mappings, project tracking, vendor management, demand pipelines, and risk assessments.
+
+**Key characteristics:**
+
+- **Zero-server architecture** — Runs entirely in the browser, including from `file://`
+- **Single-file distribution** — Build script bundles everything into one self-contained HTML file
+- **Offline-capable** — All dependencies loaded via CDN on first load; data persisted in `localStorage`
+- **No build toolchain required** — No webpack, no Vite, no npm needed for the app itself
+
+## Architecture
+
+### Technology Stack
+
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| **Framework** | [Vue 3](https://vuejs.org/) (ESM/Global build via CDN) | Reactive UI components |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) (CDN) | Utility-first CSS |
+| **Charts** | [Chart.js 4](https://www.chartjs.org/) | Bar, pie, line, doughnut charts |
+| **Graphs** | [D3.js 7](https://d3js.org/) | Force-directed dependency graphs |
+| **State** | Custom reactive store (`store.js`) | Centralized state management with `localStorage` persistence |
+| **Routing** | Custom hash-based router (`router.js`) | SPA navigation via `#/path` |
+| **Build** | Python 3 script (`build_single.py`) | Bundles multi-file app into single HTML |
+| **Tests** | [Vitest](https://vitest.dev/) | Unit testing framework |
+
+### Application Flow
+
+```
+index.html (dev) ─── or ─── bebauungsplan.html (production single-file)
+    │
+    ├── app.js          → Creates Vue app, registers 35 components
+    ├── store.js        → Reactive state: CRUD operations, persistence, import/export
+    ├── router.js       → Hash-based SPA routing with pattern matching
+    └── components/     → 35 Vue components (list, detail, form, dashboard views)
+          │
+          └── data/bebauungsplan.json  → Seed data loaded on first run
+```
+
+### State Management
+
+The store (`store.js`) uses Vue 3's `reactive()` to create a centralized, deeply-watched state object. Changes are automatically debounce-persisted to `localStorage` (500ms delay).
+
+**Key features:**
+- Computed getters for aggregated metrics (avg maturity, budget totals, TIME distribution)
+- Full CRUD for all entity types (domains, apps, projects, vendors, demands, integrations, processes)
+- Cascading deletes (e.g., deleting a domain removes its capability mappings and project references)
+- JSON import/export for data portability
+- Reset-to-seed functionality
+
+### Routing
+
+The router (`router.js`) implements hash-based navigation with regex pattern matching:
+
+```
+#/                    → Dashboard
+#/apps                → Application list
+#/apps/APP-001        → Application detail (parameterized)
+#/domains/3           → Domain detail (parameterized)
+#/risk-heatmap        → Risk heatmap view
+...
+```
+
+Unknown routes fall back to the dashboard. Query parameters are parsed automatically.
+
+## Data Model
+
+### Core Entities
+
+| Entity | ID Format | Description |
+|--------|-----------|-------------|
+| **Domains** | Numeric (1, 2, ...) | Business domains (e.g., Production, Sales, Finance) |
+| **Capabilities** | `{domainId}.{n}` (e.g., `1.3`) | Business capabilities with maturity levels (1–5) |
+| **Sub-Capabilities** | `{capId}.{n}` (e.g., `1.3.2`) | Granular capability breakdown |
+| **Applications** | `APP-{nnn}` | IT systems with vendor, cost, criticality, TIME quadrant |
+| **Projects** | `PRJ-{nnn}` | Change initiatives with budget, status, timeline |
+| **Vendors** | `VND-{nnn}` | IT vendors/partners with contract details |
+| **Demands** | `DEM-{nnn}` | Business requests and initiative proposals |
+| **Integrations** | `INT-{nnn}` | Application-to-application interfaces |
+| **Processes** | Free-form ID | End-to-end business processes spanning domains |
+
+### Enumerations
+
+| Enum | Values |
+|------|--------|
+| **Criticality** | Mission-Critical, Business-Critical, Business-Operational, Administrative |
+| **TIME Quadrant** | Tolerate, Invest, Migrate, Eliminate |
+| **App Type** | SaaS, On-Prem, Custom, PaaS |
+| **Capability Maturity** | 1 (Initial) → 5 (Optimized) |
+| **Project Status** | green, yellow, red |
+| **Risk Probability** | Sehr niedrig, Niedrig, Mittel, Hoch, Sehr hoch |
+| **Risk Impact** | Minimal, Gering, Moderat, Erheblich, Kritisch |
+| **Lifecycle Status** | Planned, Active, End-of-Support, End-of-Life |
+| **AI Risk Category** | Kein AI-Usecase, Minimales Risiko, Begrenztes Risiko, Hohes Risiko, Unannehmbares Risiko |
+
+### Relationships
+
+- **Capability Mappings** link Applications to Capabilities (with role: Primary/Secondary)
+- **Project Dependencies** link Projects to other Projects (source → target)
+- **Projects** reference Domains (primary + secondary) and affected Applications
+- **Demands** reference Domains, Applications, and Vendors
+- **Integrations** link source and target Applications
+- **Processes** span multiple Domains, derived app relationships via capability mappings
+
+## Components
+
+### Dashboard & Strategy (6)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| Dashboard | `dashboard.js` | `/` | KPI cards, TIME/status charts, management KPIs |
+| Executive Summary | `executive-summary.js` | `/executive-summary` | PDF-exportable management report |
+| Roadmap | `roadmap.js` | `/roadmap` | Gantt-style strategy timeline |
+| Budget Dashboard | `budget-dashboard.js` | `/budget-dashboard` | Run vs. Change budget, cost breakdowns |
+| Risk Heatmap | `risk-heatmap.js` | `/risk-heatmap` | Probability × Impact matrix |
+| Data Quality | `data-quality.js` | `/data-quality` | Completeness and consistency checks |
+
+### Domain & Capability Management (5)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| Domain List | `domain-list.js` | `/domains` | All business domains |
+| Domain Detail | `domain-detail.js` | `/domains/:id` | Domain with capabilities and mappings |
+| Domain Form | `domain-form.js` | Modal | Create/edit domain |
+| Capability Form | `capability-form.js` | Modal | Create/edit capability |
+| Maturity Gap | `maturity-gap.js` | `/maturity-gap` | Current vs. target maturity analysis |
+
+### Application Management (6)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| App List | `app-list.js` | `/apps` | All applications with filters |
+| App Detail | `app-detail.js` | `/apps/:id` | Full application profile |
+| App Form | `app-form.js` | Modal | Create/edit application |
+| Cap-App Matrix | `cap-app-matrix.js` | `/capability-matrix` | Capability × Application heatmap |
+| TIME Quadrant | `time-quadrant.js` | `/time` | Tolerate/Invest/Migrate/Eliminate view |
+| Integration Map | `integration-map.js` | `/integration-map` | Application interface diagram |
+
+### Project Management (5)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| Project List | `project-list.js` | `/projects` | All projects with status |
+| Project Detail | `project-detail.js` | `/projects/:id` | Full project profile |
+| Project Form | `project-form.js` | Modal | Create/edit project |
+| Project Heatmap | `project-heatmap.js` | `/project-heatmap` | Project risk/status overview |
+| Dependency Graph | `dependency-graph.js` | `/dependencies` | D3 force-directed project graph |
+
+### Demand & Pipeline (4)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| Demand List | `demand-list.js` | `/demands` | All demands |
+| Demand Detail | `demand-detail.js` | `/demands/:id` | Full demand profile |
+| Demand Form | `demand-form.js` | Modal | Create/edit demand |
+| Demand Pipeline | `demand-pipeline.js` | `/demand-pipeline` | Kanban-style pipeline view |
+
+### Reference Data (7)
+
+| Component | File | Route | Description |
+|-----------|------|-------|-------------|
+| Vendor List | `vendor-list.js` | `/vendors` | All vendors |
+| Vendor Detail | `vendor-detail.js` | `/vendors/:id` | Vendor profile with linked apps |
+| Vendor Form | `vendor-form.js` | Modal | Create/edit vendor |
+| Process List | `process-list.js` | `/processes` | End-to-end processes |
+| Process Detail | `process-detail.js` | `/processes/:id` | Process with domain/app chain |
+| Process Form | `process-form.js` | Modal | Create/edit process |
+| AI Use Cases | `ai-usecases-list.js` | `/ai-usecases` | EU AI Act categorized use cases |
+
+### Framework (2)
+
+| Component | File | Description |
+|-----------|------|-------------|
+| Layout | `layout.js` | App shell with sidebar navigation and header |
+| Settings | `settings.js` | Data import/export, reset, metadata editing |
+
+## Getting Started
+
+### Development Mode (multi-file)
+
+1. Serve the app directory with any static HTTP server:
+   ```bash
+   cd 08_StrategischeBebauung/app
+   python3 -m http.server 8080
+   ```
+2. Open `http://localhost:8080` in a browser.
+
+### Production Mode (single-file)
+
+1. Build the single-file HTML:
+   ```bash
+   cd 08_StrategischeBebauung
+   python3 build_single.py
+   ```
+2. Open `bebauungsplan.html` directly in a browser (works with `file://` protocol).
+
+## Build
+
+The build process (`build_single.py`) creates a single self-contained HTML file by:
+
+1. Reading the seed data JSON
+2. Stripping ES module `import`/`export` statements from all JS files
+3. Converting `export default` to named constants
+4. Converting async `loadData()` to a synchronous version using embedded seed data
+5. Inlining all component code and the store/router into a single `<script>` block
+6. Writing the complete HTML with CDN references for Vue, Tailwind, Chart.js, and D3
+
+```bash
+cd 08_StrategischeBebauung
+python3 build_single.py
+```
+
+Output: `bebauungsplan.html` (~500+ KB, works offline after initial CDN load)
+
+## Testing
+
+Unit tests cover the core logic modules (`store.js` and `router.js`) using [Vitest](https://vitest.dev/).
+
+### Running Tests
+
+```bash
+cd 08_StrategischeBebauung
+npm install          # first time only
+npm test             # run all tests once
+npm run test:watch   # run tests in watch mode
+```
+
+### Test Structure
+
+```
+tests/
+├── mocks/
+│   └── vue-mock.js       # Minimal Vue API mock (reactive, watch, computed)
+├── store.test.js         # Store CRUD operations, getters, relationships (94 tests)
+└── router.test.js        # Route matching, navigation, query parsing (33 tests)
+```
+
+### What's Tested
+
+- **Store getters**: `totalApps`, `totalProjects`, `avgMaturity`, `totalBudget`, `timeDistribution`, `projectStatusCounts`, `maturityGaps`, etc.
+- **Domain CRUD**: `addDomain`, `updateDomain`, `deleteDomain` (with cascading cleanup)
+- **Capability CRUD**: `addCapability`, `updateCapability`, `deleteCapability`, `addSubCapability`, `deleteSubCapability`
+- **Application CRUD**: `addApp`, `updateApp`, `deleteApp` (with mapping and project cleanup)
+- **Project CRUD**: `addProject`, `updateProject`, `deleteProject` (with dependency cleanup)
+- **Vendor CRUD**: `addVendor`, `updateVendor`, `deleteVendor`, `appsForVendor`, `vendorForApp`
+- **Demand CRUD**: `addDemand`, `updateDemand`, `deleteDemand`, filtering by domain/app/vendor
+- **Integration CRUD**: `addIntegration`, `updateIntegration`, `deleteIntegration`, `integrationsForApp`
+- **Process CRUD**: `addProcess`, `updateProcess`, `deleteProcess`, relationship derivation
+- **Mapping CRUD**: `addMapping`, `removeMapping` (with deduplication)
+- **Router**: All 28 route patterns, parameterized routes, query parsing, 404 fallback
+
+## Project Structure
+
+```
+08_StrategischeBebauung/
+├── app/
+│   ├── index.html                    # Dev entry point (multi-file mode)
+│   ├── data/
+│   │   └── bebauungsplan.json        # Seed data with full data model + enums
+│   └── js/
+│       ├── app.js                    # Vue app init, component registration
+│       ├── store.js                  # Reactive state, CRUD, persistence
+│       ├── router.js                 # Hash-based SPA router
+│       └── components/               # 35 Vue component files
+│           ├── layout.js             # App shell (sidebar + header)
+│           ├── dashboard.js          # Home / KPI dashboard
+│           ├── settings.js           # Import/export/reset
+│           ├── domain-list.js        # Domain management
+│           ├── app-list.js           # Application management
+│           ├── project-list.js       # Project management
+│           ├── demand-list.js        # Demand management
+│           ├── vendor-list.js        # Vendor management
+│           ├── process-list.js       # Process management
+│           ├── risk-heatmap.js       # Risk analysis
+│           ├── budget-dashboard.js   # Financial overview
+│           ├── executive-summary.js  # Management report
+│           └── ...                   # (+ 23 more component files)
+├── bebauungsplan.html                # Built single-file output
+├── build_single.py                   # Python build script
+├── package.json                      # Test dependencies (vitest, jsdom)
+├── vitest.config.js                  # Test configuration
+└── tests/                            # Unit tests
+    ├── mocks/vue-mock.js
+    ├── store.test.js
+    └── router.test.js
+```
+
+---
+
+## Feature Roadmap
 
 Priorisierte Erweiterungen für CIO, PMO und Geschäftsleitung – gegliedert nach strategischem Mehrwert.
 

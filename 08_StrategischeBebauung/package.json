@@ -1,0 +1,17 @@
+{
+  "name": "ea-dashboard",
+  "version": "1.0.0",
+  "description": "EA Dashboard - Enterprise Architecture Strategic Planning Tool",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "^28.0.0",
+    "vitest": "^4.0.18"
+  }
+}
