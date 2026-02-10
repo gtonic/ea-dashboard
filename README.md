@@ -403,10 +403,10 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Aggregierte Ansicht: Welche Apps erreichen in den nächsten 12/24 Monaten End-of-Life?
 - Automatische Warnungen bei Apps im "Tolerate"-Quadranten + nahendem EOL
 
-#### 17. Vendor Dependency Scorecard
-- **Vendor Concentration Risk**: Wie viel % der Mission-Critical Apps laufen bei einem Vendor?
-- **Contract Renewal Calendar**: Timeline-View aller auslaufenden Verträge
-- **Vendor Health Score**: Kombination aus Anzahl Apps, Kritikalität, Vertragsrestlaufzeit, Kosten
+#### ~~17. Vendor Dependency Scorecard~~ ✅
+- ~~**Vendor Concentration Risk**: Wie viel % der Mission-Critical Apps laufen bei einem Vendor?~~
+- ~~**Contract Renewal Calendar**: Timeline-View aller auslaufenden Verträge~~
+- ~~**Vendor Health Score**: Kombination aus Anzahl Apps, Kritikalität, Vertragsrestlaufzeit, Kosten~~
 
 #### 18. Total Cost of Ownership (TCO) Rechner
 - Pro Applikation: Lizenzkosten + Betriebskosten + Integrationskosten + Projektkosten

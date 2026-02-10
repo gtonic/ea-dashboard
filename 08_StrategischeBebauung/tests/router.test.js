@@ -247,6 +247,13 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('scenario-planner')
   })
 
+  it('resolves /vendor-scorecard path', () => {
+    window.location.hash = '#/vendor-scorecard'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/vendor-scorecard')
+    expect(router.component).toBe('vendor-scorecard')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))

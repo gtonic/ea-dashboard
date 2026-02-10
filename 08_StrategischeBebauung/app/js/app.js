@@ -28,6 +28,7 @@ import MaturityGap from './components/maturity-gap.js'
 import VendorList from './components/vendor-list.js'
 import VendorDetail from './components/vendor-detail.js'
 import VendorForm from './components/vendor-form.js'
+import VendorScorecard from './components/vendor-scorecard.js'
 import DemandList from './components/demand-list.js'
 import DemandDetail from './components/demand-detail.js'
 import DemandForm from './components/demand-form.js'
@@ -71,6 +72,7 @@ app.component('maturity-gap', MaturityGap)
 app.component('vendor-list', VendorList)
 app.component('vendor-detail', VendorDetail)
 app.component('vendor-form', VendorForm)
+app.component('vendor-scorecard', VendorScorecard)
 app.component('demand-list', DemandList)
 app.component('demand-detail', DemandDetail)
 app.component('demand-form', DemandForm)

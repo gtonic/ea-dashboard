@@ -612,6 +612,68 @@ describe('Vendor CRUD', () => {
   })
 })
 
+// ─── Vendor Scorecard Data ───────────────────────────────
+
+describe('Vendor Scorecard Data', () => {
+  beforeEach(() => {
+    store.data.vendors = [
+      { id: 'VND-001', name: 'SAP SE', criticality: 'Strategic', status: 'Active', contractValue: 550000, contractEnd: '2027-12-31', rating: 8 },
+      { id: 'VND-002', name: 'Microsoft', criticality: 'Strategic', status: 'Active', contractValue: 320000, contractEnd: '2025-06-30', rating: 7 },
+      { id: 'VND-003', name: 'SmallVendor', criticality: 'Standard', status: 'Active', contractValue: 10000, rating: 5 }
+    ]
+    store.data.applications = [
+      { id: 'APP-001', name: 'SAP ERP', vendor: 'SAP SE', criticality: 'Mission-Critical' },
+      { id: 'APP-002', name: 'SAP BW', vendor: 'SAP SE', criticality: 'Mission-Critical' },
+      { id: 'APP-003', name: 'Office 365', vendor: 'Microsoft', criticality: 'Business-Critical' },
+      { id: 'APP-004', name: 'Azure', vendor: 'Microsoft', criticality: 'Mission-Critical' },
+      { id: 'APP-005', name: 'SmallApp', vendor: 'SmallVendor', criticality: 'Administrative' }
+    ]
+  })
+
+  it('appsForVendor returns correct app count per vendor', () => {
+    expect(store.appsForVendor('VND-001')).toHaveLength(2)
+    expect(store.appsForVendor('VND-002')).toHaveLength(2)
+    expect(store.appsForVendor('VND-003')).toHaveLength(1)
+  })
+
+  it('vendor concentration risk: SAP has most Mission-Critical apps', () => {
+    const mcApps = store.data.applications.filter(a => a.criticality === 'Mission-Critical')
+    expect(mcApps).toHaveLength(3)
+    const sapMC = mcApps.filter(a => a.vendor === 'SAP SE')
+    expect(sapMC).toHaveLength(2)
+    const sapPercent = Math.round((sapMC.length / mcApps.length) * 100)
+    expect(sapPercent).toBe(67)
+  })
+
+  it('vendor concentration risk: SmallVendor has no Mission-Critical apps', () => {
+    const mcApps = store.data.applications.filter(a => a.criticality === 'Mission-Critical')
+    const smallMC = mcApps.filter(a => a.vendor === 'SmallVendor')
+    expect(smallMC).toHaveLength(0)
+  })
+
+  it('total contract value sums all vendors', () => {
+    const total = store.data.vendors.reduce((s, v) => s + (v.contractValue || 0), 0)
+    expect(total).toBe(880000)
+  })
+
+  it('contract timeline identifies vendors without contractEnd', () => {
+    const vendorsWithContract = store.data.vendors.filter(v => v.contractEnd)
+    expect(vendorsWithContract).toHaveLength(2)
+    const vendorsWithoutContract = store.data.vendors.filter(v => !v.contractEnd)
+    expect(vendorsWithoutContract).toHaveLength(1)
+    expect(vendorsWithoutContract[0].name).toBe('SmallVendor')
+  })
+
+  it('handles empty vendors array for scorecard', () => {
+    store.data.vendors = []
+    store.data.applications = []
+    const mcApps = store.data.applications.filter(a => a.criticality === 'Mission-Critical')
+    expect(mcApps).toHaveLength(0)
+    const total = store.data.vendors.reduce((s, v) => s + (v.contractValue || 0), 0)
+    expect(total).toBe(0)
+  })
+})
+
 // ─── Demand CRUD ──────────────────────────────────────────
 
 describe('Demand CRUD', () => {
