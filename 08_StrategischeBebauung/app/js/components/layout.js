@@ -21,15 +21,15 @@ export default {
             </svg>
           </div>
           <div>
-            <div class="font-bold text-sm text-gray-900 leading-tight">EA Bebauungsplan</div>
+            <div class="font-bold text-sm text-gray-900 leading-tight">EA Dashboard</div>
             <div class="text-xs text-gray-500 truncate">{{ store.data.meta.company || 'Enterprise Architecture' }}</div>
           </div>
         </div>
 
         <!-- Navigation -->
         <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-2 pb-1">Overview</div>
-          <a v-for="item in navOverview" :key="item.path"
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-2 pb-1">Domains</div>
+          <a v-for="item in navDomains" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700"
              :class="{ active: isActive(item.path) }">
@@ -37,8 +37,17 @@ export default {
             <span>{{ item.label }}</span>
           </a>
 
-          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Capabilities & Apps</div>
-          <a v-for="item in navCapApps" :key="item.path"
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Applications</div>
+          <a v-for="item in navApplications" :key="item.path"
+             :href="linkTo(item.path)" @click="closeMobile()"
+             class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700"
+             :class="{ active: isActive(item.path) }">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+            <span>{{ item.label }}</span>
+          </a>
+
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Demand</div>
+          <a v-for="item in navDemand" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700"
              :class="{ active: isActive(item.path) }">
@@ -48,6 +57,15 @@ export default {
 
           <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Projects</div>
           <a v-for="item in navProjects" :key="item.path"
+             :href="linkTo(item.path)" @click="closeMobile()"
+             class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700"
+             :class="{ active: isActive(item.path) }">
+            <span v-html="item.icon" class="w-5 h-5 shrink-0"></span>
+            <span>{{ item.label }}</span>
+          </a>
+
+          <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-4 pb-1">Misc</div>
+          <a v-for="item in navMisc" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
              class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700"
              :class="{ active: isActive(item.path) }">
@@ -108,24 +126,26 @@ export default {
     </div>
   `,
   setup () {
-    const navOverview = [
-      { path: '/', label: 'Dashboard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>' }
+    const navDomains = [
+      { path: '/domains', label: 'Domains', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>' }
     ]
-    const navCapApps = [
-      { path: '/domains', label: 'Domains', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>' },
+    const navApplications = [
       { path: '/apps', label: 'Applications', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>' },
-      { path: '/vendors', label: 'Vendors', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' },
-      { path: '/capability-matrix', label: 'Cap-App Matrix', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>' },
       { path: '/time', label: 'TIME Quadrant', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>' },
       { path: '/integration-map', label: 'Integration Map', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>' }
     ]
+    const navDemand = [
+      { path: '/demand-pipeline', label: 'Demand Pipeline', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18v4H3V4zm2 6h14v4H5v-4zm4 6h6v4H9v-4z"/></svg>' },
+      { path: '/demands', label: 'Demand Backlog', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' }
+    ]
     const navProjects = [
       { path: '/projects', label: 'Portfolio', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>' },
-      { path: '/demands', label: 'Demand Backlog', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' },
-      { path: '/demand-pipeline', label: 'Demand Pipeline', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18v4H3V4zm2 6h14v4H5v-4zm4 6h6v4H9v-4z"/></svg>' },
-      { path: '/ai-usecases', label: 'AI Use Cases', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.482 4.446A2.25 2.25 0 0115.378 21H8.622a2.25 2.25 0 01-2.14-1.554L5 14.5m14 0H5"/></svg>' },
       { path: '/project-heatmap', label: 'Project Heatmap', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>' },
       { path: '/dependencies', label: 'Dependencies', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>' }
+    ]
+    const navMisc = [
+      { path: '/vendors', label: 'Vendors', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>' },
+      { path: '/ai-usecases', label: 'AI Use Cases', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-1.482 4.446A2.25 2.25 0 0115.378 21H8.622a2.25 2.25 0 01-2.14-1.554L5 14.5m14 0H5"/></svg>' }
     ]
     const navStrategy = [
       { path: '/budget-dashboard', label: 'Budget Dashboard', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
@@ -134,7 +154,8 @@ export default {
       { path: '/roadmap', label: 'Strategy Roadmap', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>' },
       { path: '/executive-summary', label: 'Executive Summary', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' },
       { path: '/processes', label: 'E2E Processes', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>' },
-      { path: '/maturity-gap', label: 'Maturity Gap', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>' }
+      { path: '/maturity-gap', label: 'Maturity Gap', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>' },
+      { path: '/capability-matrix', label: 'Cap-App Matrix', icon: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>' }
     ]
 
     const pageTitles = {
@@ -169,7 +190,7 @@ export default {
 
     const { computed } = Vue
     const currentComponent = computed(() => router.component || 'dashboard-view')
-    const pageTitle = computed(() => pageTitles[currentComponent.value] || 'EA Bebauungsplan')
+    const pageTitle = computed(() => pageTitles[currentComponent.value] || 'EA Dashboard')
     const lastSaved = computed(() => {
       const d = store.data.meta.lastUpdated
       if (!d) return '—'
@@ -190,7 +211,7 @@ export default {
 
     return {
       store, router, linkTo, navigateTo,
-      navOverview, navCapApps, navProjects, navStrategy,
+      navDomains, navApplications, navDemand, navProjects, navMisc, navStrategy,
       currentComponent, pageTitle, lastSaved, isActive, closeMobile
     }
   }
