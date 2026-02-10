@@ -43,6 +43,8 @@ import DataQuality from './components/data-quality.js'
 import GlobalSearch from './components/global-search.js'
 import ResourceOverlap from './components/resource-overlap.js'
 import ScenarioPlanner from './components/scenario-planner.js'
+import CapabilityInvestment from './components/capability-investment.js'
+import ConformityScorecard from './components/conformity-scorecard.js'
 
 // Create app
 const app = createApp(Layout)
@@ -87,6 +89,8 @@ app.component('data-quality', DataQuality)
 app.component('global-search', GlobalSearch)
 app.component('resource-overlap', ResourceOverlap)
 app.component('scenario-planner', ScenarioPlanner)
+app.component('capability-investment', CapabilityInvestment)
+app.component('conformity-scorecard', ConformityScorecard)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

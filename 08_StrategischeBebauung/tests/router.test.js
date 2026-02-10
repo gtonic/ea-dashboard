@@ -254,6 +254,20 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('vendor-scorecard')
   })
 
+  it('resolves /capability-investment path', () => {
+    window.location.hash = '#/capability-investment'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/capability-investment')
+    expect(router.component).toBe('capability-investment')
+  })
+
+  it('resolves /conformity-scorecard path', () => {
+    window.location.hash = '#/conformity-scorecard'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/conformity-scorecard')
+    expect(router.component).toBe('conformity-scorecard')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))

@@ -38,6 +38,8 @@ const routes = [
   { pattern: /^\/executive-summary$/,      component: 'executive-summary' },
   { pattern: /^\/resource-overlaps$/,       component: 'resource-overlap' },
   { pattern: /^\/scenario-planner$/,       component: 'scenario-planner' },
+  { pattern: /^\/capability-investment$/,  component: 'capability-investment' },
+  { pattern: /^\/conformity-scorecard$/,   component: 'conformity-scorecard' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
