@@ -13300,7 +13300,7 @@ const AppLayout = {
         </div>
 
         <!-- Navigation -->
-        <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5" aria-label="Sidebar navigation">
+        <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5" id="sidebar-nav" aria-label="Sidebar navigation">
           <div class="text-[10px] font-semibold uppercase tracking-wider text-gray-400 px-3 pt-2 pb-1" id="nav-domains">Domains</div>
           <a v-for="item in navDomains" :key="item.path"
              :href="linkTo(item.path)" @click="closeMobile()"
