@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build single-file EA Bebauungsplan HTML from multi-file app/."""
+"""Build single-file EA Dashboard HTML from multi-file app/."""
 
 import os, re, json
 
@@ -123,7 +123,7 @@ for filename, varname in COMPONENTS:
 
 # 5. Assemble script content
 sc = []
-sc.append('// EA Bebauungsplan - Metallwerk Vorarlberg GmbH')
+sc.append('// EA Dashboard - Metallwerk Vorarlberg GmbH')
 sc.append('// Single-File Build - works as file:// without server\n')
 sc.append('// ── Vue API destructuring (global build) ──')
 sc.append('const { reactive, watch } = Vue;\n')
@@ -182,7 +182,7 @@ loadData();
 startWatching();
 app.mount('#app');
 
-console.log('[EA Bebauungsplan] App mounted - ' + store.data.meta.company);
+console.log('[EA Dashboard] App mounted - ' + store.data.meta.company);
 ''')
 
 main_script = '\n'.join(sc)
@@ -195,7 +195,7 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write('<!DOCTYPE html>\n<html lang="en" class="h-full">\n<head>\n')
     f.write('  <meta charset="UTF-8" />\n')
     f.write('  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n')
-    f.write('  <title>EA Bebauungsplan</title>\n\n')
+    f.write('  <title>EA Dashboard</title>\n\n')
     f.write('  <script src="https://cdn.tailwindcss.com">' + SC + '\n')
     f.write('  <script>\n')
     f.write("    tailwind.config = {\n")

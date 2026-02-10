@@ -231,7 +231,7 @@ export default {
 
         <!-- Footer -->
         <div class="text-center text-[10px] text-gray-400 py-4 border-t border-surface-200">
-          {{ store.data.meta.company }} · EA Bebauungsplan · {{ reportDate }} · Confidential
+          {{ store.data.meta.company }} · EA Dashboard · {{ reportDate }} · Confidential
         </div>
       </div>
     </div>

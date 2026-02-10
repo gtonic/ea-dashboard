@@ -90,4 +90,4 @@ startWatching()
 
 app.mount('#app')
 
-console.log('[EA Bebauungsplan] App mounted ✓ — ' + store.data.meta.company)
+console.log('[EA Dashboard] App mounted ✓ — ' + store.data.meta.company)
