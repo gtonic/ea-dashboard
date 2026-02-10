@@ -365,7 +365,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Adopt / Trial / Assess / Hold Kategorisierung
 - Mapping zu strategischen Entscheidungen
 
-#### 10. Globale Volltextsuche
+#### ~~10. Globale Volltextsuche~~ ✅ Implementiert
 - Über alle Entitäten: "Zeig mir alles zu SAP" → Apps, Projekte, Demands, Vendors, Prozesse
 
 #### 11. Change-Log / Audit-Trail
@@ -384,7 +384,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - **GL-View**: Executive Summary mit 5 KPIs und Ampeln
 - Konfigurierbare Dashboards pro Rolle
 
-#### 14. Integration-Map / Schnittstellen-Diagramm
+#### ~~14. Integration-Map / Schnittstellen-Diagramm~~ ✅ Implementiert
 - Applikations-Kommunikation (Datenflüsse)
 - Schnittstellen-Technologie (API, File, DB-Link)
 - Ergänzung zum Dependency-Graph (der aktuell nur Projekt-Dependencies zeigt)
@@ -396,6 +396,54 @@ Erweiterte Finanzübersicht für CIO/CFO:
 
 ---
 
+### 🔵 Phase 5+ – Weiterentwicklung & Professionalisierung
+
+#### 16. Application Lifecycle Timeline
+- Visuelle Timeline pro App: Planned → Active → End-of-Support → End-of-Life
+- Aggregierte Ansicht: Welche Apps erreichen in den nächsten 12/24 Monaten End-of-Life?
+- Automatische Warnungen bei Apps im "Tolerate"-Quadranten + nahendem EOL
+
+#### 17. Vendor Dependency Scorecard
+- **Vendor Concentration Risk**: Wie viel % der Mission-Critical Apps laufen bei einem Vendor?
+- **Contract Renewal Calendar**: Timeline-View aller auslaufenden Verträge
+- **Vendor Health Score**: Kombination aus Anzahl Apps, Kritikalität, Vertragsrestlaufzeit, Kosten
+
+#### 18. Total Cost of Ownership (TCO) Rechner
+- Pro Applikation: Lizenzkosten + Betriebskosten + Integrationskosten + Projektkosten
+- TCO pro Capability: Was kostet eine Business-Capability end-to-end?
+- TCO-Vergleich: Was kostet App X vs. Migration auf App Y?
+
+#### 19. Business Process Impact Map
+- Interaktive Prozesslandkarte: Welche Prozesse sind von App-Änderung betroffen?
+- Kritischer Pfad: Prozesse mit Single-App-Dependencies (kein Fallback)
+- Prozesskosten: Aggregierte Kosten aller Apps entlang eines Prozesses
+
+#### 20. Trend-Analyse / Zeitreihen-Dashboard
+- KPI-Entwicklung über die Zeit (Quartalsvergleich)
+- Maturity-Trend: Wird die IT-Landschaft reifer?
+- Budget-Trend: Run vs. Change Ratio Entwicklung
+- Setzt Quartalssnapshots voraus (passt zu Feature 11)
+
+#### 21. EA Health Score & Automatische Empfehlungen
+- Aggregierter "Gesundheitszustand" der IT-Landschaft (Score 0–100)
+- Heuristik-basierte Warnungen:
+  - Apps mit "Eliminate" + aktiven Projekten = Widerspruch
+  - Capabilities auf Maturity 1 ohne Investment = Empfehlung
+  - Vendors mit nur einer App + hoher Kritikalität = Klumpenrisiko
+- Automatische Handlungsempfehlungen pro Warnung
+
+#### 22. Dark Mode & Accessibility
+- Dark Mode Toggle (Tailwind `dark:` Klassen – Grundstruktur bereits vorhanden)
+- Barrierefreiheit: ARIA-Labels, Keyboard-Navigation, Screen-Reader-Support
+- Responsive Design Verbesserungen für Tablet/Mobile
+
+#### 23. Erweiterte Export-Funktionen
+- **PowerPoint-Export**: Fertige Folien für Management-Präsentationen
+- **CSV/Excel-Export**: Pro Entity-Typ für Weiterverarbeitung
+- **Share-Link**: Daten als Base64-encoded URL zum Teilen (kein Backend nötig)
+
+---
+
 ### Empfohlene Umsetzungsreihenfolge
 
 | Phase | Features | Wert |
@@ -404,3 +452,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | **Phase 2** | ~~Budget-Dashboard + Demand→Project Pipeline + AI/EU AI Act~~ | ✅ Implementiert |
 | **Phase 3** | ~~Risiko-Heatmap + Datenqualität~~ | ✅ Implementiert |
 | **Phase 4** | ~~Szenario-Planung + Ressourcen-Analyse~~ | ✅ Implementiert |
+| **Phase 5** | Globale Volltextsuche + Integration-Map | ✅ Implementiert |
+| **Phase 6** | Capability-Investment + Technologie-Radar + EA Health Score | Nächste Priorität |
+| **Phase 7** | App Lifecycle Timeline + Vendor Scorecard + TCO Rechner | Strategische Vertiefung |
+| **Phase 8** | Trend-Analyse + Dark Mode + Erweiterte Exports | Professionalisierung |
