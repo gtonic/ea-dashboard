@@ -16,6 +16,7 @@ const routes = [
   { pattern: /^\/apps\/(APP-\d+)$/,         component: 'app-detail',      paramNames: ['id'] },
   { pattern: /^\/capability-matrix$/,       component: 'cap-app-matrix' },
   { pattern: /^\/time$/,                    component: 'time-quadrant' },
+  { pattern: /^\/integration-map$/,          component: 'integration-map' },
   { pattern: /^\/projects$/,                component: 'project-list' },
   { pattern: /^\/projects\/(PRJ-\d+)$/,     component: 'project-detail',   paramNames: ['id'] },
   { pattern: /^\/project-heatmap$/,         component: 'project-heatmap' },
