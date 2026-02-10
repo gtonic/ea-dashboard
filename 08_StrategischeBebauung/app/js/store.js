@@ -31,6 +31,7 @@ export const store = reactive({
   data: createEmptyState(),
   loaded: false,
   sidebarOpen: true,
+  darkMode: localStorage.getItem('ea-dark-mode') === 'true',
 
   // ── Getters (computed-like but on reactive) ──
 
@@ -565,6 +566,10 @@ function persist () {
 // Watch deeply and auto-persist
 export function startWatching () {
   watch(() => store.data, persist, { deep: true })
+  watch(() => store.darkMode, (v) => {
+    localStorage.setItem('ea-dark-mode', v)
+    document.documentElement.classList.toggle('dark', v)
+  })
 }
 
 // ────────────────────────────────────────────
