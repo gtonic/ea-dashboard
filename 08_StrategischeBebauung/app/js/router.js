@@ -25,6 +25,7 @@ const routes = [
   { pattern: /^\/processes\/([A-Za-z0-9]+)$/, component: 'process-detail', paramNames: ['id'] },
   { pattern: /^\/vendors$/,                  component: 'vendor-list' },
   { pattern: /^\/vendors\/(VND-\d+)$/,       component: 'vendor-detail',   paramNames: ['id'] },
+  { pattern: /^\/vendor-scorecard$/,          component: 'vendor-scorecard' },
   { pattern: /^\/demands$/,                   component: 'demand-list' },
   { pattern: /^\/demands\/(DEM-\d+)$/,        component: 'demand-detail',   paramNames: ['id'] },
   { pattern: /^\/ai-usecases$/,                  component: 'ai-usecases-list' },

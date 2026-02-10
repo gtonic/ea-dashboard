@@ -49,6 +49,7 @@ COMPONENTS = [
     ('process-detail.js',   'ProcessDetail'),
     ('vendor-list.js',      'VendorList'),
     ('vendor-detail.js',    'VendorDetail'),
+    ('vendor-scorecard.js', 'VendorScorecard'),
     ('demand-list.js',      'DemandList'),
     ('demand-detail.js',    'DemandDetail'),
     ('demand-form.js',      'DemandForm'),
@@ -167,6 +168,7 @@ app.component('maturity-gap', MaturityGap);
 app.component('vendor-list', VendorList);
 app.component('vendor-detail', VendorDetail);
 app.component('vendor-form', VendorForm);
+app.component('vendor-scorecard', VendorScorecard);
 
 app.component('demand-list', DemandList);
 app.component('demand-detail', DemandDetail);
