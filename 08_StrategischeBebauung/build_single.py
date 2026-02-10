@@ -62,6 +62,8 @@ COMPONENTS = [
     ('data-quality.js',     'DataQuality'),
     ('maturity-gap.js',     'MaturityGap'),
     ('global-search.js',    'GlobalSearch'),
+    ('resource-overlap.js', 'ResourceOverlap'),
+    ('scenario-planner.js', 'ScenarioPlanner'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -178,6 +180,8 @@ app.component('integration-map', IntegrationMap);
 app.component('risk-heatmap', RiskHeatmap);
 app.component('data-quality', DataQuality);
 app.component('global-search', GlobalSearch);
+app.component('resource-overlap', ResourceOverlap);
+app.component('scenario-planner', ScenarioPlanner);
 
 initRouter();
 loadData();

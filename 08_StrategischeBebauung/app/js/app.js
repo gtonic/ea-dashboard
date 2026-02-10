@@ -40,6 +40,8 @@ import IntegrationMap from './components/integration-map.js'
 import RiskHeatmap from './components/risk-heatmap.js'
 import DataQuality from './components/data-quality.js'
 import GlobalSearch from './components/global-search.js'
+import ResourceOverlap from './components/resource-overlap.js'
+import ScenarioPlanner from './components/scenario-planner.js'
 
 // Create app
 const app = createApp(Layout)
@@ -81,6 +83,8 @@ app.component('integration-map', IntegrationMap)
 app.component('risk-heatmap', RiskHeatmap)
 app.component('data-quality', DataQuality)
 app.component('global-search', GlobalSearch)
+app.component('resource-overlap', ResourceOverlap)
+app.component('scenario-planner', ScenarioPlanner)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

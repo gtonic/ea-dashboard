@@ -233,6 +233,20 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('global-search')
   })
 
+  it('resolves /resource-overlaps path', () => {
+    window.location.hash = '#/resource-overlaps'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/resource-overlaps')
+    expect(router.component).toBe('resource-overlap')
+  })
+
+  it('resolves /scenario-planner path', () => {
+    window.location.hash = '#/scenario-planner'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/scenario-planner')
+    expect(router.component).toBe('scenario-planner')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))
