@@ -58,6 +58,8 @@ COMPONENTS = [
     ('roadmap.js',          'RoadmapView'),
     ('executive-summary.js','ExecutiveSummary'),
     ('integration-map.js',  'IntegrationMap'),
+    ('risk-heatmap.js',     'RiskHeatmap'),
+    ('data-quality.js',     'DataQuality'),
     ('maturity-gap.js',     'MaturityGap'),
     ('layout.js',           'AppLayout'),
 ]
@@ -172,6 +174,8 @@ app.component('budget-dashboard', BudgetDashboard);
 app.component('roadmap-view', RoadmapView);
 app.component('executive-summary', ExecutiveSummary);
 app.component('integration-map', IntegrationMap);
+app.component('risk-heatmap', RiskHeatmap);
+app.component('data-quality', DataQuality);
 
 initRouter();
 loadData();

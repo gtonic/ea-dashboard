@@ -45,6 +45,24 @@ export default {
               </select>
             </div>
             <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Risk Probability</label>
+              <select v-model="form.riskProbability" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                <option v-for="r in (store.data.enums.riskProbability || [])" :key="r" :value="r">{{ r }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Risk Impact</label>
+              <select v-model="form.riskImpact" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                <option v-for="r in (store.data.enums.riskImpact || [])" :key="r" :value="r">{{ r }}</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Lifecycle Status</label>
+              <select v-model="form.lifecycleStatus" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                <option v-for="l in (store.data.enums.lifecycleStatus || [])" :key="l" :value="l">{{ l }}</option>
+              </select>
+            </div>
+            <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Cost per Year (€)</label>
               <input v-model.number="form.costPerYear" type="number" min="0" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" />
             </div>
@@ -91,6 +109,7 @@ export default {
     const defaultForm = () => ({
       name: '', vendor: '', category: '', type: 'On-Prem',
       criticality: 'Business-Operational', timeQuadrant: 'Tolerate',
+      riskProbability: 'Niedrig', riskImpact: 'Mittel', lifecycleStatus: 'Active',
       costPerYear: 0, userCount: 0, businessOwner: '', itOwner: '',
       goLiveDate: '', businessValue: 5, technicalHealth: 5, description: ''
     })

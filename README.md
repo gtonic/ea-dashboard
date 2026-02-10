@@ -19,7 +19,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Plankosten vs. Prognose vs. Ist
 - Cost-of-Ownership pro Capability
 
-#### 4. Risiko- & Compliance-Ansicht
+#### ~~4. Risiko- & Compliance-Ansicht~~ ✅ Implementiert
 - **Risiko-Heatmap**: Wahrscheinlichkeit × Auswirkung für Apps und Projekte
 - Applikationen ohne Capability-Mapping = "Schatten-IT-Indikator"
 - Vendor-Risiko: Auslaufende Verträge, Single-Vendor-Dependencies
@@ -66,7 +66,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Wer hat wann was geändert? (Governance)
 - Versionierung der Daten (Snapshots pro Quartal)
 
-#### 12. Datenqualitäts-Dashboard
+#### ~~12. Datenqualitäts-Dashboard~~ ✅ Implementiert
 - Unvollständige Datensätze (Apps ohne Kosten, ohne Vendor, ohne TIME-Quadrant)
 - Capabilities ohne App-Mapping = "weiße Flecken"
 - Vendors ohne verknüpfte Apps
@@ -96,5 +96,5 @@ Erweiterte Finanzübersicht für CIO/CFO:
 |-------|----------|------|
 | **Phase 1** | ~~Strategie-Roadmap + Executive Summary PDF~~ | ✅ Implementiert |
 | **Phase 2** | ~~Budget-Dashboard + Demand→Project Pipeline + AI/EU AI Act~~ | ✅ Implementiert |
-| **Phase 3** | Risiko-Heatmap + Datenqualität | Governance & Compliance |
+| **Phase 3** | ~~Risiko-Heatmap + Datenqualität~~ | ✅ Implementiert |
 | **Phase 4** | Szenario-Planung + Ressourcen-Analyse | Strategische Planung next level |
