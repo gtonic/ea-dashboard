@@ -52,7 +52,7 @@ index.html (dev) ─── or ─── bebauungsplan.html (production single-fi
     ├── app.js          → Creates Vue app, registers 35 components
     ├── store.js        → Reactive state: CRUD operations, persistence, import/export
     ├── router.js       → Hash-based SPA routing with pattern matching
-    └── components/     → 35 Vue components (list, detail, form, dashboard views)
+    └── components/     → 37 Vue components (list, detail, form, dashboard views)
           │
           └── data/bebauungsplan.json  → Seed data loaded on first run
 ```
@@ -124,7 +124,7 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 
 ## Components
 
-### Dashboard & Strategy (6)
+### Dashboard & Strategy (8)
 
 | Component | File | Route | Description |
 |-----------|------|-------|-------------|
@@ -134,6 +134,8 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 | Budget Dashboard | `budget-dashboard.js` | `/budget-dashboard` | Run vs. Change budget, cost breakdowns |
 | Risk Heatmap | `risk-heatmap.js` | `/risk-heatmap` | Probability × Impact matrix |
 | Data Quality | `data-quality.js` | `/data-quality` | Completeness and consistency checks |
+| Resource Overlaps | `resource-overlap.js` | `/resource-overlaps` | Conflict detection, timeline collisions, cross-domain complexity |
+| Scenario Planner | `scenario-planner.js` | `/scenario-planner` | What-if analysis for project/app changes |
 
 ### Domain & Capability Management (5)
 
@@ -281,7 +283,7 @@ tests/
 │       ├── app.js                    # Vue app init, component registration
 │       ├── store.js                  # Reactive state, CRUD, persistence
 │       ├── router.js                 # Hash-based SPA router
-│       └── components/               # 35 Vue component files
+│       └── components/               # 37 Vue component files
 │           ├── layout.js             # App shell (sidebar + header)
 │           ├── dashboard.js          # Home / KPI dashboard
 │           ├── settings.js           # Import/export/reset
@@ -339,7 +341,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Pipeline-Funnel: Demands → Bewertung → Genehmigt → Projekt
 - Durchlaufzeiten-Analyse
 
-#### 6. Ressourcen-Überlappungs-Analyse
+#### ~~6. Ressourcen-Überlappungs-Analyse~~ ✅ Implementiert
 - Projekte die dieselben Applikationen betreffen (Konflikterkennung)
 - Cross-Domain-Projekte: Komplexitäts-Indikator
 - Timeline-Kollisionen: Gleichzeitige Änderungen an derselben App
@@ -349,7 +351,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Capabilities mit hoher Kritikalität aber niedrigem Investment = **unterfinanziert**
 - Maturity-Gap × Budget = Investieren wir in die richtigen Dinge?
 
-#### 8. Szenario-Planung / What-If-Analyse
+#### ~~8. Szenario-Planung / What-If-Analyse~~ ✅ Implementiert
 - "Was passiert, wenn wir Projekt X streichen?" → Auswirkung auf Maturity-Gaps, App-Landscape
 - "Was passiert, wenn wir App Y ablösen?" → Betroffene Capabilities, Projekte, Prozesse
 - Speicherbare Szenarien zum Vergleich
@@ -401,4 +403,4 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | **Phase 1** | ~~Strategie-Roadmap + Executive Summary PDF~~ | ✅ Implementiert |
 | **Phase 2** | ~~Budget-Dashboard + Demand→Project Pipeline + AI/EU AI Act~~ | ✅ Implementiert |
 | **Phase 3** | ~~Risiko-Heatmap + Datenqualität~~ | ✅ Implementiert |
-| **Phase 4** | Szenario-Planung + Ressourcen-Analyse | Strategische Planung next level |
+| **Phase 4** | ~~Szenario-Planung + Ressourcen-Analyse~~ | ✅ Implementiert |

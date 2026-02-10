@@ -35,6 +35,8 @@ const routes = [
   { pattern: /^\/data-quality$/,           component: 'data-quality' },
   { pattern: /^\/roadmap$/,                component: 'roadmap-view' },
   { pattern: /^\/executive-summary$/,      component: 'executive-summary' },
+  { pattern: /^\/resource-overlaps$/,       component: 'resource-overlap' },
+  { pattern: /^\/scenario-planner$/,       component: 'scenario-planner' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
