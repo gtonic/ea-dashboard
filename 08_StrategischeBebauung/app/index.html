@@ -44,6 +44,8 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+    .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    .dark ::-webkit-scrollbar-thumb:hover { background: #64748b; }
 
     /* Custom transitions */
     .fade-enter-active, .fade-leave-active { transition: opacity .2s ease; }
@@ -70,6 +72,8 @@
     .nav-item { transition: background-color .15s ease, color .15s ease; }
     .nav-item:hover { background-color: #e2e8f0; }
     .nav-item.active { background-color: #dbeafe; color: #1d4ed8; font-weight: 600; }
+    .dark .nav-item:hover { background-color: #334155; }
+    .dark .nav-item.active { background-color: #1e3a8a; color: #93c5fd; }
 
     /* Responsive sidebar */
     @media (max-width: 1024px) {
@@ -83,7 +87,7 @@
     }
   </style>
 </head>
-<body class="h-full bg-surface-50 text-gray-800 antialiased">
+<body class="h-full bg-surface-50 dark:bg-surface-950 text-gray-800 dark:text-gray-200 antialiased">
   <div id="app" v-cloak>
     <app-layout></app-layout>
   </div>
