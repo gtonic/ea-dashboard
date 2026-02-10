@@ -165,6 +165,38 @@
     "budgetType": [
       "Run / Pflicht",
       "Change / Grow"
+    ],
+    "interfaceType": [
+      {
+        "value": "API",
+        "label": "REST / SOAP API",
+        "symbol": "⇄"
+      },
+      {
+        "value": "File",
+        "label": "Datei-Transfer",
+        "symbol": "📁"
+      },
+      {
+        "value": "DB-Link",
+        "label": "Datenbank-Link",
+        "symbol": "🔗"
+      },
+      {
+        "value": "Event",
+        "label": "Event / Message",
+        "symbol": "⚡"
+      },
+      {
+        "value": "ETL",
+        "label": "ETL / Batch",
+        "symbol": "⟳"
+      },
+      {
+        "value": "Manual",
+        "label": "Manuell / Export",
+        "symbol": "✋"
+      }
     ]
   },
   "domains": [
@@ -3489,9 +3521,15 @@
       "requestDate": "2026-01-25",
       "estimatedBudget": 200000,
       "primaryDomain": 4,
-      "relatedDomains": [10],
-      "relatedApps": ["APP-003"],
-      "relatedVendors": ["VND-003"],
+      "relatedDomains": [
+        10
+      ],
+      "relatedApps": [
+        "APP-003"
+      ],
+      "relatedVendors": [
+        "VND-003"
+      ],
       "businessCase": "Reduktion der Ausschussrate um 35%. Einsparung von 150k/Jahr durch weniger Nacharbeit.",
       "isAIUseCase": true,
       "aiRiskCategory": "Hohes Risiko",
@@ -3529,9 +3567,15 @@
       "requestDate": "2026-02-05",
       "estimatedBudget": 45000,
       "primaryDomain": 8,
-      "relatedDomains": [2],
-      "relatedApps": ["APP-005"],
-      "relatedVendors": ["VND-002"],
+      "relatedDomains": [
+        2
+      ],
+      "relatedApps": [
+        "APP-005"
+      ],
+      "relatedVendors": [
+        "VND-002"
+      ],
       "businessCase": "Reduktion der HR-Ticketlast um 50%. 24/7 Verfügbarkeit für Standardanfragen.",
       "isAIUseCase": true,
       "aiRiskCategory": "Begrenztes Risiko",
@@ -3557,6 +3601,152 @@
         "scalabilityCheck": false,
         "notes": ""
       }
+    }
+  ],
+  "integrations": [
+    {
+      "id": "INT-001",
+      "sourceAppId": "APP-001",
+      "targetAppId": "APP-002",
+      "interfaceType": "API",
+      "protocol": "REST",
+      "description": "Kundenstammdaten-Synchronisation SAP → Salesforce",
+      "dataObjects": "Kunden, Ansprechpartner, Konditionen",
+      "frequency": "Echtzeit",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-002",
+      "sourceAppId": "APP-001",
+      "targetAppId": "APP-003",
+      "interfaceType": "API",
+      "protocol": "RFC/BAPI",
+      "description": "Fertigungsaufträge und Rückmeldungen",
+      "dataObjects": "Fertigungsaufträge, Betriebsdaten",
+      "frequency": "Echtzeit",
+      "direction": "bidirectional",
+      "status": "active"
+    },
+    {
+      "id": "INT-003",
+      "sourceAppId": "APP-001",
+      "targetAppId": "APP-007",
+      "interfaceType": "DB-Link",
+      "protocol": "DirectQuery",
+      "description": "Finanzdaten für Management-Reporting",
+      "dataObjects": "Buchungen, Kostenstellen, Ergebnisrechnung",
+      "frequency": "Täglich",
+      "direction": "pull",
+      "status": "active"
+    },
+    {
+      "id": "INT-004",
+      "sourceAppId": "APP-002",
+      "targetAppId": "APP-001",
+      "interfaceType": "API",
+      "protocol": "REST",
+      "description": "Aufträge und Opportunities aus Salesforce",
+      "dataObjects": "Aufträge, Angebote",
+      "frequency": "Echtzeit",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-005",
+      "sourceAppId": "APP-004",
+      "targetAppId": "APP-003",
+      "interfaceType": "File",
+      "protocol": "PLM-XML",
+      "description": "Stücklisten-Export an MES",
+      "dataObjects": "BOMs, Zeichnungen, Änderungsstände",
+      "frequency": "Bei Freigabe",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-006",
+      "sourceAppId": "APP-009",
+      "targetAppId": "APP-001",
+      "interfaceType": "File",
+      "protocol": "CSV",
+      "description": "Lohn- und Gehaltsdaten an SAP FI/CO",
+      "dataObjects": "Lohnarten, Kostenstellen, Abwesenheiten",
+      "frequency": "Monatlich",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-007",
+      "sourceAppId": "APP-001",
+      "targetAppId": "APP-018",
+      "interfaceType": "File",
+      "protocol": "MT940/CAMT",
+      "description": "Zahlungsverkehr SAP → Multicash",
+      "dataObjects": "Zahlungsaufträge, Kontoauszüge",
+      "frequency": "Täglich",
+      "direction": "bidirectional",
+      "status": "active"
+    },
+    {
+      "id": "INT-008",
+      "sourceAppId": "APP-008",
+      "targetAppId": "APP-011",
+      "interfaceType": "API",
+      "protocol": "REST",
+      "description": "Cloud-Monitoring und Ticket-Erstellung",
+      "dataObjects": "Incidents, Change Requests",
+      "frequency": "Echtzeit",
+      "direction": "bidirectional",
+      "status": "active"
+    },
+    {
+      "id": "INT-009",
+      "sourceAppId": "APP-012",
+      "targetAppId": "APP-008",
+      "interfaceType": "Event",
+      "protocol": "Webhook",
+      "description": "Infrastruktur-Alerts an ITSM",
+      "dataObjects": "Alerts, Metriken",
+      "frequency": "Echtzeit",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-010",
+      "sourceAppId": "APP-014",
+      "targetAppId": "APP-001",
+      "interfaceType": "Manual",
+      "protocol": "Excel-Upload",
+      "description": "QM-Prüfergebnisse manuell nach SAP QM",
+      "dataObjects": "Prüflose, Messwerte, Sperren",
+      "frequency": "Wöchentlich",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-011",
+      "sourceAppId": "APP-001",
+      "targetAppId": "APP-013",
+      "interfaceType": "ETL",
+      "protocol": "Batch-Job",
+      "description": "Personaldaten-Abgleich SAP HCM → SAGE",
+      "dataObjects": "Personalstamm, Organisationseinheiten",
+      "frequency": "Nächtlich",
+      "direction": "push",
+      "status": "active"
+    },
+    {
+      "id": "INT-012",
+      "sourceAppId": "APP-016",
+      "targetAppId": "APP-006",
+      "interfaceType": "API",
+      "protocol": "Graph API",
+      "description": "Power Automate Workflows mit SharePoint",
+      "dataObjects": "Dokumente, Listen, Genehmigungen",
+      "frequency": "Event-basiert",
+      "direction": "bidirectional",
+      "status": "active"
     }
   ]
 }

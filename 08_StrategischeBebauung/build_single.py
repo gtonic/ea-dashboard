@@ -57,6 +57,7 @@ COMPONENTS = [
     ('budget-dashboard.js', 'BudgetDashboard'),
     ('roadmap.js',          'RoadmapView'),
     ('executive-summary.js','ExecutiveSummary'),
+    ('integration-map.js',  'IntegrationMap'),
     ('maturity-gap.js',     'MaturityGap'),
     ('layout.js',           'AppLayout'),
 ]
@@ -170,6 +171,7 @@ app.component('ai-usecases-list', AIUsecasesList);
 app.component('budget-dashboard', BudgetDashboard);
 app.component('roadmap-view', RoadmapView);
 app.component('executive-summary', ExecutiveSummary);
+app.component('integration-map', IntegrationMap);
 
 initRouter();
 loadData();

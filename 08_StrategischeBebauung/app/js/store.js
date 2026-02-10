@@ -19,6 +19,7 @@ function createEmptyState () {
     vendors: [],
     e2eProcesses: [],
     demands: [],
+    integrations: [],
     enums: {}
   }
 }
@@ -435,6 +436,40 @@ export const store = reactive({
   demandsForVendor (vendorId) {
     return (this.data.demands || []).filter(d =>
       d.relatedVendors && d.relatedVendors.includes(vendorId)
+    )
+  },
+
+  // ── Integration CRUD ──
+
+  integrationById (id) {
+    return (this.data.integrations || []).find(i => i.id === id)
+  },
+
+  addIntegration (integration) {
+    if (!this.data.integrations) this.data.integrations = []
+    if (!integration.id) {
+      const maxNum = this.data.integrations.reduce((m, i) => {
+        const n = parseInt(i.id.replace('INT-', ''), 10)
+        return isNaN(n) ? m : Math.max(m, n)
+      }, 0)
+      integration.id = 'INT-' + String(maxNum + 1).padStart(3, '0')
+    }
+    this.data.integrations.push(integration)
+  },
+
+  updateIntegration (id, patch) {
+    const i = this.integrationById(id)
+    if (i) Object.assign(i, patch)
+  },
+
+  deleteIntegration (id) {
+    if (!this.data.integrations) return
+    this.data.integrations = this.data.integrations.filter(i => i.id !== id)
+  },
+
+  integrationsForApp (appId) {
+    return (this.data.integrations || []).filter(i =>
+      i.sourceAppId === appId || i.targetAppId === appId
     )
   },
 
