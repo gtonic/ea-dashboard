@@ -182,8 +182,6 @@ export default {
     const { computed } = Vue
 
     const projects = computed(() => store.data.projects || [])
-    const apps = computed(() => store.data.applications || [])
-    const domains = computed(() => store.data.domains || [])
 
     // Parse quarter string like "Q1/2026" to a comparable number (2026*4 + 1)
     function parseQuarter (q) {
