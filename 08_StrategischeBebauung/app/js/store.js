@@ -478,6 +478,71 @@ export const store = reactive({
   updateManagementKPI (id, patch) {
     const kpi = (this.data.managementKPIs || []).find(k => k.id === id)
     if (kpi) Object.assign(kpi, patch)
+  },
+
+  // ── Global Full-Text Search ──
+
+  globalSearch (query) {
+    if (!query || !query.trim()) return []
+    const q = query.trim().toLowerCase()
+    const results = []
+
+    // Applications
+    ;(this.data.applications || []).forEach(a => {
+      const fields = [a.id, a.name, a.vendor, a.category, a.type, a.description, a.businessOwner, a.itOwner, a.criticality, a.timeQuadrant].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Application', id: a.id, name: a.name, detail: [a.vendor, a.category].filter(Boolean).join(' · '), route: '/apps/' + a.id })
+      }
+    })
+
+    // Domains
+    ;(this.data.domains || []).forEach(d => {
+      const fields = [d.name, d.description, d.domainOwner, d.strategicFocus, d.vision].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Domain', id: d.id, name: d.name, detail: d.domainOwner || '', route: '/domains/' + d.id })
+      }
+      // Capabilities within domain
+      ;(d.capabilities || []).forEach(c => {
+        const cFields = [c.id, c.name, c.description].filter(Boolean).join(' ')
+        if (cFields.toLowerCase().includes(q)) {
+          results.push({ type: 'Capability', id: c.id, name: c.name, detail: d.name, route: '/domains/' + d.id })
+        }
+      })
+    })
+
+    // Projects
+    ;(this.data.projects || []).forEach(p => {
+      const fields = [p.id, p.name, p.category, p.sponsor, p.projectLead, p.statusText, p.strategicContribution].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Project', id: p.id, name: p.name, detail: [p.category, p.status].filter(Boolean).join(' · '), route: '/projects/' + p.id })
+      }
+    })
+
+    // Vendors
+    ;(this.data.vendors || []).forEach(v => {
+      const fields = [v.id, v.name, v.category, v.description, v.contactPerson, v.vendorManager].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Vendor', id: v.id, name: v.name, detail: v.category || '', route: '/vendors/' + v.id })
+      }
+    })
+
+    // E2E Processes
+    ;(this.data.e2eProcesses || []).forEach(p => {
+      const fields = [p.id, p.name, p.owner, p.description].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Process', id: p.id, name: p.name, detail: p.owner || '', route: '/processes/' + p.id })
+      }
+    })
+
+    // Demands
+    ;(this.data.demands || []).forEach(d => {
+      const fields = [d.id, d.title, d.description, d.category, d.status, d.requestedBy, d.businessCase].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Demand', id: d.id, name: d.title, detail: [d.category, d.status].filter(Boolean).join(' · '), route: '/demands/' + d.id })
+      }
+    })
+
+    return results
   }
 })
 

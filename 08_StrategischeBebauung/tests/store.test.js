@@ -754,6 +754,126 @@ describe('Management KPI', () => {
   })
 })
 
+// ─── Global Search ────────────────────────────────────────
+
+describe('Global Search', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'SAP S/4HANA', vendor: 'SAP SE', category: 'ERP', description: 'Enterprise resource planning' },
+      { id: 'APP-002', name: 'Salesforce CRM', vendor: 'Salesforce', category: 'CRM', description: 'Customer relationship management' }
+    ]
+    store.data.domains = [
+      { id: 1, name: 'IT Infrastructure', description: 'Cloud and datacenter', domainOwner: 'CIO', capabilities: [
+        { id: '1.1', name: 'Cloud Platform', description: 'Public cloud services' }
+      ]},
+      { id: 2, name: 'Sales & Marketing', description: 'Revenue generation', domainOwner: 'CSO', capabilities: [] }
+    ]
+    store.data.projects = [
+      { id: 'PRJ-001', name: 'SAP Upgrade 2025', category: 'Modernisierung', status: 'yellow', sponsor: 'CFO' }
+    ]
+    store.data.vendors = [
+      { id: 'VND-001', name: 'SAP SE', category: 'ERP', description: 'Strategic ERP partner' }
+    ]
+    store.data.e2eProcesses = [
+      { id: 'O2C', name: 'Order-to-Cash', owner: 'Vertriebsleiter', description: 'From order to delivery' }
+    ]
+    store.data.demands = [
+      { id: 'DEM-001', title: 'SAP Integration Enhancement', category: 'Projekt', status: 'In Bewertung', description: 'Improve SAP integrations' }
+    ]
+  })
+
+  it('returns empty array for empty query', () => {
+    expect(store.globalSearch('')).toEqual([])
+    expect(store.globalSearch('  ')).toEqual([])
+    expect(store.globalSearch(null)).toEqual([])
+    expect(store.globalSearch(undefined)).toEqual([])
+  })
+
+  it('finds applications by name', () => {
+    const results = store.globalSearch('SAP')
+    const appResults = results.filter(r => r.type === 'Application')
+    expect(appResults.length).toBeGreaterThanOrEqual(1)
+    expect(appResults[0].name).toBe('SAP S/4HANA')
+    expect(appResults[0].route).toBe('/apps/APP-001')
+  })
+
+  it('finds domains by name', () => {
+    const results = store.globalSearch('Infrastructure')
+    const domainResults = results.filter(r => r.type === 'Domain')
+    expect(domainResults).toHaveLength(1)
+    expect(domainResults[0].name).toBe('IT Infrastructure')
+    expect(domainResults[0].route).toBe('/domains/1')
+  })
+
+  it('finds capabilities within domains', () => {
+    const results = store.globalSearch('Cloud Platform')
+    const capResults = results.filter(r => r.type === 'Capability')
+    expect(capResults).toHaveLength(1)
+    expect(capResults[0].name).toBe('Cloud Platform')
+    expect(capResults[0].route).toBe('/domains/1')
+  })
+
+  it('finds projects by name', () => {
+    const results = store.globalSearch('Upgrade')
+    const projResults = results.filter(r => r.type === 'Project')
+    expect(projResults).toHaveLength(1)
+    expect(projResults[0].name).toBe('SAP Upgrade 2025')
+    expect(projResults[0].route).toBe('/projects/PRJ-001')
+  })
+
+  it('finds vendors by name', () => {
+    const results = store.globalSearch('SAP SE')
+    const vendorResults = results.filter(r => r.type === 'Vendor')
+    expect(vendorResults).toHaveLength(1)
+    expect(vendorResults[0].route).toBe('/vendors/VND-001')
+  })
+
+  it('finds processes by name', () => {
+    const results = store.globalSearch('Order-to-Cash')
+    const procResults = results.filter(r => r.type === 'Process')
+    expect(procResults).toHaveLength(1)
+    expect(procResults[0].route).toBe('/processes/O2C')
+  })
+
+  it('finds demands by title', () => {
+    const results = store.globalSearch('Integration Enhancement')
+    const demandResults = results.filter(r => r.type === 'Demand')
+    expect(demandResults).toHaveLength(1)
+    expect(demandResults[0].route).toBe('/demands/DEM-001')
+  })
+
+  it('search is case-insensitive', () => {
+    const results = store.globalSearch('sap')
+    expect(results.length).toBeGreaterThan(0)
+  })
+
+  it('searches across all entity types at once', () => {
+    const results = store.globalSearch('SAP')
+    const types = [...new Set(results.map(r => r.type))]
+    expect(types).toContain('Application')
+    expect(types).toContain('Project')
+    expect(types).toContain('Vendor')
+    expect(types).toContain('Demand')
+  })
+
+  it('searches in description fields', () => {
+    const results = store.globalSearch('resource planning')
+    const appResults = results.filter(r => r.type === 'Application')
+    expect(appResults).toHaveLength(1)
+    expect(appResults[0].name).toBe('SAP S/4HANA')
+  })
+
+  it('handles missing entity arrays gracefully', () => {
+    store.data.applications = undefined
+    store.data.domains = undefined
+    store.data.projects = undefined
+    store.data.vendors = undefined
+    store.data.e2eProcesses = undefined
+    store.data.demands = undefined
+    expect(store.globalSearch('test')).toEqual([])
+  })
+})
+
 // ─── E2E Process relationships ────────────────────────────
 
 describe('Process Relationships', () => {

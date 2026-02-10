@@ -109,6 +109,14 @@ export default {
           </button>
           <h1 class="text-lg font-semibold text-gray-900">{{ pageTitle }}</h1>
           <div class="flex-1"></div>
+          <a :href="linkTo('/search')"
+             class="p-2 rounded-lg hover:bg-surface-100 text-gray-500 hidden sm:flex items-center gap-2 border border-surface-200 px-3"
+             title="Global Search">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <span class="text-xs text-gray-400">Search…</span>
+          </a>
           <span class="text-xs text-gray-400 hidden sm:block">{{ store.data.meta.company }}</span>
         </header>
 
@@ -185,7 +193,8 @@ export default {
       'maturity-gap': 'Maturity Gap Analysis',
       'roadmap-view': 'Strategy Roadmap',
       'executive-summary': 'Executive Summary',
-      'settings-view': 'Settings'
+      'settings-view': 'Settings',
+      'global-search': 'Global Search'
     }
 
     const { computed } = Vue

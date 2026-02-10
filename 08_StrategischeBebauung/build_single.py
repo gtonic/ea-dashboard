@@ -61,6 +61,7 @@ COMPONENTS = [
     ('risk-heatmap.js',     'RiskHeatmap'),
     ('data-quality.js',     'DataQuality'),
     ('maturity-gap.js',     'MaturityGap'),
+    ('global-search.js',    'GlobalSearch'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -176,6 +177,7 @@ app.component('executive-summary', ExecutiveSummary);
 app.component('integration-map', IntegrationMap);
 app.component('risk-heatmap', RiskHeatmap);
 app.component('data-quality', DataQuality);
+app.component('global-search', GlobalSearch);
 
 initRouter();
 loadData();
