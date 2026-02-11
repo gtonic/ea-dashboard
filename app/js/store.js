@@ -33,7 +33,7 @@ export const store = reactive({
   loaded: false,
   sidebarOpen: true,
   darkMode: localStorage.getItem('ea-dark-mode') === 'true',
-  featureToggles: JSON.parse(localStorage.getItem('ea-feature-toggles') || '{"analysisEnabled":true,"governanceEnabled":true}'),
+  featureToggles: JSON.parse(localStorage.getItem('ea-feature-toggles') || '{"analysisEnabled":true,"governanceEnabled":true,"complianceEnabled":false,"selectedRegulations":[]}'),
 
   // ── Getters (computed-like but on reactive) ──
 

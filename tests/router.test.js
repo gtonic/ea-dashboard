@@ -316,4 +316,11 @@ describe('initRouter and route resolution', () => {
     expect(router.path).toBe('/')
     expect(router.component).toBe('dashboard-view')
   })
+
+  it('resolves /compliance-dashboard path', () => {
+    window.location.hash = '#/compliance-dashboard'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/compliance-dashboard')
+    expect(router.component).toBe('compliance-dashboard')
+  })
 })

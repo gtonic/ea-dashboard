@@ -233,6 +233,15 @@
       "Trial",
       "Assess",
       "Hold"
+    ],
+    "complianceRegulations": [
+      { "value": "GDPR", "label": "GDPR / DSGVO", "description": "General Data Protection Regulation" },
+      { "value": "SOX", "label": "SOX", "description": "Sarbanes-Oxley Act" },
+      { "value": "ISO27001", "label": "ISO 27001", "description": "Information Security Management" },
+      { "value": "DORA", "label": "DORA", "description": "Digital Operational Resilience Act" },
+      { "value": "NIS2", "label": "NIS2", "description": "Network and Information Security Directive" },
+      { "value": "BAIT", "label": "BAIT", "description": "Bankaufsichtliche Anforderungen an die IT" },
+      { "value": "KRITIS", "label": "KRITIS", "description": "Kritische Infrastrukturen" }
     ]
   },
   "domains": [

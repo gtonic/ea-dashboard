@@ -1192,4 +1192,35 @@ describe('Feature Toggles', () => {
     expect(store.featureToggles.analysisEnabled).toBe(false)
     expect(store.featureToggles.governanceEnabled).toBe(false)
   })
+
+  it('complianceEnabled defaults to false', () => {
+    // Reset featureToggles to the default state (as if localStorage was empty)
+    store.featureToggles = JSON.parse('{"analysisEnabled":true,"governanceEnabled":true,"complianceEnabled":false,"selectedRegulations":[]}')
+    expect(store.featureToggles.complianceEnabled).toBe(false)
+  })
+
+  it('complianceEnabled can be toggled on', () => {
+    store.featureToggles.complianceEnabled = true
+    expect(store.featureToggles.complianceEnabled).toBe(true)
+  })
+
+  it('selectedRegulations defaults to empty array', () => {
+    store.featureToggles = JSON.parse('{"analysisEnabled":true,"governanceEnabled":true,"complianceEnabled":false,"selectedRegulations":[]}')
+    expect(store.featureToggles.selectedRegulations).toEqual([])
+  })
+
+  it('selectedRegulations can hold regulation values', () => {
+    store.featureToggles.selectedRegulations = ['GDPR', 'DORA']
+    expect(store.featureToggles.selectedRegulations).toContain('GDPR')
+    expect(store.featureToggles.selectedRegulations).toContain('DORA')
+    expect(store.featureToggles.selectedRegulations).toHaveLength(2)
+  })
+
+  it('compliance toggle is independent of other toggles', () => {
+    store.featureToggles.complianceEnabled = true
+    store.featureToggles.analysisEnabled = false
+    expect(store.featureToggles.complianceEnabled).toBe(true)
+    expect(store.featureToggles.analysisEnabled).toBe(false)
+    expect(store.featureToggles.governanceEnabled).toBe(true)
+  })
 })

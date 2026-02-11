@@ -75,6 +75,7 @@ COMPONENTS = [
     ('ea-health-score.js',     'EaHealthScore'),
     ('app-lifecycle-timeline.js', 'AppLifecycleTimeline'),
     ('tco-calculator.js',      'TcoCalculator'),
+    ('compliance-dashboard.js', 'ComplianceDashboard'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -203,6 +204,7 @@ app.component('tech-radar', TechRadar);
 app.component('ea-health-score', EaHealthScore);
 app.component('app-lifecycle-timeline', AppLifecycleTimeline);
 app.component('tco-calculator', TcoCalculator);
+app.component('compliance-dashboard', ComplianceDashboard);
 
 initRouter();
 loadData();
