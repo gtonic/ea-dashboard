@@ -34,6 +34,9 @@ COMPONENTS = [
     ('project-form.js',     'ProjectForm'),
     ('process-form.js',     'ProcessForm'),
     ('vendor-form.js',      'VendorForm'),
+    ('entity-form.js',      'EntityForm'),
+    ('entity-list.js',      'EntityList'),
+    ('entity-detail.js',    'EntityDetail'),
     ('dashboard.js',        'DashboardView'),
     ('settings.js',         'SettingsView'),
     ('domain-list.js',      'DomainList'),
@@ -176,6 +179,9 @@ app.component('vendor-list', VendorList);
 app.component('vendor-detail', VendorDetail);
 app.component('vendor-form', VendorForm);
 app.component('vendor-scorecard', VendorScorecard);
+app.component('entity-list', EntityList);
+app.component('entity-detail', EntityDetail);
+app.component('entity-form', EntityForm);
 
 app.component('demand-list', DemandList);
 app.component('demand-detail', DemandDetail);
