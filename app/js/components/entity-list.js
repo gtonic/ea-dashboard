@@ -14,6 +14,10 @@ export default {
           <option value="">Alle Regionen</option>
           <option v-for="r in regions" :key="r" :value="r">{{ r }}</option>
         </select>
+        <button @click="showForm = true"
+                class="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors whitespace-nowrap">
+          + Neue Entität
+        </button>
       </div>
 
       <!-- Count -->
@@ -81,12 +85,16 @@ export default {
           </tbody>
         </table>
       </div>
+
+      <!-- Create Modal -->
+      <entity-form v-if="showForm" @close="showForm = false" @saved="onSaved"></entity-form>
     </div>
   `,
   setup () {
     const { ref, computed } = Vue
     const search = ref('')
     const filterRegion = ref('')
+    const showForm = ref(false)
 
     const entities = computed(() => store.data.legalEntities || [])
 
@@ -133,6 +141,10 @@ export default {
       }[region] || 'bg-gray-100 text-gray-600'
     }
 
-    return { store, linkTo, navigateTo, search, filterRegion, regions, filtered, appCount, parentName, countryFlag, regionClass }
+    function onSaved () {
+      showForm.value = false
+    }
+
+    return { store, linkTo, navigateTo, search, filterRegion, regions, filtered, appCount, parentName, countryFlag, regionClass, showForm, onSaved }
   }
 }

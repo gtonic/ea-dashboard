@@ -21,6 +21,10 @@ export default {
             <div class="text-sm text-gray-500">{{ entity.id }} · {{ entity.city }}, {{ entity.country }}</div>
             <p class="text-sm text-gray-600 mt-3 max-w-2xl">{{ entity.description }}</p>
           </div>
+          <div class="flex gap-2 shrink-0">
+            <button @click="showEdit = true" class="px-3 py-1.5 border border-gray-300 rounded-lg text-xs hover:bg-surface-100">Bearbeiten</button>
+            <button @click="confirmDelete" class="px-3 py-1.5 border border-red-300 text-red-600 rounded-lg text-xs hover:bg-red-50">Löschen</button>
+          </div>
         </div>
 
         <!-- Metrics -->
@@ -101,12 +105,16 @@ export default {
           </a>
         </div>
       </div>
+
+      <!-- Edit Modal -->
+      <entity-form v-if="showEdit" :edit-entity="entity" @close="showEdit = false" @saved="showEdit = false"></entity-form>
     </div>
     <div v-else class="text-center py-12 text-gray-500">Entität nicht gefunden.</div>
   `,
   setup () {
     const { ref, computed } = Vue
     const appSearch = ref('')
+    const showEdit = ref(false)
 
     const entity = computed(() => store.entityById(router.params.id))
 
@@ -159,6 +167,13 @@ export default {
       return { 'Mission-Critical': 'bg-red-100 text-red-700', 'Business-Critical': 'bg-orange-100 text-orange-700', 'Business-Operational': 'bg-yellow-100 text-yellow-700', 'Administrative': 'bg-gray-100 text-gray-600' }[c] || 'bg-gray-100 text-gray-600'
     }
 
-    return { store, linkTo, navigateTo, entity, apps, filteredApps, appSearch, parentName, childEntities, timeDistribution, critCount, countryFlag, regionClass, timeClass, timeAppClass, critAppClass }
+    function confirmDelete () {
+      if (entity.value && confirm('„' + entity.value.name + '" löschen? Dies kann nicht rückgängig gemacht werden.')) {
+        store.deleteEntity(entity.value.id)
+        navigateTo('/entities')
+      }
+    }
+
+    return { store, linkTo, navigateTo, entity, apps, filteredApps, appSearch, parentName, childEntities, timeDistribution, critCount, countryFlag, regionClass, timeClass, timeAppClass, critAppClass, showEdit, confirmDelete }
   }
 }

@@ -443,10 +443,32 @@ export const store = reactive({
     return entry?.role || null
   },
 
-  // ── Legal Entity helpers ──
+  // ── Legal Entity CRUD ──
 
   entityById (id) {
     return (this.data.legalEntities || []).find(e => e.id === id)
+  },
+
+  addEntity (entity) {
+    if (!this.data.legalEntities) this.data.legalEntities = []
+    if (!entity.id) {
+      const maxNum = this.data.legalEntities.reduce((max, e) => {
+        const m = e.id && e.id.match(/^ENT-(\d+)$/)
+        return m ? Math.max(max, parseInt(m[1], 10)) : max
+      }, 0)
+      entity.id = 'ENT-' + String(maxNum + 1).padStart(3, '0')
+    }
+    this.data.legalEntities.push(entity)
+  },
+
+  updateEntity (id, patch) {
+    const e = this.entityById(id)
+    if (e) Object.assign(e, patch)
+  },
+
+  deleteEntity (id) {
+    if (!this.data.legalEntities) return
+    this.data.legalEntities = this.data.legalEntities.filter(e => e.id !== id)
   },
 
   /** All applications assigned to a given entity */

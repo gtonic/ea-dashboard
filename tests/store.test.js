@@ -983,9 +983,9 @@ describe('Process Relationships', () => {
   })
 })
 
-// ─── Legal Entity Tests ─────────────────────────────────────
+// ─── Legal Entity CRUD ─────────────────────────────────────
 
-describe('Legal Entity Helpers', () => {
+describe('Legal Entity CRUD', () => {
   beforeEach(() => {
     store.data.legalEntities = [
       { id: 'ENT-001', name: 'Parent Corp', shortName: 'Parent', country: 'AT', city: 'Wien', region: 'Headquarters', parentEntity: null },
@@ -1015,6 +1015,59 @@ describe('Legal Entity Helpers', () => {
 
   it('entityById returns undefined for unknown id', () => {
     expect(store.entityById('ENT-999')).toBeUndefined()
+  })
+
+  it('addEntity creates legalEntities array if needed', () => {
+    store.data.legalEntities = undefined
+    store.addEntity({ name: 'New Corp', shortName: 'NC', country: 'CH', city: 'Zürich', region: 'DACH' })
+    expect(store.data.legalEntities).toHaveLength(1)
+    expect(store.data.legalEntities[0].id).toBe('ENT-001')
+  })
+
+  it('addEntity appends entity with auto-generated id', () => {
+    store.addEntity({ name: 'New Corp', shortName: 'NC', country: 'CH', city: 'Zürich', region: 'DACH' })
+    expect(store.data.legalEntities).toHaveLength(3)
+    expect(store.data.legalEntities[2].shortName).toBe('NC')
+    expect(store.data.legalEntities[2].id).toBe('ENT-003')
+  })
+
+  it('addEntity preserves explicit id', () => {
+    store.addEntity({ id: 'ENT-100', name: 'Explicit', shortName: 'EX' })
+    expect(store.entityById('ENT-100')).toBeDefined()
+  })
+
+  it('addEntity avoids duplicate id after deletion', () => {
+    store.addEntity({ name: 'Third', shortName: 'T3' })
+    expect(store.data.legalEntities[2].id).toBe('ENT-003')
+    store.deleteEntity('ENT-003')
+    store.addEntity({ name: 'Fourth', shortName: 'T4' })
+    // max existing is ENT-002 → next is ENT-003 (reuses gap, no conflict)
+    expect(store.data.legalEntities[2].id).toBe('ENT-003')
+  })
+
+  it('updateEntity patches entity properties', () => {
+    store.updateEntity('ENT-001', { name: 'Updated Corp', city: 'Graz' })
+    const e = store.entityById('ENT-001')
+    expect(e.name).toBe('Updated Corp')
+    expect(e.city).toBe('Graz')
+    expect(e.shortName).toBe('Parent')
+  })
+
+  it('updateEntity does nothing for unknown id', () => {
+    store.updateEntity('ENT-999', { name: 'Nope' })
+    expect(store.data.legalEntities).toHaveLength(2)
+  })
+
+  it('deleteEntity removes entity by id', () => {
+    store.deleteEntity('ENT-002')
+    expect(store.data.legalEntities).toHaveLength(1)
+    expect(store.entityById('ENT-002')).toBeUndefined()
+  })
+
+  it('deleteEntity handles missing array', () => {
+    store.data.legalEntities = undefined
+    store.deleteEntity('ENT-001')
+    expect(store.data.legalEntities).toBeUndefined()
   })
 
   it('appsForEntity returns apps assigned to entity', () => {
