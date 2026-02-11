@@ -1100,3 +1100,40 @@ describe('Legal Entity CRUD', () => {
     expect(store.entitiesForApp('APP-004')).toEqual([])
   })
 })
+
+// ─── Feature Toggles ──────────────────────────────────────
+
+describe('Feature Toggles', () => {
+  beforeEach(() => {
+    store.featureToggles = { analysisEnabled: true, governanceEnabled: true }
+  })
+
+  it('featureToggles has correct default shape', () => {
+    expect(store.featureToggles).toHaveProperty('analysisEnabled')
+    expect(store.featureToggles).toHaveProperty('governanceEnabled')
+  })
+
+  it('featureToggles defaults to both enabled', () => {
+    expect(store.featureToggles.analysisEnabled).toBe(true)
+    expect(store.featureToggles.governanceEnabled).toBe(true)
+  })
+
+  it('analysisEnabled can be toggled off', () => {
+    store.featureToggles.analysisEnabled = false
+    expect(store.featureToggles.analysisEnabled).toBe(false)
+    expect(store.featureToggles.governanceEnabled).toBe(true)
+  })
+
+  it('governanceEnabled can be toggled off', () => {
+    store.featureToggles.governanceEnabled = false
+    expect(store.featureToggles.governanceEnabled).toBe(false)
+    expect(store.featureToggles.analysisEnabled).toBe(true)
+  })
+
+  it('both toggles can be disabled independently', () => {
+    store.featureToggles.analysisEnabled = false
+    store.featureToggles.governanceEnabled = false
+    expect(store.featureToggles.analysisEnabled).toBe(false)
+    expect(store.featureToggles.governanceEnabled).toBe(false)
+  })
+})

@@ -33,6 +33,7 @@ export const store = reactive({
   loaded: false,
   sidebarOpen: true,
   darkMode: localStorage.getItem('ea-dark-mode') === 'true',
+  featureToggles: JSON.parse(localStorage.getItem('ea-feature-toggles') || '{"analysisEnabled":true,"governanceEnabled":true}'),
 
   // ── Getters (computed-like but on reactive) ──
 
@@ -692,6 +693,9 @@ export function startWatching () {
     localStorage.setItem('ea-dark-mode', v)
     document.documentElement.classList.toggle('dark', v)
   })
+  watch(() => store.featureToggles, (v) => {
+    localStorage.setItem('ea-feature-toggles', JSON.stringify(v))
+  }, { deep: true })
 }
 
 // ────────────────────────────────────────────

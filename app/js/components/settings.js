@@ -1,6 +1,7 @@
 // settings.js — Import/export JSON, reset to seed data
 import { store } from '../store.js'
 import { exportJSON, importJSON, resetToSeed } from '../store.js'
+import { i18n } from '../i18n.js'
 
 export default {
   name: 'SettingsView',
@@ -20,6 +21,37 @@ export default {
             <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
                   :class="store.darkMode ? 'translate-x-6' : 'translate-x-1'"></span>
           </button>
+        </div>
+      </section>
+
+      <!-- Feature Toggles -->
+      <section class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-4">{{ t('settings.featureToggles') }}</h2>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('nav.analysis') }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ t('settings.analysisDesc') }}</div>
+            </div>
+            <button @click="store.featureToggles.analysisEnabled = !store.featureToggles.analysisEnabled"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    :class="store.featureToggles.analysisEnabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-surface-700'">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                    :class="store.featureToggles.analysisEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
+            </button>
+          </div>
+          <div class="flex items-center justify-between border-t border-surface-100 dark:border-surface-700 pt-4">
+            <div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('nav.governance') }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ t('settings.governanceDesc') }}</div>
+            </div>
+            <button @click="store.featureToggles.governanceEnabled = !store.featureToggles.governanceEnabled"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    :class="store.featureToggles.governanceEnabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-surface-700'">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                    :class="store.featureToggles.governanceEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -99,6 +131,7 @@ export default {
   `,
   setup () {
     const { ref, computed } = Vue
+    const t = (key) => i18n.t(key)
     const toast = ref(null)
 
     function showToast (message, type = 'success') {
@@ -143,6 +176,6 @@ export default {
       }
     }
 
-    return { store, stats, toast, doExport, doImport, confirmReset }
+    return { store, stats, toast, doExport, doImport, confirmReset, t }
   }
 }
