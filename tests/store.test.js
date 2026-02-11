@@ -675,6 +675,62 @@ describe('Vendor Scorecard Data', () => {
   })
 })
 
+// ─── Vendor Type Data ─────────────────────────────────────
+
+describe('Vendor Type Data', () => {
+  it('vendorType enum exists and contains expected types', () => {
+    store.data.enums = {
+      vendorType: [
+        { value: 'MSP', label: 'Managed Service Provider' },
+        { value: 'HYP', label: 'Hyperscaler' },
+        { value: 'INF', label: 'Infrastruktur' },
+        { value: 'SAAS-I', label: 'SaaS (Infrastruktur)' },
+        { value: 'SAAS-S', label: 'SaaS (Spezialisiert)' },
+        { value: 'LIC', label: 'Lizenz-Software' },
+        { value: 'MKT', label: 'Marktprodukt' },
+        { value: 'PBR', label: 'Beratung / Professional Services' }
+      ]
+    }
+    expect(store.data.enums.vendorType).toHaveLength(8)
+    const values = store.data.enums.vendorType.map(t => t.value)
+    expect(values).toContain('MSP')
+    expect(values).toContain('HYP')
+    expect(values).toContain('SAAS-S')
+    expect(values).toContain('LIC')
+  })
+
+  it('vendors can be filtered by vendorType', () => {
+    store.data.vendors = [
+      { id: 'VND-001', name: 'SAP SE', vendorType: 'LIC' },
+      { id: 'VND-002', name: 'Microsoft', vendorType: 'HYP' },
+      { id: 'VND-003', name: 'Salesforce', vendorType: 'SAAS-S' },
+      { id: 'VND-004', name: 'Personio', vendorType: 'SAAS-S' }
+    ]
+    const saasVendors = store.data.vendors.filter(v => v.vendorType === 'SAAS-S')
+    expect(saasVendors).toHaveLength(2)
+    const licVendors = store.data.vendors.filter(v => v.vendorType === 'LIC')
+    expect(licVendors).toHaveLength(1)
+    expect(licVendors[0].name).toBe('SAP SE')
+  })
+
+  it('vendorType label can be resolved from enum', () => {
+    store.data.enums = {
+      vendorType: [
+        { value: 'HYP', label: 'Hyperscaler' },
+        { value: 'LIC', label: 'Lizenz-Software' }
+      ]
+    }
+    const vendorTypeLabel = (val) => {
+      const types = store.data.enums.vendorType || []
+      const t = types.find(e => e.value === val)
+      return t ? t.label : val
+    }
+    expect(vendorTypeLabel('HYP')).toBe('Hyperscaler')
+    expect(vendorTypeLabel('LIC')).toBe('Lizenz-Software')
+    expect(vendorTypeLabel('UNKNOWN')).toBe('UNKNOWN')
+  })
+})
+
 // ─── Demand CRUD ──────────────────────────────────────────
 
 describe('Demand CRUD', () => {
