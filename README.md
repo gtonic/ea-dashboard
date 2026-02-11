@@ -460,3 +460,84 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | **Phase 6** | ~~Capability-Investment + Technologie-Radar + EA Health Score~~ | ✅ Implementiert |
 | **Phase 7** | ~~App Lifecycle Timeline + Vendor Scorecard + TCO Rechner~~ | ✅ Implementiert |
 | **Phase 8** | Trend-Analyse + Dark Mode + Erweiterte Exports | Nächste Priorität |
+
+---
+
+### 🟣 Compliance-Umsetzungsphasen – Regulatorik & Governance
+
+Integration regulatorischer Anforderungen (DSGVO, NIS2, Cyber Resilience Act, EU AI Act, ISO 27001/9001 u.a.) in das EA Dashboard, um Compliance-Status pro Applikation, Domäne und Prozess transparent und steuerbar zu machen.
+
+#### Relevante Regulierungen & Standards
+
+| Regulierung / Standard | Scope | Relevanz für EA |
+|------------------------|-------|-----------------|
+| **DSGVO** (EU 2016/679) | Personenbezogene Daten | Apps mit PII-Verarbeitung identifizieren, DSFA-Pflicht |
+| **NIS2** (EU 2022/2555) | Netz- & Informationssicherheit | Kritische Infrastruktur, Incident-Response, Risikomanagement |
+| **Cyber Resilience Act** (EU 2024) | Produkte mit digitalen Elementen | Software-Stückliste (SBOM), Schwachstellen-Management |
+| **EU AI Act** (EU 2024/1689) | Künstliche Intelligenz | Risikoklassifizierung (bereits als Feld vorhanden), Dokumentationspflicht |
+| **DORA** (EU 2022/2554) | Digitale operationale Resilienz | IKT-Risikomanagement, Drittanbieter-Überwachung |
+| **eIDAS 2.0** (EU 2024/1183) | Elektronische Identifizierung | Identitäts- und Vertrauensdienste |
+| **ISO 27001** | Informationssicherheit (ISMS) | Controls-Mapping auf IT-Systeme |
+| **ISO 9001** | Qualitätsmanagement | Prozesskonformität |
+| **ISO 42001** | KI-Managementsystem | KI-Governance (Ergänzung zu EU AI Act) |
+| **ISO 22301** | Business Continuity | Ausfallsicherheit kritischer Systeme |
+| **SOC 2 / BSI C5** | Cloud-Compliance | Vendor-/Cloud-Bewertung |
+| **TISAX** | Automotive Informationssicherheit | Branchenspezifisch |
+| **PCI DSS** | Zahlungsdatenverarbeitung | Apps mit Payment-Bezug |
+
+#### Phase C1 – Compliance-Grundlagen (3–4 Wochen)
+
+**Ziel:** Regulatorische Anforderungen als eigenständige Entität im Datenmodell verankern und mit bestehenden Entitäten (Apps, Prozesse, Vendors) verknüpfen.
+
+**Datenmodell-Erweiterung:**
+- `regulations[]` — Regulierungsstammdaten (Name, Kurzname, Scope, Gültigkeitsbereich, Fristen)
+- `complianceRequirements[]` — Einzelanforderungen pro Regulierung (z.B. Art. 32 DSGVO → "Technische und organisatorische Maßnahmen")
+- `complianceAssessments[]` — Bewertung pro App×Anforderung (Status: Konform/Teilw./Nicht konform/N.A., Verantwortlicher, Frist, Nachweise)
+
+**Umsetzung:**
+- Regulierungsverwaltung (CRUD): `regulation-list.js`, `regulation-detail.js`, `regulation-form.js`
+- Compliance-Status-Anzeige in App-Detail und Vendor-Detail
+- Erweiterung `store.js` um Compliance-CRUD und Getters
+- Erweiterung `router.js` um `/regulations`, `/regulations/:id`
+- Seed-Daten für DSGVO, NIS2, ISO 27001 als Beispielregulierungen
+
+**Ergebnis:** Überblick welche Regulierungen für welche Apps/Prozesse gelten, mit Bewertungsstatus.
+
+#### Phase C2 – Tiefe Integration & Gap-Analyse (4–5 Wochen)
+
+**Ziel:** Compliance-Bewertungen systematisieren, Gaps automatisch erkennen, Handlungsempfehlungen generieren.
+
+**Umsetzung:**
+- **Compliance-Dashboard** (`compliance-dashboard.js`): Gesamtstatus aller Regulierungen, Ampel-Anzeige, Fortschrittsbalken pro Regulierung
+- **Gap-Analyse**: Automatische Erkennung von Apps ohne Bewertung für zutreffende Regulierungen
+- **Cross-Referenz**: Welche Applikationen sind von den meisten Regulierungen betroffen? (Regulierungslast-Score)
+- **Vendor-Compliance**: Regulierungs-Konformität pro Vendor aggregieren (z.B. SOC 2, BSI C5 Status aller Vendor-Apps)
+- **Integration in bestehende Views**:
+  - Risk-Heatmap: Compliance-Risiken als zusätzliche Dimension
+  - EA Health Score: Compliance-Faktor in Gesamtbewertung
+  - Executive Summary: Compliance-Sektion im Management-Report
+
+**Ergebnis:** Proaktive Identifikation von Compliance-Lücken mit priorisierter Handlungsliste.
+
+#### Phase C3 – Reporting, Audit-Trail & Automatisierung (3–5 Wochen)
+
+**Ziel:** Audit-fähige Compliance-Reports erzeugen, Änderungsnachverfolgung, Workflow-Unterstützung.
+
+**Umsetzung:**
+- **Compliance-Report-Export** (PDF): Regulierungs-Steckbriefe mit Status aller betroffenen Apps
+- **Assessment-Workflow**: Status-Übergänge (Offen → In Prüfung → Bewertet → Review erforderlich) mit Fristmanagement
+- **Audit-Trail**: Wer hat wann welche Compliance-Bewertung geändert? (Versionierung pro Assessment)
+- **Fristenwarnungen**: Regulierungen mit ablaufenden Übergangsfristen hervorheben
+- **Automatische Zuordnung**: Neue Apps erhalten automatisch zutreffende Regulierungen basierend auf Typ, Kritikalität und Datenklassifizierung
+- **Compliance-Scorecard pro Domäne**: Aggregierter Konformitätsgrad je Geschäftsdomäne
+
+**Ergebnis:** Vollständig audit-fähiges Compliance-Management mit Reporting und Nachvollziehbarkeit.
+
+#### Empfohlene Compliance-Reihenfolge
+
+| Phase | Inhalt | Aufwand | Voraussetzung |
+|-------|--------|---------|---------------|
+| **C1** | Regulierungsverwaltung, Datenmodell, CRUD, Basis-UI | 3–4 Wochen | — |
+| **C2** | Dashboard, Gap-Analyse, Cross-Referenz, View-Integration | 4–5 Wochen | C1 |
+| **C3** | Reporting, Audit-Trail, Workflows, Automatisierung | 3–5 Wochen | C2 |
+| **Gesamt** | **Vollständiges Compliance-Modul** | **10–14 Wochen** | — |
