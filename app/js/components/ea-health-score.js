@@ -203,11 +203,11 @@ export default {
           count++
         })
       })
-      if (count === 0) return 100
+      if (count === 0) return 0
       return Math.round((total / count / 5) * 100)
     })
 
-    // 4. Vendor Diversity: penalize single-vendor concentration
+    // 4. Vendor Diversity: penalize vendor concentration starting at 30%
     const vendorScore = computed(() => {
       const apps = store.data.applications
       if (apps.length === 0) return 100
@@ -217,7 +217,7 @@ export default {
         vendorCounts[v] = (vendorCounts[v] || 0) + 1
       })
       const maxConcentration = Math.max(...Object.values(vendorCounts)) / apps.length
-      // If one vendor has > 50% of apps, score drops
+      // Score decreases as concentration rises above 30%, reaching 0 at 100%
       return Math.round((1 - Math.max(0, maxConcentration - 0.3) / 0.7) * 100)
     })
 

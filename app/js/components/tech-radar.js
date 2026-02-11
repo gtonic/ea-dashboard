@@ -155,7 +155,7 @@ export default {
     </div>
   `,
   setup () {
-    const { ref, computed, onMounted, nextTick, watch } = Vue
+    const { ref, computed, onMounted, nextTick } = Vue
 
     const selectedQuadrant = ref(null)
     const radarCanvas = ref(null)
@@ -297,7 +297,6 @@ export default {
     }
 
     onMounted(() => { nextTick(renderCharts) })
-    watch(selectedQuadrant, () => { nextTick(renderCharts) })
 
     return {
       store, linkTo, selectedQuadrant,
