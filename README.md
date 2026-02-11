@@ -129,7 +129,7 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 
 ## Components
 
-### Dashboard & Strategy (8)
+### Dashboard & Strategy (11)
 
 | Component | File | Route | Description |
 |-----------|------|-------|-------------|
@@ -141,6 +141,9 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 | Data Quality | `data-quality.js` | `/data-quality` | Completeness and consistency checks |
 | Resource Overlaps | `resource-overlap.js` | `/resource-overlaps` | Conflict detection, timeline collisions, cross-domain complexity |
 | Scenario Planner | `scenario-planner.js` | `/scenario-planner` | What-if analysis for project/app changes |
+| Capability Investment | `capability-investment.js` | `/capability-investment` | Budget allocation to capabilities, underfunded analysis |
+| Technology Radar | `tech-radar.js` | `/tech-radar` | Adopt/Trial/Assess/Hold technology categorization |
+| EA Health Score | `ea-health-score.js` | `/ea-health-score` | Aggregated IT landscape health (0–100) with recommendations |
 
 ### Domain & Capability Management (5)
 
@@ -347,7 +350,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Cross-Domain-Projekte: Komplexitäts-Indikator
 - Timeline-Kollisionen: Gleichzeitige Änderungen an derselben App
 
-#### 7. Capability-basierte Investment-Analyse
+#### ~~7. Capability-basierte Investment-Analyse~~ ✅ Implementiert
 - In welche Capabilities fließt wie viel Budget (via Projekte)?
 - Capabilities mit hoher Kritikalität aber niedrigem Investment = **unterfinanziert**
 - Maturity-Gap × Budget = Investieren wir in die richtigen Dinge?
@@ -361,7 +364,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 
 ### 🟢 Nice-to-Have – Professionalisierung
 
-#### 9. Technologie-Radar
+#### ~~9. Technologie-Radar~~ ✅ Implementiert
 - Genutzte Technologien/Plattformen aggregiert aus App-Daten
 - Adopt / Trial / Assess / Hold Kategorisierung
 - Mapping zu strategischen Entscheidungen
@@ -425,7 +428,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 - Budget-Trend: Run vs. Change Ratio Entwicklung
 - Setzt Quartalssnapshots voraus (passt zu Feature 11)
 
-#### 21. EA Health Score & Automatische Empfehlungen
+#### ~~21. EA Health Score & Automatische Empfehlungen~~ ✅ Implementiert
 - Aggregierter "Gesundheitszustand" der IT-Landschaft (Score 0–100)
 - Heuristik-basierte Warnungen:
   - Apps mit "Eliminate" + aktiven Projekten = Widerspruch
@@ -453,7 +456,7 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | **Phase 2** | ~~Budget-Dashboard + Demand→Project Pipeline + AI/EU AI Act~~ | ✅ Implementiert |
 | **Phase 3** | ~~Risiko-Heatmap + Datenqualität~~ | ✅ Implementiert |
 | **Phase 4** | ~~Szenario-Planung + Ressourcen-Analyse~~ | ✅ Implementiert |
-| **Phase 5** | Globale Volltextsuche + Integration-Map | ✅ Implementiert |
-| **Phase 6** | Capability-Investment + Technologie-Radar + EA Health Score | Nächste Priorität |
-| **Phase 7** | App Lifecycle Timeline + Vendor Scorecard + TCO Rechner | Strategische Vertiefung |
+| **Phase 5** | ~~Globale Volltextsuche + Integration-Map~~ | ✅ Implementiert |
+| **Phase 6** | ~~Capability-Investment + Technologie-Radar + EA Health Score~~ | ✅ Implementiert |
+| **Phase 7** | App Lifecycle Timeline + Vendor Scorecard + TCO Rechner | Nächste Priorität |
 | **Phase 8** | Trend-Analyse + Dark Mode + Erweiterte Exports | Professionalisierung |

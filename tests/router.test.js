@@ -268,6 +268,20 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('conformity-scorecard')
   })
 
+  it('resolves /tech-radar path', () => {
+    window.location.hash = '#/tech-radar'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/tech-radar')
+    expect(router.component).toBe('tech-radar')
+  })
+
+  it('resolves /ea-health-score path', () => {
+    window.location.hash = '#/ea-health-score'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/ea-health-score')
+    expect(router.component).toBe('ea-health-score')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))

@@ -42,6 +42,8 @@ const routes = [
   { pattern: /^\/scenario-planner$/,       component: 'scenario-planner' },
   { pattern: /^\/capability-investment$/,  component: 'capability-investment' },
   { pattern: /^\/conformity-scorecard$/,   component: 'conformity-scorecard' },
+  { pattern: /^\/tech-radar$/,             component: 'tech-radar' },
+  { pattern: /^\/ea-health-score$/,        component: 'ea-health-score' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
