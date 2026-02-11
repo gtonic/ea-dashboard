@@ -481,7 +481,14 @@ export default {
     const setLocale = (lang) => i18n.setLocale(lang)
 
     // ── Navigation groups (reactive to i18n changes) ──
-    const navGroups = computed(() => buildNavGroups())
+    const navGroups = computed(() => {
+      const groups = buildNavGroups()
+      return groups.filter(g => {
+        if (g.id === 'analysis' && !store.featureToggles.analysisEnabled) return false
+        if (g.id === 'governance' && !store.featureToggles.governanceEnabled) return false
+        return true
+      })
+    })
 
     // ── Component / page title mapping ──
     const componentToPageKey = {

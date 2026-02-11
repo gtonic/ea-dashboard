@@ -208,6 +208,11 @@ const translations = {
     'ui.close': 'Schließen',
     'ui.openMenu': 'Navigationsmenü öffnen',
     'ui.closeMenu': 'Navigationsmenü schließen',
+
+    // ── Settings ──
+    'settings.featureToggles': 'Funktionsbereiche',
+    'settings.analysisDesc': 'Erweiterte Analysefunktionen ein-/ausblenden',
+    'settings.governanceDesc': 'Governance-Funktionen ein-/ausblenden',
   },
 
   en: {
@@ -397,5 +402,10 @@ const translations = {
     'ui.close': 'Close',
     'ui.openMenu': 'Open navigation menu',
     'ui.closeMenu': 'Close navigation menu',
+
+    // ── Settings ──
+    'settings.featureToggles': 'Feature Toggles',
+    'settings.analysisDesc': 'Show/hide extended analysis features',
+    'settings.governanceDesc': 'Show/hide governance features',
   }
 }
