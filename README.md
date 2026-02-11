@@ -7,6 +7,7 @@
 ## Table of Contents
 
 - [Overview](#overview)
+- [User Documentation](#user-documentation)
 - [Architecture](#architecture)
 - [Data Model](#data-model)
 - [Components](#components)
@@ -28,6 +29,10 @@ The EA Dashboard is an Application Portfolio Management (APM) tool designed for 
 - **Single-file distribution** — Build script bundles everything into one self-contained HTML file
 - **Offline-capable** — All dependencies loaded via CDN on first load; data persisted in `localStorage`
 - **No build toolchain required** — No webpack, no Vite, no npm needed for the app itself
+
+## User Documentation
+
+For a comprehensive guide to all features — grouped by stakeholder role (CIO, Enterprise Architect, PMO, Business Stakeholders) — see the **[User Documentation (USERDOC.md)](USERDOC.md)**.
 
 ## Architecture
 
