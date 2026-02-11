@@ -3654,7 +3654,6 @@
       "id": "VND-014",
       "name": "Eigenentwicklung",
       "category": "Custom Development",
-      "vendorType": "MSP",
       "status": "Active",
       "criticality": "Standard",
       "serviceLevel": "Internal",
