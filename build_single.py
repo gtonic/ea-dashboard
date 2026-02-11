@@ -68,6 +68,8 @@ COMPONENTS = [
     ('scenario-planner.js', 'ScenarioPlanner'),
     ('capability-investment.js', 'CapabilityInvestment'),
     ('conformity-scorecard.js', 'ConformityScorecard'),
+    ('tech-radar.js',          'TechRadar'),
+    ('ea-health-score.js',     'EaHealthScore'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -189,6 +191,8 @@ app.component('resource-overlap', ResourceOverlap);
 app.component('scenario-planner', ScenarioPlanner);
 app.component('capability-investment', CapabilityInvestment);
 app.component('conformity-scorecard', ConformityScorecard);
+app.component('tech-radar', TechRadar);
+app.component('ea-health-score', EaHealthScore);
 
 initRouter();
 loadData();

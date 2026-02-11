@@ -217,6 +217,12 @@
       "Active",
       "End-of-Support",
       "End-of-Life"
+    ],
+    "technologyRadar": [
+      "Adopt",
+      "Trial",
+      "Assess",
+      "Hold"
     ]
   },
   "domains": [
@@ -1742,7 +1748,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Sehr hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "SAP ABAP",
+        "SAP HANA",
+        "SAP Fiori"
+      ]
     },
     {
       "id": "APP-002",
@@ -1764,7 +1775,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Salesforce Platform",
+        "Apex",
+        "Lightning"
+      ]
     },
     {
       "id": "APP-003",
@@ -1786,7 +1802,11 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Sehr hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Java",
+        "Oracle DB"
+      ]
     },
     {
       "id": "APP-004",
@@ -1808,7 +1828,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "C++",
+        "Oracle DB",
+        "Teamcenter SOA"
+      ]
     },
     {
       "id": "APP-005",
@@ -1830,7 +1855,12 @@
       },
       "riskProbability": "Mittel",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Microsoft 365",
+        "Exchange Online",
+        "Teams"
+      ]
     },
     {
       "id": "APP-006",
@@ -1852,7 +1882,11 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "SharePoint",
+        "Microsoft Graph API"
+      ]
     },
     {
       "id": "APP-007",
@@ -1874,7 +1908,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Power BI",
+        "DAX",
+        "Azure Analysis Services"
+      ]
     },
     {
       "id": "APP-008",
@@ -1896,7 +1935,11 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "ServiceNow Platform",
+        "JavaScript"
+      ]
     },
     {
       "id": "APP-009",
@@ -1918,7 +1961,11 @@
       },
       "riskProbability": "Mittel",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Ruby on Rails",
+        "PostgreSQL"
+      ]
     },
     {
       "id": "APP-010",
@@ -1940,7 +1987,11 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "C++",
+        "Windows Desktop"
+      ]
     },
     {
       "id": "APP-011",
@@ -1962,7 +2013,12 @@
       },
       "riskProbability": "Mittel",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Azure",
+        "Kubernetes",
+        "Terraform"
+      ]
     },
     {
       "id": "APP-012",
@@ -1984,7 +2040,12 @@
       },
       "riskProbability": "Mittel",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "PHP",
+        "MySQL",
+        "SNMP"
+      ]
     },
     {
       "id": "APP-013",
@@ -2006,7 +2067,11 @@
       },
       "riskProbability": "Hoch",
       "riskImpact": "Niedrig",
-      "lifecycleStatus": "End-of-Life"
+      "lifecycleStatus": "End-of-Life",
+      "technology": [
+        "COBOL",
+        "IBM DB2"
+      ]
     },
     {
       "id": "APP-014",
@@ -2028,7 +2093,11 @@
       },
       "riskProbability": "Hoch",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "End-of-Support"
+      "lifecycleStatus": "End-of-Support",
+      "technology": [
+        "VBA",
+        "Microsoft Excel"
+      ]
     },
     {
       "id": "APP-015",
@@ -2050,7 +2119,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Hoch",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "C#",
+        "Windows Server",
+        "Hyper-V"
+      ]
     },
     {
       "id": "APP-016",
@@ -2072,7 +2146,12 @@
       },
       "riskProbability": "Niedrig",
       "riskImpact": "Mittel",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Power Apps",
+        "Power Automate",
+        "Dataverse"
+      ]
     },
     {
       "id": "APP-017",
@@ -2094,7 +2173,11 @@
       },
       "riskProbability": "Mittel",
       "riskImpact": "Niedrig",
-      "lifecycleStatus": "Active"
+      "lifecycleStatus": "Active",
+      "technology": [
+        "Java",
+        "Atlassian Cloud"
+      ]
     },
     {
       "id": "APP-018",
@@ -2116,7 +2199,12 @@
       },
       "riskProbability": "Sehr hoch",
       "riskImpact": "Niedrig",
-      "lifecycleStatus": "End-of-Life"
+      "lifecycleStatus": "End-of-Life",
+      "technology": [
+        "C++",
+        "SWIFT",
+        "EBICS"
+      ]
     }
   ],
   "capabilityMappings": [

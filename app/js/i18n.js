@@ -70,12 +70,14 @@ const translations = {
     'nav.maturityGap': 'Reifegradanalyse',
     'nav.dependencies': 'Abhängigkeitsgraph',
     'nav.resourceOverlap': 'Ressourcen-Überlappung',
+    'nav.techRadar': 'Technologie-Radar',
 
     // ── Nav Items – Governance ──
     'nav.riskHeatmap': 'Risiko-Heatmap',
     'nav.conformityScorecard': 'Konformitätsbewertung',
     'nav.budgetDashboard': 'Budget-Dashboard',
     'nav.dataQuality': 'Datenqualität',
+    'nav.eaHealthScore': 'EA Health Score',
 
     // ── Nav Items – Innovation ──
     'nav.aiUsecases': 'KI-Anwendungsfälle',
@@ -135,6 +137,8 @@ const translations = {
     'page.globalSearch': 'Globale Suche',
     'page.capabilityInvestment': 'Capability-Investment-Analyse',
     'page.conformityScorecard': 'Strategische Konformitäts-Scorecard',
+    'page.techRadar': 'Technologie-Radar',
+    'page.eaHealthScore': 'EA Health Score',
 
     // ── Misc UI ──
     'ui.collapse': 'Navigation einklappen',
@@ -195,12 +199,14 @@ const translations = {
     'nav.maturityGap': 'Maturity Gap Analysis',
     'nav.dependencies': 'Dependency Graph',
     'nav.resourceOverlap': 'Resource Overlap',
+    'nav.techRadar': 'Technology Radar',
 
     // ── Nav Items – Governance ──
     'nav.riskHeatmap': 'Risk Heatmap',
     'nav.conformityScorecard': 'Conformity Scorecard',
     'nav.budgetDashboard': 'Budget Dashboard',
     'nav.dataQuality': 'Data Quality',
+    'nav.eaHealthScore': 'EA Health Score',
 
     // ── Nav Items – Innovation ──
     'nav.aiUsecases': 'AI Use Cases',
@@ -260,6 +266,8 @@ const translations = {
     'page.globalSearch': 'Global Search',
     'page.capabilityInvestment': 'Capability Investment Analysis',
     'page.conformityScorecard': 'Strategic Conformity Scorecard',
+    'page.techRadar': 'Technology Radar',
+    'page.eaHealthScore': 'EA Health Score',
 
     // ── Misc UI ──
     'ui.collapse': 'Collapse navigation',
