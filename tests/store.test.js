@@ -1036,6 +1036,15 @@ describe('Legal Entity CRUD', () => {
     expect(store.entityById('ENT-100')).toBeDefined()
   })
 
+  it('addEntity avoids duplicate id after deletion', () => {
+    store.addEntity({ name: 'Third', shortName: 'T3' })
+    expect(store.data.legalEntities[2].id).toBe('ENT-003')
+    store.deleteEntity('ENT-003')
+    store.addEntity({ name: 'Fourth', shortName: 'T4' })
+    // max existing is ENT-002 → next is ENT-003 (reuses gap, no conflict)
+    expect(store.data.legalEntities[2].id).toBe('ENT-003')
+  })
+
   it('updateEntity patches entity properties', () => {
     store.updateEntity('ENT-001', { name: 'Updated Corp', city: 'Graz' })
     const e = store.entityById('ENT-001')

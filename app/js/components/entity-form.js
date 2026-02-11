@@ -86,7 +86,7 @@ export default {
     })
 
     function save () {
-      const data = { ...form.value }
+      const { id, ...data } = form.value
       if (props.editEntity) {
         store.updateEntity(props.editEntity.id, data)
       } else {

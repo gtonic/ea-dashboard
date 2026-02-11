@@ -451,7 +451,13 @@ export const store = reactive({
 
   addEntity (entity) {
     if (!this.data.legalEntities) this.data.legalEntities = []
-    entity.id = entity.id || 'ENT-' + String(this.data.legalEntities.length + 1).padStart(3, '0')
+    if (!entity.id) {
+      const maxNum = this.data.legalEntities.reduce((max, e) => {
+        const m = e.id && e.id.match(/^ENT-(\d+)$/)
+        return m ? Math.max(max, parseInt(m[1], 10)) : max
+      }, 0)
+      entity.id = 'ENT-' + String(maxNum + 1).padStart(3, '0')
+    }
     this.data.legalEntities.push(entity)
   },
 
