@@ -207,7 +207,7 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 
 1. Serve the app directory with any static HTTP server:
    ```bash
-   cd 08_StrategischeBebauung/app
+   cd app
    python3 -m http.server 8080
    ```
 2. Open `http://localhost:8080` in a browser.
@@ -216,7 +216,6 @@ Unknown routes fall back to the dashboard. Query parameters are parsed automatic
 
 1. Build the single-file HTML:
    ```bash
-   cd 08_StrategischeBebauung
    python3 build_single.py
    ```
 2. Open `bebauungsplan.html` directly in a browser (works with `file://` protocol).
@@ -233,7 +232,6 @@ The build process (`build_single.py`) creates a single self-contained HTML file 
 6. Writing the complete HTML with CDN references for Vue, Tailwind, Chart.js, and D3
 
 ```bash
-cd 08_StrategischeBebauung
 python3 build_single.py
 ```
 
@@ -246,7 +244,6 @@ Unit tests cover the core logic modules (`store.js` and `router.js`) using [Vite
 ### Running Tests
 
 ```bash
-cd 08_StrategischeBebauung
 npm install          # first time only
 npm test             # run all tests once
 npm run test:watch   # run tests in watch mode
@@ -279,7 +276,6 @@ tests/
 ## Project Structure
 
 ```
-08_StrategischeBebauung/
 ├── app/
 │   ├── index.html                    # Dev entry point (multi-file mode)
 │   ├── data/
