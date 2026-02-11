@@ -7,6 +7,7 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 APP  = os.path.join(BASE, 'app')
 JS   = os.path.join(APP, 'js')
 COMP = os.path.join(JS, 'components')
+VENDOR = os.path.join(APP, 'vendor')
 OUT  = os.path.join(BASE, 'bebauungsplan.html')
 
 def read(path):
@@ -208,7 +209,12 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write('  <meta charset="UTF-8" />\n')
     f.write('  <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n')
     f.write('  <title>EA Dashboard</title>\n\n')
-    f.write('  <script src="https://cdn.tailwindcss.com">' + SC + '\n')
+
+    # Inline vendored libraries (no CDN needed)
+    tailwind_js = read(os.path.join(VENDOR, 'tailwindcss.js'))
+    f.write('  <script>\n')
+    f.write(tailwind_js)
+    f.write('\n  ' + SC + '\n')
     f.write('  <script>\n')
     f.write("    tailwind.config = {\n")
     f.write("      darkMode: 'class',\n")
@@ -217,9 +223,21 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write("        surface: { 50:'#f8fafc',100:'#f1f5f9',200:'#e2e8f0',300:'#cbd5e1',700:'#334155',800:'#1e293b',900:'#0f172a',950:'#020617' },\n")
     f.write("      }}}\n    }\n")
     f.write('  ' + SC + '\n\n')
-    f.write('  <script src="https://cdn.jsdelivr.net/npm/chart.js@4">' + SC + '\n')
-    f.write('  <script src="https://cdn.jsdelivr.net/npm/d3@7">' + SC + '\n')
-    f.write('  <script src="https://unpkg.com/vue@3/dist/vue.global.js">' + SC + '\n\n')
+
+    chartjs_code = read(os.path.join(VENDOR, 'chart.js'))
+    f.write('  <script>\n')
+    f.write(chartjs_code)
+    f.write('\n  ' + SC + '\n')
+
+    d3_code = read(os.path.join(VENDOR, 'd3.js'))
+    f.write('  <script>\n')
+    f.write(d3_code)
+    f.write('\n  ' + SC + '\n')
+
+    vue_code = read(os.path.join(VENDOR, 'vue.global.js'))
+    f.write('  <script>\n')
+    f.write(vue_code)
+    f.write('\n  ' + SC + '\n\n')
 
     # STYLE
     f.write('  <style>\n')

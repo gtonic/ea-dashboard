@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EA Dashboard — Metallwerk Vorarlberg</title>
 
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS Play CDN (vendored) -->
+  <script src="./vendor/tailwindcss.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -21,17 +21,17 @@
     }
   </script>
 
-  <!-- Chart.js (UMD global) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <!-- Chart.js (vendored) -->
+  <script src="./vendor/chart.js"></script>
 
-  <!-- D3.js (UMD global) -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <!-- D3.js (vendored) -->
+  <script src="./vendor/d3.js"></script>
 
-  <!-- Vue 3 importmap -->
+  <!-- Vue 3 importmap (vendored) -->
   <script type="importmap">
   {
     "imports": {
-      "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+      "vue": "./vendor/vue.esm-browser.js"
     }
   }
   </script>
