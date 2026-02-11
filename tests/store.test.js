@@ -15,6 +15,7 @@ function createTestState() {
     e2eProcesses: [],
     demands: [],
     integrations: [],
+    legalEntities: [],
     enums: {}
   }
 }
@@ -979,5 +980,70 @@ describe('Process Relationships', () => {
   it('processesForApp returns both processes for APP-002', () => {
     const procs = store.processesForApp('APP-002')
     expect(procs).toHaveLength(2)
+  })
+})
+
+// ─── Legal Entity Tests ─────────────────────────────────────
+
+describe('Legal Entity Helpers', () => {
+  beforeEach(() => {
+    store.data.legalEntities = [
+      { id: 'ENT-001', name: 'Parent Corp', shortName: 'Parent', country: 'AT', city: 'Wien', region: 'Headquarters', parentEntity: null },
+      { id: 'ENT-002', name: 'Subsidiary GmbH', shortName: 'Sub', country: 'DE', city: 'München', region: 'DACH', parentEntity: 'ENT-001' }
+    ]
+    store.data.applications = [
+      { id: 'APP-001', name: 'ERP', vendor: 'SAP', entities: ['ENT-001', 'ENT-002'], criticality: 'Mission-Critical', timeQuadrant: 'Invest' },
+      { id: 'APP-002', name: 'CRM', vendor: 'SF', entities: ['ENT-001'], criticality: 'Business-Critical', timeQuadrant: 'Invest' },
+      { id: 'APP-003', name: 'HRM', vendor: 'HR', entities: ['ENT-002'], criticality: 'Administrative', timeQuadrant: 'Tolerate' }
+    ]
+  })
+
+  it('totalEntities returns count of legal entities', () => {
+    expect(store.totalEntities).toBe(2)
+  })
+
+  it('totalEntities handles missing legalEntities array', () => {
+    store.data.legalEntities = undefined
+    expect(store.totalEntities).toBe(0)
+  })
+
+  it('entityById finds entity by id', () => {
+    const e = store.entityById('ENT-001')
+    expect(e).toBeDefined()
+    expect(e.shortName).toBe('Parent')
+  })
+
+  it('entityById returns undefined for unknown id', () => {
+    expect(store.entityById('ENT-999')).toBeUndefined()
+  })
+
+  it('appsForEntity returns apps assigned to entity', () => {
+    const apps = store.appsForEntity('ENT-001')
+    expect(apps).toHaveLength(2)
+    expect(apps.map(a => a.name)).toContain('ERP')
+    expect(apps.map(a => a.name)).toContain('CRM')
+  })
+
+  it('appsForEntity returns apps for subsidiary', () => {
+    const apps = store.appsForEntity('ENT-002')
+    expect(apps).toHaveLength(2)
+    expect(apps.map(a => a.name)).toContain('ERP')
+    expect(apps.map(a => a.name)).toContain('HRM')
+  })
+
+  it('appsForEntity returns empty for unknown entity', () => {
+    expect(store.appsForEntity('ENT-999')).toEqual([])
+  })
+
+  it('entitiesForApp returns entities for an app', () => {
+    const ents = store.entitiesForApp('APP-001')
+    expect(ents).toHaveLength(2)
+    expect(ents.map(e => e.shortName)).toContain('Parent')
+    expect(ents.map(e => e.shortName)).toContain('Sub')
+  })
+
+  it('entitiesForApp returns empty for app without entities', () => {
+    store.data.applications.push({ id: 'APP-004', name: 'NoEnt', vendor: 'X' })
+    expect(store.entitiesForApp('APP-004')).toEqual([])
   })
 })

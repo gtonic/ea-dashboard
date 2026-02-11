@@ -105,6 +105,7 @@ function buildNavGroups () {
         { path: '/maturity-gap',           labelKey: 'nav.maturityGap',          icon: icons.maturity,   pageKey: 'page.maturityGap' },
         { path: '/dependencies',           labelKey: 'nav.dependencies',         icon: icons.dependency, pageKey: 'page.dependencies' },
         { path: '/resource-overlaps',      labelKey: 'nav.resourceOverlap',      icon: icons.overlap,    pageKey: 'page.resourceOverlap' },
+        { path: '/app-lifecycle-timeline',  labelKey: 'nav.appLifecycleTimeline', icon: icons.roadmap,    pageKey: 'page.appLifecycleTimeline' },
       ]
     },
     {
@@ -117,6 +118,7 @@ function buildNavGroups () {
         { path: '/budget-dashboard',      labelKey: 'nav.budgetDashboard',    icon: icons.budget,      pageKey: 'page.budgetDashboard' },
         { path: '/data-quality',          labelKey: 'nav.dataQuality',        icon: icons.quality,     pageKey: 'page.dataQuality' },
         { path: '/ea-health-score',       labelKey: 'nav.eaHealthScore',      icon: icons.healthScore, pageKey: 'page.eaHealthScore' },
+        { path: '/tco-calculator',        labelKey: 'nav.tcoCalculator',      icon: icons.budget,      pageKey: 'page.tcoCalculator' },
       ]
     },
     {

@@ -44,6 +44,8 @@ const routes = [
   { pattern: /^\/conformity-scorecard$/,   component: 'conformity-scorecard' },
   { pattern: /^\/tech-radar$/,             component: 'tech-radar' },
   { pattern: /^\/ea-health-score$/,        component: 'ea-health-score' },
+  { pattern: /^\/app-lifecycle-timeline$/, component: 'app-lifecycle-timeline' },
+  { pattern: /^\/tco-calculator$/,         component: 'tco-calculator' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]

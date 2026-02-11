@@ -49,6 +49,8 @@ import CapabilityInvestment from './components/capability-investment.js'
 import ConformityScorecard from './components/conformity-scorecard.js'
 import TechRadar from './components/tech-radar.js'
 import EaHealthScore from './components/ea-health-score.js'
+import AppLifecycleTimeline from './components/app-lifecycle-timeline.js'
+import TcoCalculator from './components/tco-calculator.js'
 
 // Create app
 const app = createApp(Layout)
@@ -99,6 +101,8 @@ app.component('capability-investment', CapabilityInvestment)
 app.component('conformity-scorecard', ConformityScorecard)
 app.component('tech-radar', TechRadar)
 app.component('ea-health-score', EaHealthScore)
+app.component('app-lifecycle-timeline', AppLifecycleTimeline)
+app.component('tco-calculator', TcoCalculator)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

@@ -282,6 +282,20 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('ea-health-score')
   })
 
+  it('resolves /app-lifecycle-timeline path', () => {
+    window.location.hash = '#/app-lifecycle-timeline'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/app-lifecycle-timeline')
+    expect(router.component).toBe('app-lifecycle-timeline')
+  })
+
+  it('resolves /tco-calculator path', () => {
+    window.location.hash = '#/tco-calculator'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/tco-calculator')
+    expect(router.component).toBe('tco-calculator')
+  })
+
   it('falls back to dashboard for unknown routes', () => {
     window.location.hash = '#/nonexistent-page'
     window.dispatchEvent(new Event('hashchange'))

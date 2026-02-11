@@ -1753,7 +1753,20 @@
         "SAP ABAP",
         "SAP HANA",
         "SAP Fiori"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-005",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2030-12-31",
+      "endOfLifeDate": "2032-12-31",
+      "licenseCost": 280000,
+      "operationsCost": 120000,
+      "integrationCost": 30000,
+      "personnelCost": 20000
     },
     {
       "id": "APP-002",
@@ -1780,7 +1793,19 @@
         "Salesforce Platform",
         "Apex",
         "Lightning"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-004",
+        "ENT-006"
+      ],
+      "endOfSupportDate": "2029-06-30",
+      "endOfLifeDate": "2030-06-30",
+      "licenseCost": 90000,
+      "operationsCost": 15000,
+      "integrationCost": 10000,
+      "personnelCost": 5000
     },
     {
       "id": "APP-003",
@@ -1806,7 +1831,17 @@
       "technology": [
         "Java",
         "Oracle DB"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2028-12-31",
+      "endOfLifeDate": "2030-06-30",
+      "licenseCost": 100000,
+      "operationsCost": 50000,
+      "integrationCost": 20000,
+      "personnelCost": 10000
     },
     {
       "id": "APP-004",
@@ -1833,7 +1868,18 @@
         "C++",
         "Oracle DB",
         "Teamcenter SOA"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-005",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2027-06-30",
+      "endOfLifeDate": "2028-12-31",
+      "licenseCost": 80000,
+      "operationsCost": 40000,
+      "integrationCost": 15000,
+      "personnelCost": 10000
     },
     {
       "id": "APP-005",
@@ -1860,7 +1906,22 @@
         "Microsoft 365",
         "Exchange Online",
         "Teams"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-004",
+        "ENT-005",
+        "ENT-006",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2029-12-31",
+      "endOfLifeDate": "2031-12-31",
+      "licenseCost": 85000,
+      "operationsCost": 10000,
+      "integrationCost": 5000,
+      "personnelCost": 0
     },
     {
       "id": "APP-006",
@@ -1886,7 +1947,22 @@
       "technology": [
         "SharePoint",
         "Microsoft Graph API"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-004",
+        "ENT-005",
+        "ENT-006",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2029-12-31",
+      "endOfLifeDate": "2031-12-31",
+      "licenseCost": 0,
+      "operationsCost": 5000,
+      "integrationCost": 10000,
+      "personnelCost": 3000
     },
     {
       "id": "APP-007",
@@ -1913,7 +1989,18 @@
         "Power BI",
         "DAX",
         "Azure Analysis Services"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003"
+      ],
+      "endOfSupportDate": "2029-12-31",
+      "endOfLifeDate": "2031-12-31",
+      "licenseCost": 45000,
+      "operationsCost": 8000,
+      "integrationCost": 5000,
+      "personnelCost": 2000
     },
     {
       "id": "APP-008",
@@ -1939,7 +2026,18 @@
       "technology": [
         "ServiceNow Platform",
         "JavaScript"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2030-03-31",
+      "endOfLifeDate": "2032-03-31",
+      "licenseCost": 65000,
+      "operationsCost": 15000,
+      "integrationCost": 10000,
+      "personnelCost": 5000
     },
     {
       "id": "APP-009",
@@ -1965,7 +2063,19 @@
       "technology": [
         "Ruby on Rails",
         "PostgreSQL"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2028-09-30",
+      "endOfLifeDate": "2029-09-30",
+      "licenseCost": 35000,
+      "operationsCost": 5000,
+      "integrationCost": 3000,
+      "personnelCost": 2000
     },
     {
       "id": "APP-010",
@@ -1991,7 +2101,17 @@
       "technology": [
         "C++",
         "Windows Desktop"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2026-12-31",
+      "endOfLifeDate": "2027-06-30",
+      "licenseCost": 50000,
+      "operationsCost": 12000,
+      "integrationCost": 3000,
+      "personnelCost": 0
     },
     {
       "id": "APP-011",
@@ -2018,7 +2138,17 @@
         "Azure",
         "Kubernetes",
         "Terraform"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002"
+      ],
+      "endOfSupportDate": "2030-12-31",
+      "endOfLifeDate": "2032-12-31",
+      "licenseCost": 60000,
+      "operationsCost": 40000,
+      "integrationCost": 10000,
+      "personnelCost": 10000
     },
     {
       "id": "APP-012",
@@ -2045,7 +2175,17 @@
         "PHP",
         "MySQL",
         "SNMP"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2027-06-30",
+      "endOfLifeDate": "2028-06-30",
+      "licenseCost": 0,
+      "operationsCost": 15000,
+      "integrationCost": 3000,
+      "personnelCost": 2000
     },
     {
       "id": "APP-013",
@@ -2071,7 +2211,16 @@
       "technology": [
         "COBOL",
         "IBM DB2"
-      ]
+      ],
+      "entities": [
+        "ENT-001"
+      ],
+      "endOfSupportDate": "2024-06-30",
+      "endOfLifeDate": "2025-12-31",
+      "licenseCost": 12000,
+      "operationsCost": 5000,
+      "integrationCost": 0,
+      "personnelCost": 3000
     },
     {
       "id": "APP-014",
@@ -2097,7 +2246,17 @@
       "technology": [
         "VBA",
         "Microsoft Excel"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2023-12-31",
+      "endOfLifeDate": "2025-06-30",
+      "licenseCost": 0,
+      "operationsCost": 2000,
+      "integrationCost": 0,
+      "personnelCost": 3000
     },
     {
       "id": "APP-015",
@@ -2124,7 +2283,16 @@
         "C#",
         "Windows Server",
         "Hyper-V"
-      ]
+      ],
+      "entities": [
+        "ENT-001"
+      ],
+      "endOfSupportDate": "2028-12-31",
+      "endOfLifeDate": "2030-12-31",
+      "licenseCost": 15000,
+      "operationsCost": 5000,
+      "integrationCost": 2000,
+      "personnelCost": 3000
     },
     {
       "id": "APP-016",
@@ -2151,7 +2319,18 @@
         "Power Apps",
         "Power Automate",
         "Dataverse"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-003"
+      ],
+      "endOfSupportDate": "2029-12-31",
+      "endOfLifeDate": "2031-12-31",
+      "licenseCost": 20000,
+      "operationsCost": 3000,
+      "integrationCost": 5000,
+      "personnelCost": 2000
     },
     {
       "id": "APP-017",
@@ -2177,7 +2356,19 @@
       "technology": [
         "Java",
         "Atlassian Cloud"
-      ]
+      ],
+      "entities": [
+        "ENT-001",
+        "ENT-002",
+        "ENT-005",
+        "ENT-007"
+      ],
+      "endOfSupportDate": "2028-06-30",
+      "endOfLifeDate": "2029-12-31",
+      "licenseCost": 12000,
+      "operationsCost": 3000,
+      "integrationCost": 2000,
+      "personnelCost": 1000
     },
     {
       "id": "APP-018",
@@ -2204,7 +2395,16 @@
         "C++",
         "SWIFT",
         "EBICS"
-      ]
+      ],
+      "entities": [
+        "ENT-001"
+      ],
+      "endOfSupportDate": "2023-12-31",
+      "endOfLifeDate": "2025-06-30",
+      "licenseCost": 8000,
+      "operationsCost": 4000,
+      "integrationCost": 0,
+      "personnelCost": 3000
     }
   ],
   "capabilityMappings": [
@@ -3909,6 +4109,78 @@
       "frequency": "Event-basiert",
       "direction": "bidirectional",
       "status": "active"
+    }
+  ],
+  "legalEntities": [
+    {
+      "id": "ENT-001",
+      "name": "Metallwerk Vorarlberg GmbH",
+      "shortName": "MW Vorarlberg",
+      "description": "Konzernsitz und Hauptproduktionsstandort in Vorarlberg. Zentrale für alle strategischen und operativen Entscheidungen.",
+      "country": "AT",
+      "city": "Dornbirn",
+      "region": "Headquarters",
+      "parentEntity": null
+    },
+    {
+      "id": "ENT-002",
+      "name": "Metallwerk Deutschland GmbH",
+      "shortName": "MW Deutschland",
+      "description": "Vertriebsniederlassung und Servicecenter für den deutschen Markt. Bearbeitet Großkunden aus der Automobilindustrie.",
+      "country": "DE",
+      "city": "München",
+      "region": "DACH",
+      "parentEntity": "ENT-001"
+    },
+    {
+      "id": "ENT-003",
+      "name": "Metallwerk Schweiz AG",
+      "shortName": "MW Schweiz",
+      "description": "Vertrieb und Kundenservice für den Schweizer Markt. Schwerpunkt Medizintechnik und Uhrenindustrie.",
+      "country": "CH",
+      "city": "Zürich",
+      "region": "DACH",
+      "parentEntity": "ENT-001"
+    },
+    {
+      "id": "ENT-004",
+      "name": "Metallwerk USA Inc.",
+      "shortName": "MW USA",
+      "description": "US-amerikanische Tochtergesellschaft. Vertrieb und Lager für den nordamerikanischen Markt.",
+      "country": "US",
+      "city": "Detroit",
+      "region": "Americas",
+      "parentEntity": "ENT-001"
+    },
+    {
+      "id": "ENT-005",
+      "name": "Metallwerk Italia S.r.l.",
+      "shortName": "MW Italia",
+      "description": "Italienische Produktionstochter. Spezialisiert auf Aluminiumdruckguss für die Luxusgüterindustrie.",
+      "country": "IT",
+      "city": "Bozen",
+      "region": "EMEA",
+      "parentEntity": "ENT-001"
+    },
+    {
+      "id": "ENT-006",
+      "name": "Metallwerk UK Ltd.",
+      "shortName": "MW UK",
+      "description": "Vertriebsbüro für den britischen Markt. Betreuung von Aerospace- und Defence-Kunden.",
+      "country": "GB",
+      "city": "Birmingham",
+      "region": "EMEA",
+      "parentEntity": "ENT-001"
+    },
+    {
+      "id": "ENT-007",
+      "name": "Metallwerk Produktionswerk 2 GmbH",
+      "shortName": "MW Werk 2",
+      "description": "Zweites Produktionswerk in Österreich, spezialisiert auf CNC-Bearbeitung und Oberflächentechnik.",
+      "country": "AT",
+      "city": "Rankweil",
+      "region": "Headquarters",
+      "parentEntity": "ENT-001"
     }
   ]
 }
