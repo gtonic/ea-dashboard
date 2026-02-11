@@ -18,9 +18,31 @@ export default {
               <label class="block text-xs font-medium text-gray-600 mb-1">Name *</label>
               <input v-model="form.name" required class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" />
             </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-600 mb-1">Vendor</label>
-              <input v-model="form.vendor" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" />
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Vendors</label>
+              <div class="space-y-2">
+                <div v-for="(v, idx) in form.vendors" :key="idx" class="flex items-center gap-2">
+                  <select v-model="v.vendorId" @change="onVendorSelect(idx)" class="flex-1 px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                    <option value="">— Vendor wählen —</option>
+                    <option v-for="vnd in availableVendors" :key="vnd.id" :value="vnd.id">{{ vnd.name }}</option>
+                  </select>
+                  <select v-model="v.role" class="w-48 px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                    <option v-for="r in (store.data.enums.vendorRole || [])" :key="r" :value="r">{{ r }}</option>
+                  </select>
+                  <button type="button" @click="removeVendor(idx)" class="text-red-400 hover:text-red-600 text-lg px-1" title="Entfernen">&times;</button>
+                </div>
+                <button type="button" @click="addVendor" class="text-xs text-primary-600 hover:text-primary-700">+ Vendor hinzufügen</button>
+              </div>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Entitäten / Firmen</label>
+              <div class="flex flex-wrap gap-2 mb-2">
+                <label v-for="ent in allEntities" :key="ent.id" class="flex items-center gap-1.5 px-2 py-1 border border-surface-200 rounded-lg text-xs cursor-pointer hover:bg-surface-50" :class="form.entities.includes(ent.id) ? 'bg-primary-50 border-primary-300' : ''">
+                  <input type="checkbox" :value="ent.id" v-model="form.entities" class="w-3.5 h-3.5 rounded border-gray-300 text-primary-600 focus:ring-primary-300" />
+                  <span>{{ entityFlag(ent.country) }}</span>
+                  <span>{{ ent.shortName }}</span>
+                </label>
+              </div>
             </div>
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Category</label>
@@ -107,7 +129,7 @@ export default {
     const { ref, onMounted } = Vue
 
     const defaultForm = () => ({
-      name: '', vendor: '', category: '', type: 'On-Prem',
+      name: '', vendors: [{ vendorId: '', vendorName: '', role: 'Hersteller' }], entities: [], category: '', type: 'On-Prem',
       criticality: 'Business-Operational', timeQuadrant: 'Tolerate',
       riskProbability: 'Niedrig', riskImpact: 'Mittel', lifecycleStatus: 'Active',
       costPerYear: 0, userCount: 0, businessOwner: '', itOwner: '',
@@ -116,21 +138,54 @@ export default {
 
     const form = ref(defaultForm())
 
+    const availableVendors = Vue.computed(() => {
+      return [...(store.data.vendors || [])].sort((a, b) => a.name.localeCompare(b.name))
+    })
+
+    const allEntities = Vue.computed(() => {
+      return [...(store.data.legalEntities || [])].sort((a, b) => a.shortName.localeCompare(b.shortName))
+    })
+
+    const flagMap = { AT: '🇦🇹', CH: '🇨🇭', DE: '🇩🇪', US: '🇺🇸', CA: '🇨🇦', IT: '🇮🇹', FR: '🇫🇷', GB: '🇬🇧' }
+    function entityFlag (code) { return flagMap[code] || '🏳️' }
+
     onMounted(() => {
       if (props.editApp) {
-        form.value = {
-          ...defaultForm(),
-          ...props.editApp,
+        const base = { ...defaultForm(), ...props.editApp,
           businessValue: props.editApp.scores?.businessValue || 5,
           technicalHealth: props.editApp.scores?.technicalHealth || 5
         }
+        // Ensure entities array exists
+        if (!base.entities || !Array.isArray(base.entities)) base.entities = []
+        // Ensure vendors array exists
+        if (!base.vendors || !Array.isArray(base.vendors) || base.vendors.length === 0) {
+          base.vendors = [{ vendorId: '', vendorName: props.editApp.vendor || '', role: 'Hersteller' }]
+        }
+        form.value = base
       }
     })
+
+    function addVendor () {
+      form.value.vendors.push({ vendorId: '', vendorName: '', role: 'Hersteller' })
+    }
+    function removeVendor (idx) {
+      if (form.value.vendors.length > 1) form.value.vendors.splice(idx, 1)
+    }
+    function onVendorSelect (idx) {
+      const entry = form.value.vendors[idx]
+      const vnd = store.vendorById(entry.vendorId)
+      if (vnd) entry.vendorName = vnd.name
+    }
 
     function save () {
       const data = { ...form.value, scores: { businessValue: form.value.businessValue, technicalHealth: form.value.technicalHealth } }
       delete data.businessValue
       delete data.technicalHealth
+      // Set legacy vendor field from first Hersteller
+      const primary = data.vendors.find(v => v.role === 'Hersteller') || data.vendors[0]
+      data.vendor = primary?.vendorName || ''
+      // Clean empty entries
+      data.vendors = data.vendors.filter(v => v.vendorId || v.vendorName)
       if (props.editApp) {
         store.updateApp(props.editApp.id, data)
       } else {
@@ -139,6 +194,6 @@ export default {
       emit('saved')
     }
 
-    return { store, form, save }
+    return { store, form, save, availableVendors, allEntities, addVendor, removeVendor, onVendorSelect, entityFlag }
   }
 }

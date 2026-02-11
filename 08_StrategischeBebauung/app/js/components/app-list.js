@@ -18,6 +18,10 @@ export default {
           <option value="">All Criticality</option>
           <option v-for="c in ['Mission-Critical','Business-Critical','Business-Operational','Administrative']" :key="c" :value="c">{{ c }}</option>
         </select>
+        <select v-model="filterEntity" class="px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white">
+          <option value="">Alle Entitäten</option>
+          <option v-for="ent in allEntities" :key="ent.id" :value="ent.id">{{ ent.shortName }}</option>
+        </select>
         <button @click="showForm = true"
                 class="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors whitespace-nowrap">
           + Add Application
@@ -39,6 +43,7 @@ export default {
               <th class="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">Type</th>
               <th class="text-right px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-gray-900 hidden md:table-cell" @click="toggleSort('costPerYear')">Cost/yr {{ sortIcon('costPerYear') }}</th>
               <th class="text-right px-4 py-3 font-medium text-gray-600 hidden lg:table-cell">Users</th>
+              <th class="text-center px-4 py-3 font-medium text-gray-600 hidden lg:table-cell">Entitäten</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-surface-100">
@@ -47,7 +52,7 @@ export default {
                 @click="navigateTo('/apps/' + app.id)">
               <td class="px-4 py-3">
                 <div class="font-medium text-gray-900">{{ app.name }}</div>
-                <div class="text-xs text-gray-400">{{ app.vendor }}</div>
+                <div class="text-xs text-gray-400">{{ vendorNames(app) }}</div>
               </td>
               <td class="px-4 py-3 text-gray-600 hidden md:table-cell">{{ app.category }}</td>
               <td class="px-4 py-3">
@@ -59,6 +64,9 @@ export default {
               <td class="px-4 py-3 text-gray-600 hidden md:table-cell">{{ app.type }}</td>
               <td class="px-4 py-3 text-right text-gray-700 font-mono hidden md:table-cell">{{ app.costPerYear > 0 ? '€' + app.costPerYear.toLocaleString() : '—' }}</td>
               <td class="px-4 py-3 text-right text-gray-600 hidden lg:table-cell">{{ app.userCount }}</td>
+              <td class="px-4 py-3 text-center text-gray-600 hidden lg:table-cell">
+                <span class="text-xs font-mono">{{ (app.entities || []).length }}</span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -78,9 +86,14 @@ export default {
     const search = ref('')
     const filterTime = ref('')
     const filterCrit = ref('')
+    const filterEntity = ref('')
     const sortBy = ref('name')
     const sortDir = ref(1)
     const showForm = ref(false)
+
+    const allEntities = Vue.computed(() => {
+      return [...(store.data.legalEntities || [])].sort((a, b) => a.shortName.localeCompare(b.shortName))
+    })
 
     function toggleSort (field) {
       if (sortBy.value === field) sortDir.value *= -1
@@ -94,9 +107,10 @@ export default {
     const filtered = computed(() => {
       let list = [...store.data.applications]
       const q = search.value.toLowerCase()
-      if (q) list = list.filter(a => a.name.toLowerCase().includes(q) || a.vendor.toLowerCase().includes(q) || a.category.toLowerCase().includes(q))
+      if (q) list = list.filter(a => a.name.toLowerCase().includes(q) || (a.vendor || '').toLowerCase().includes(q) || a.category.toLowerCase().includes(q) || (a.vendors || []).some(v => (v.vendorName || '').toLowerCase().includes(q)))
       if (filterTime.value) list = list.filter(a => a.timeQuadrant === filterTime.value)
       if (filterCrit.value) list = list.filter(a => a.criticality === filterCrit.value)
+      if (filterEntity.value) list = list.filter(a => a.entities && a.entities.includes(filterEntity.value))
       list.sort((a, b) => {
         const av = a[sortBy.value], bv = b[sortBy.value]
         if (typeof av === 'number') return (av - bv) * sortDir.value
@@ -116,6 +130,13 @@ export default {
 
     function onSaved () { showForm.value = false }
 
-    return { store, linkTo, navigateTo, search, filterTime, filterCrit, sortBy, sortDir, filtered, totalCost, toggleSort, sortIcon, critClass, timeClass, showForm, onSaved }
+    function vendorNames (app) {
+      if (app.vendors && Array.isArray(app.vendors) && app.vendors.length > 0) {
+        return app.vendors.map(v => v.vendorName).filter(Boolean).join(', ')
+      }
+      return app.vendor || '—'
+    }
+
+    return { store, linkTo, navigateTo, search, filterTime, filterCrit, filterEntity, allEntities, sortBy, sortDir, filtered, totalCost, toggleSort, sortIcon, critClass, timeClass, showForm, onSaved, vendorNames }
   }
 }

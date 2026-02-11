@@ -18,6 +18,10 @@ export default {
           <option value="">All Criticality</option>
           <option v-for="c in store.data.enums.vendorCriticality" :key="c" :value="c">{{ c }}</option>
         </select>
+        <select v-model="filterType" class="px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white">
+          <option value="">All Vendor Types</option>
+          <option v-for="t in (store.data.enums.vendorType || [])" :key="t.value" :value="t.value">{{ t.label }}</option>
+        </select>
         <button @click="showForm = true"
                 class="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors whitespace-nowrap">
           + Add Vendor
@@ -34,6 +38,7 @@ export default {
             <tr class="border-b border-surface-200 bg-surface-50">
               <th class="text-left px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-gray-900" @click="toggleSort('name')">Vendor {{ sortIcon('name') }}</th>
               <th class="text-left px-4 py-3 font-medium text-gray-600 hidden md:table-cell">Category</th>
+              <th class="text-left px-4 py-3 font-medium text-gray-600 hidden lg:table-cell cursor-pointer hover:text-gray-900" @click="toggleSort('vendorType')">Vendor Type {{ sortIcon('vendorType') }}</th>
               <th class="text-left px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-gray-900" @click="toggleSort('criticality')">Criticality {{ sortIcon('criticality') }}</th>
               <th class="text-left px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-gray-900" @click="toggleSort('status')">Status {{ sortIcon('status') }}</th>
               <th class="text-right px-4 py-3 font-medium text-gray-600 cursor-pointer hover:text-gray-900 hidden md:table-cell" @click="toggleSort('contractValue')">Contract Value {{ sortIcon('contractValue') }}</th>
@@ -50,6 +55,10 @@ export default {
                 <div class="text-xs text-gray-400">{{ v.id }}</div>
               </td>
               <td class="px-4 py-3 text-gray-600 hidden md:table-cell">{{ v.category }}</td>
+              <td class="px-4 py-3 hidden lg:table-cell">
+                <span v-if="v.vendorType" class="text-xs px-2 py-0.5 rounded-full" :class="vendorTypeClass(v.vendorType)">{{ vendorTypeLabel(v.vendorType) }}</span>
+                <span v-else class="text-xs text-gray-400">—</span>
+              </td>
               <td class="px-4 py-3">
                 <span class="text-xs px-2 py-0.5 rounded-full" :class="critClass(v.criticality)">{{ v.criticality }}</span>
               </td>
@@ -78,6 +87,7 @@ export default {
     const search = ref('')
     const filterStatus = ref('')
     const filterCrit = ref('')
+    const filterType = ref('')
     const sortBy = ref('name')
     const sortDir = ref(1)
     const showForm = ref(false)
@@ -97,6 +107,7 @@ export default {
       if (q) list = list.filter(v => v.name.toLowerCase().includes(q) || v.category.toLowerCase().includes(q) || (v.contactPerson || '').toLowerCase().includes(q))
       if (filterStatus.value) list = list.filter(v => v.status === filterStatus.value)
       if (filterCrit.value) list = list.filter(v => v.criticality === filterCrit.value)
+      if (filterType.value) list = list.filter(v => v.vendorType === filterType.value)
       list.sort((a, b) => {
         const av = a[sortBy.value], bv = b[sortBy.value]
         if (typeof av === 'number') return (av - bv) * sortDir.value
@@ -120,6 +131,24 @@ export default {
 
     function onSaved () { showForm.value = false }
 
-    return { store, linkTo, navigateTo, search, filterStatus, filterCrit, sortBy, sortDir, filtered, totalContractValue, vendorAppCount, toggleSort, sortIcon, critClass, statusClass, showForm, onSaved }
+    function vendorTypeLabel (val) {
+      const types = store.data.enums.vendorType || []
+      const t = types.find(e => e.value === val)
+      return t ? t.label : val
+    }
+    function vendorTypeClass (val) {
+      return {
+        MSP: 'bg-purple-100 text-purple-700',
+        HYP: 'bg-blue-100 text-blue-700',
+        INF: 'bg-slate-100 text-slate-700',
+        MKT: 'bg-cyan-100 text-cyan-700',
+        'SAAS-I': 'bg-amber-100 text-amber-700',
+        'SAAS-S': 'bg-emerald-100 text-emerald-700',
+        LIC: 'bg-orange-100 text-orange-700',
+        PBR: 'bg-indigo-100 text-indigo-700'
+      }[val] || 'bg-gray-100 text-gray-600'
+    }
+
+    return { store, linkTo, navigateTo, search, filterStatus, filterCrit, filterType, sortBy, sortDir, filtered, totalContractValue, vendorAppCount, toggleSort, sortIcon, critClass, statusClass, vendorTypeLabel, vendorTypeClass, showForm, onSaved }
   }
 }

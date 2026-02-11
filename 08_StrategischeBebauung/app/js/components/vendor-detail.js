@@ -19,6 +19,9 @@ export default {
               <span class="text-xs px-2 py-0.5 rounded-full" :class="critClass(vendor.criticality)">{{ vendor.criticality }}</span>
             </div>
             <div class="text-sm text-gray-500">{{ vendor.id }} · {{ vendor.category }}</div>
+            <div v-if="vendor.vendorType" class="mt-1">
+              <span class="text-xs px-2 py-0.5 rounded-full" :class="vendorTypeClass(vendor.vendorType)">{{ vendorTypeLabel(vendor.vendorType) }}</span>
+            </div>
             <p class="text-sm text-gray-600 mt-3 max-w-2xl">{{ vendor.description }}</p>
           </div>
           <div class="flex gap-2 shrink-0">
@@ -81,6 +84,7 @@ export default {
               <span class="text-xs font-mono text-gray-400">{{ app.id }}</span>
               <span class="text-sm text-gray-800">{{ app.name }}</span>
               <span class="text-xs px-2 py-0.5 rounded-full" :class="timeClass(app.timeQuadrant)">{{ app.timeQuadrant }}</span>
+              <span v-if="vendorRole(app)" class="text-xs px-2 py-0.5 rounded-full" :class="vendorRoleClass(vendorRole(app))">{{ vendorRole(app) }}</span>
             </div>
             <span class="text-xs text-gray-400">€{{ (app.costPerYear || 0).toLocaleString() }}/yr</span>
           </a>
@@ -120,6 +124,38 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, vendor, relatedApps, showEdit, statusClass, critClass, timeClass, confirmDelete }
+    function vendorTypeLabel (val) {
+      const types = (store.data.enums && store.data.enums.vendorType) || []
+      const t = types.find(e => e.value === val)
+      return t ? t.label : val
+    }
+    function vendorTypeClass (val) {
+      return {
+        MSP: 'bg-purple-100 text-purple-700',
+        HYP: 'bg-blue-100 text-blue-700',
+        INF: 'bg-slate-100 text-slate-700',
+        MKT: 'bg-cyan-100 text-cyan-700',
+        'SAAS-I': 'bg-amber-100 text-amber-700',
+        'SAAS-S': 'bg-emerald-100 text-emerald-700',
+        LIC: 'bg-orange-100 text-orange-700',
+        PBR: 'bg-indigo-100 text-indigo-700'
+      }[val] || 'bg-gray-100 text-gray-600'
+    }
+
+    function vendorRole (app) {
+      if (!vendor.value) return null
+      return store.vendorRoleForApp(vendor.value.id, app.id)
+    }
+    function vendorRoleClass (role) {
+      return {
+        'Hersteller': 'bg-blue-100 text-blue-700',
+        'Entwicklungspartner': 'bg-purple-100 text-purple-700',
+        'Implementierungspartner': 'bg-cyan-100 text-cyan-700',
+        'Betriebspartner': 'bg-amber-100 text-amber-700',
+        'Berater': 'bg-indigo-100 text-indigo-700'
+      }[role] || 'bg-gray-100 text-gray-600'
+    }
+
+    return { store, router, linkTo, navigateTo, vendor, relatedApps, showEdit, statusClass, critClass, timeClass, confirmDelete, vendorTypeLabel, vendorTypeClass, vendorRole, vendorRoleClass }
   }
 }

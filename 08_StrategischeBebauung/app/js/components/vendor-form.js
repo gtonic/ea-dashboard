@@ -23,6 +23,13 @@ export default {
               <input v-model="form.category" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" placeholder="e.g. ERP, Cloud, Security" />
             </div>
             <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1">Vendor Type</label>
+              <select v-model="form.vendorType" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
+                <option value="">— Select —</option>
+                <option v-for="t in (store.data.enums.vendorType || [])" :key="t.value" :value="t.value">{{ t.label }}</option>
+              </select>
+            </div>
+            <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Status</label>
               <select v-model="form.status" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
                 <option v-for="s in store.data.enums.vendorStatus" :key="s" :value="s">{{ s }}</option>
@@ -79,7 +86,7 @@ export default {
     const { ref, onMounted } = Vue
 
     const defaultForm = () => ({
-      name: '', category: '', status: 'Active',
+      name: '', category: '', vendorType: '', status: 'Active',
       criticality: 'Standard', serviceLevel: '',
       contractValue: 0, contractEnd: '',
       contactPerson: '', vendorManager: '',

@@ -18,7 +18,7 @@ export default {
               <span class="text-xs px-2 py-0.5 rounded-full" :class="timeClass(app.timeQuadrant)">{{ app.timeQuadrant }}</span>
               <span class="text-xs px-2 py-0.5 rounded-full" :class="critClass(app.criticality)">{{ app.criticality }}</span>
             </div>
-            <div class="text-sm text-gray-500">{{ app.vendor }} · {{ app.category }} · {{ app.type }}</div>
+            <div class="text-sm text-gray-500">{{ primaryVendorName }} · {{ app.category }} · {{ app.type }}</div>
             <p class="text-sm text-gray-600 mt-3 max-w-2xl">{{ app.description }}</p>
           </div>
           <div class="flex gap-2 shrink-0">
@@ -61,6 +61,43 @@ export default {
             <div class="text-xs text-gray-500">IT Owner</div>
             <div class="text-sm text-gray-800">{{ app.itOwner || '—' }}</div>
           </div>
+        </div>
+      </div>
+
+      <!-- Vendors -->
+      <div v-if="appVendors.length" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 bg-surface-50">
+          <h3 class="text-sm font-semibold text-gray-700">Vendors ({{ appVendors.length }})</h3>
+        </div>
+        <div class="divide-y divide-surface-100">
+          <a v-for="v in appVendors" :key="v.vendorId || v.vendorName"
+             :href="v.vendorRecord ? linkTo('/vendors/' + v.vendorRecord.id) : '#'"
+             class="flex items-center justify-between px-5 py-3 hover:bg-surface-50 transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-mono text-gray-400">{{ v.vendorId }}</span>
+              <span class="text-sm text-gray-800 font-medium">{{ v.vendorName }}</span>
+              <span v-if="v.vendorRecord && v.vendorRecord.vendorType" class="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">{{ vendorTypeLabel(v.vendorRecord.vendorType) }}</span>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full" :class="vendorRoleClass(v.role)">{{ v.role }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Entities -->
+      <div v-if="appEntities.length" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 bg-surface-50">
+          <h3 class="text-sm font-semibold text-gray-700">Entitäten / Firmen ({{ appEntities.length }})</h3>
+        </div>
+        <div class="divide-y divide-surface-100">
+          <a v-for="ent in appEntities" :key="ent.id" :href="linkTo('/entities/' + ent.id)"
+             class="flex items-center justify-between px-5 py-3 hover:bg-surface-50 transition-colors">
+            <div class="flex items-center gap-3">
+              <span class="text-lg">{{ entityFlag(ent.country) }}</span>
+              <span class="text-sm text-gray-800 font-medium">{{ ent.shortName }}</span>
+              <span class="text-xs text-gray-400">{{ ent.city }}, {{ ent.country }}</span>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded-full" :class="entityRegionClass(ent.region)">{{ ent.region }}</span>
+          </a>
         </div>
       </div>
 
@@ -157,6 +194,44 @@ export default {
       return store.processesForApp(app.value.id)
     })
 
+    const appVendors = computed(() => {
+      if (!app.value) return []
+      return store.vendorsForApp(app.value.id)
+    })
+
+    const appEntities = computed(() => {
+      if (!app.value) return []
+      return store.entitiesForApp(app.value.id)
+    })
+
+    const flagMap = { AT: '🇦🇹', CH: '🇨🇭', DE: '🇩🇪', US: '🇺🇸', CA: '🇨🇦', IT: '🇮🇹', FR: '🇫🇷', GB: '🇬🇧' }
+    function entityFlag (code) { return flagMap[code] || '🏳️' }
+    function entityRegionClass (region) {
+      return { 'Headquarters': 'bg-purple-100 text-purple-700', 'DACH': 'bg-blue-100 text-blue-700', 'Americas': 'bg-green-100 text-green-700', 'EMEA': 'bg-amber-100 text-amber-700' }[region] || 'bg-gray-100 text-gray-600'
+    }
+
+    const primaryVendorName = computed(() => {
+      if (!app.value) return ''
+      const primary = appVendors.value.find(v => v.role === 'Hersteller') || appVendors.value[0]
+      return primary?.vendorName || app.value.vendor || '—'
+    })
+
+    function vendorRoleClass (role) {
+      return {
+        'Hersteller': 'bg-blue-100 text-blue-700',
+        'Entwicklungspartner': 'bg-purple-100 text-purple-700',
+        'Implementierungspartner': 'bg-cyan-100 text-cyan-700',
+        'Betriebspartner': 'bg-amber-100 text-amber-700',
+        'Berater': 'bg-indigo-100 text-indigo-700'
+      }[role] || 'bg-gray-100 text-gray-600'
+    }
+
+    function vendorTypeLabel (val) {
+      const types = (store.data.enums && store.data.enums.vendorType) || []
+      const t = types.find(e => e.value === val)
+      return t ? t.label : val
+    }
+
     function timeClass (t) {
       return { Invest: 'bg-green-100 text-green-700', Tolerate: 'bg-yellow-100 text-yellow-700', Migrate: 'bg-blue-100 text-blue-700', Eliminate: 'bg-red-100 text-red-700' }[t] || ''
     }
@@ -181,6 +256,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete }
+    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, primaryVendorName, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
   }
 }

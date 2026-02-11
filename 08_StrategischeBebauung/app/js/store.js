@@ -20,6 +20,7 @@ function createEmptyState () {
     e2eProcesses: [],
     demands: [],
     integrations: [],
+    legalEntities: [],
     enums: {}
   }
 }
@@ -38,6 +39,7 @@ export const store = reactive({
   get totalApps () { return this.data.applications.length },
   get totalProjects () { return this.data.projects.length },
   get totalVendors () { return (this.data.vendors || []).length },
+  get totalEntities () { return (this.data.legalEntities || []).length },
 
   get totalCapabilities () {
     return this.data.domains.reduce((n, d) => n + d.capabilities.length, 0)
@@ -376,19 +378,69 @@ export const store = reactive({
     this.data.vendors = this.data.vendors.filter(v => v.id !== id)
   },
 
-  /** Find all applications that reference this vendor (by vendor name match or vendorId) */
+  /** Find all applications that reference this vendor (by vendors array, vendor name match or vendorId) */
   appsForVendor (vendorId) {
     const vendor = this.vendorById(vendorId)
     if (!vendor) return []
-    return this.data.applications.filter(a => a.vendor === vendor.name || a.vendorId === vendorId)
+    return this.data.applications.filter(a => {
+      // New multi-vendor array
+      if (a.vendors && Array.isArray(a.vendors)) {
+        return a.vendors.some(v => v.vendorId === vendorId || v.vendorName === vendor.name)
+      }
+      // Legacy single vendor field
+      return a.vendor === vendor.name || a.vendorId === vendorId
+    })
   },
 
-  /** Find the vendor record for a given application */
-  vendorForApp (appId) {
+  /** Find all vendor records for a given application (multi-vendor aware) */
+  vendorsForApp (appId) {
     const app = this.appById(appId)
-    if (!app) return null
-    if (app.vendorId) return this.vendorById(app.vendorId)
-    return (this.data.vendors || []).find(v => v.name === app.vendor)
+    if (!app) return []
+    if (app.vendors && Array.isArray(app.vendors) && app.vendors.length > 0) {
+      return app.vendors.map(v => ({
+        ...v,
+        vendorRecord: v.vendorId ? this.vendorById(v.vendorId) : (this.data.vendors || []).find(vr => vr.name === v.vendorName)
+      }))
+    }
+    // Legacy: single vendor field
+    const vendorRecord = app.vendorId ? this.vendorById(app.vendorId) : (this.data.vendors || []).find(v => v.name === app.vendor)
+    if (!vendorRecord && !app.vendor) return []
+    return [{ vendorId: vendorRecord?.id || '', vendorName: app.vendor || vendorRecord?.name || '', role: 'Hersteller', vendorRecord }]
+  },
+
+  /** Find the vendor record for a given application (legacy, returns first/primary vendor) */
+  vendorForApp (appId) {
+    const vendors = this.vendorsForApp(appId)
+    const primary = vendors.find(v => v.role === 'Hersteller') || vendors[0]
+    return primary?.vendorRecord || null
+  },
+
+  /** Get the role of a vendor for a specific app */
+  vendorRoleForApp (vendorId, appId) {
+    const app = this.appById(appId)
+    if (!app || !app.vendors) return null
+    const entry = app.vendors.find(v => v.vendorId === vendorId)
+    return entry?.role || null
+  },
+
+  // ── Legal Entity helpers ──
+
+  entityById (id) {
+    return (this.data.legalEntities || []).find(e => e.id === id)
+  },
+
+  /** All applications assigned to a given entity */
+  appsForEntity (entityId) {
+    return this.data.applications.filter(a =>
+      a.entities && Array.isArray(a.entities) && a.entities.includes(entityId)
+    )
+  },
+
+  /** All entity records assigned to a given application */
+  entitiesForApp (appId) {
+    const app = this.appById(appId)
+    if (!app || !app.entities || !Array.isArray(app.entities)) return []
+    return app.entities.map(id => this.entityById(id)).filter(Boolean)
   },
 
   // ── Demand CRUD ──

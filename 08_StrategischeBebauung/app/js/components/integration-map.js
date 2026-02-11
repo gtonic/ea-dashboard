@@ -35,8 +35,19 @@ export default {
       </div>
 
       <!-- Graph -->
-      <div class="bg-white rounded-xl border border-surface-200 overflow-hidden">
-        <div ref="graphContainer" class="w-full h-[400px] lg:h-[560px]"></div>
+      <div class="bg-white rounded-xl border border-surface-200 overflow-hidden relative">
+        <!-- Zoom Controls -->
+        <div class="absolute top-3 right-3 z-10 flex flex-col gap-1">
+          <button @click="zoomIn" class="w-8 h-8 bg-white border border-surface-200 rounded-lg shadow-sm text-gray-600 hover:bg-surface-50 flex items-center justify-center text-lg font-bold" title="Zoom In">+</button>
+          <button @click="zoomOut" class="w-8 h-8 bg-white border border-surface-200 rounded-lg shadow-sm text-gray-600 hover:bg-surface-50 flex items-center justify-center text-lg font-bold" title="Zoom Out">−</button>
+          <button @click="zoomReset" class="w-8 h-8 bg-white border border-surface-200 rounded-lg shadow-sm text-gray-600 hover:bg-surface-50 flex items-center justify-center text-xs" title="Reset">⟲</button>
+          <button @click="zoomFit" class="w-8 h-8 bg-white border border-surface-200 rounded-lg shadow-sm text-gray-600 hover:bg-surface-50 flex items-center justify-center text-xs" title="Fit All">▣</button>
+        </div>
+        <!-- Zoom Level Indicator -->
+        <div class="absolute bottom-3 left-3 z-10 text-[10px] text-gray-400 bg-white/80 px-2 py-0.5 rounded">
+          Zoom: {{ Math.round(currentZoom * 100) }}% · Scroll/Pinch zum Zoomen · Drag zum Verschieben
+        </div>
+        <div ref="graphContainer" class="w-full" style="height: 640px; cursor: grab;"></div>
       </div>
 
       <!-- Integration table -->
@@ -169,6 +180,9 @@ export default {
     const filterApp = ref('')
     const showForm = ref(false)
     const editing = ref(null)
+    const currentZoom = ref(1)
+    let zoomBehavior = null
+    let svgSelection = null
 
     const emptyForm = () => ({
       sourceAppId: '', targetAppId: '', interfaceType: 'API',
@@ -219,12 +233,48 @@ export default {
       nextTick(renderGraph)
     }
 
+    // Zoom controls
+    function zoomIn () {
+      if (svgSelection && zoomBehavior) {
+        svgSelection.transition().duration(300).call(zoomBehavior.scaleBy, 1.4)
+      }
+    }
+    function zoomOut () {
+      if (svgSelection && zoomBehavior) {
+        svgSelection.transition().duration(300).call(zoomBehavior.scaleBy, 0.7)
+      }
+    }
+    function zoomReset () {
+      if (svgSelection && zoomBehavior) {
+        svgSelection.transition().duration(500).call(zoomBehavior.transform, d3.zoomIdentity)
+      }
+    }
+    function zoomFit () {
+      if (!svgSelection || !zoomBehavior || !graphContainer.value) return
+      const container = graphContainer.value
+      const g = svgSelection.select('g.graph-root')
+      const bounds = g.node().getBBox()
+      if (bounds.width === 0 || bounds.height === 0) return
+      const fullWidth = container.clientWidth
+      const fullHeight = container.clientHeight || 640
+      const padding = 60
+      const scale = Math.min(
+        (fullWidth - padding * 2) / bounds.width,
+        (fullHeight - padding * 2) / bounds.height,
+        2 // max zoom
+      )
+      const tx = fullWidth / 2 - (bounds.x + bounds.width / 2) * scale
+      const ty = fullHeight / 2 - (bounds.y + bounds.height / 2) * scale
+      svgSelection.transition().duration(600)
+        .call(zoomBehavior.transform, d3.zoomIdentity.translate(tx, ty).scale(scale))
+    }
+
     function renderGraph () {
       if (!graphContainer.value || typeof d3 === 'undefined') return
 
       const container = graphContainer.value
       const width = container.clientWidth
-      const height = container.clientHeight || 560
+      const height = container.clientHeight || 640
 
       const integrations = filtered.value
       if (!integrations.length) {
@@ -239,25 +289,50 @@ export default {
       const appIds = new Set()
       integrations.forEach(i => { appIds.add(i.sourceAppId); appIds.add(i.targetAppId) })
 
+      // Count connections per node for sizing
+      const connCount = {}
+      integrations.forEach(i => {
+        connCount[i.sourceAppId] = (connCount[i.sourceAppId] || 0) + 1
+        connCount[i.targetAppId] = (connCount[i.targetAppId] || 0) + 1
+      })
+
       const nodes = [...appIds].map(id => {
         const a = store.appById(id)
+        const conns = connCount[id] || 0
         return {
           id,
           name: a ? a.name : id,
           type: a ? a.type : '',
           criticality: a ? a.criticality : '',
-          timeQuadrant: a ? a.timeQuadrant : ''
+          timeQuadrant: a ? a.timeQuadrant : '',
+          connectionCount: conns,
+          // Scale node size based on connections (min 32, max 60)
+          nodeSize: Math.min(60, Math.max(32, 28 + conns * 2.5))
         }
       })
 
-      const links = integrations.map(i => ({
-        source: i.sourceAppId,
-        target: i.targetAppId,
-        type: i.interfaceType,
-        direction: i.direction,
-        label: i.protocol || i.interfaceType,
-        description: i.description
-      }))
+      // Aggregate links — group parallel connections between same nodes
+      const linkMap = new Map()
+      integrations.forEach(i => {
+        const key = [i.sourceAppId, i.targetAppId].sort().join('|')
+        if (!linkMap.has(key)) {
+          linkMap.set(key, {
+            source: i.sourceAppId,
+            target: i.targetAppId,
+            types: [],
+            labels: [],
+            descriptions: [],
+            count: 0,
+            direction: i.direction
+          })
+        }
+        const entry = linkMap.get(key)
+        entry.types.push(i.interfaceType)
+        entry.labels.push(i.protocol || i.interfaceType)
+        entry.descriptions.push(i.description)
+        entry.count++
+      })
+      const links = [...linkMap.values()]
 
       // Clear previous
       d3.select(container).selectAll('*').remove()
@@ -265,6 +340,19 @@ export default {
       const svg = d3.select(container).append('svg')
         .attr('width', width).attr('height', height)
         .attr('viewBox', [0, 0, width, height])
+      svgSelection = svg
+
+      // Zoom behavior
+      zoomBehavior = d3.zoom()
+        .scaleExtent([0.15, 4])
+        .on('zoom', (event) => {
+          graphRoot.attr('transform', event.transform)
+          currentZoom.value = event.transform.k
+        })
+      svg.call(zoomBehavior)
+
+      // Root group that receives zoom transforms
+      const graphRoot = svg.append('g').attr('class', 'graph-root')
 
       // Arrow markers per interface type
       const defs = svg.append('defs')
@@ -272,90 +360,234 @@ export default {
         defs.append('marker')
           .attr('id', 'if-arrow-' + type)
           .attr('viewBox', '0 -5 10 10')
-          .attr('refX', 32).attr('refY', 0)
-          .attr('markerWidth', 6).attr('markerHeight', 6)
+          .attr('refX', 38).attr('refY', 0)
+          .attr('markerWidth', 5).attr('markerHeight', 5)
           .attr('orient', 'auto')
           .append('path').attr('d', 'M0,-5L10,0L0,5').attr('fill', color)
-        // Reverse arrow for bidirectional
         defs.append('marker')
           .attr('id', 'if-arrow-rev-' + type)
           .attr('viewBox', '0 -5 10 10')
-          .attr('refX', -22).attr('refY', 0)
-          .attr('markerWidth', 6).attr('markerHeight', 6)
+          .attr('refX', -28).attr('refY', 0)
+          .attr('markerWidth', 5).attr('markerHeight', 5)
           .attr('orient', 'auto')
           .append('path').attr('d', 'M10,-5L0,0L10,5').attr('fill', color)
       })
 
+      // Drop shadow for nodes
+      const filter = defs.append('filter').attr('id', 'node-shadow')
+        .attr('x', '-20%').attr('y', '-20%').attr('width', '140%').attr('height', '140%')
+      filter.append('feDropShadow').attr('dx', 0).attr('dy', 1).attr('stdDeviation', 2)
+        .attr('flood-color', '#00000015')
+
+      // Find hub node (most connections)
+      const hubNode = nodes.reduce((max, n) => n.connectionCount > max.connectionCount ? n : max, nodes[0])
+
+      // Simulation with improved forces
       const simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(160))
-        .force('charge', d3.forceManyBody().strength(-500))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+          // Longer distance for hub connections to spread things out
+          const srcConns = connCount[typeof d.source === 'object' ? d.source.id : d.source] || 0
+          const tgtConns = connCount[typeof d.target === 'object' ? d.target.id : d.target] || 0
+          const maxConns = Math.max(srcConns, tgtConns)
+          return maxConns > 10 ? 220 : maxConns > 5 ? 180 : 140
+        }))
+        .force('charge', d3.forceManyBody().strength(d => {
+          // Hub nodes push harder
+          return d.connectionCount > 10 ? -1200 : d.connectionCount > 5 ? -800 : -400
+        }))
         .force('center', d3.forceCenter(width / 2, height / 2))
-        .force('collision', d3.forceCollide().radius(50))
+        .force('collision', d3.forceCollide().radius(d => d.nodeSize + 20))
+        .force('x', d3.forceX(width / 2).strength(0.04))
+        .force('y', d3.forceY(height / 2).strength(0.04))
+        .alphaDecay(0.02)
+        .velocityDecay(0.4)
 
-      // Links
-      const link = svg.append('g').selectAll('line')
-        .data(links).join('line')
-        .attr('class', 'dep-link')
-        .attr('stroke', d => ifColor(d.type))
-        .attr('stroke-width', 2)
-        .attr('marker-end', d => 'url(#if-arrow-' + d.type + ')')
-        .attr('marker-start', d => d.direction === 'bidirectional' ? 'url(#if-arrow-rev-' + d.type + ')' : null)
+      // Links — use curves for multiple connections between same nodes
+      const link = graphRoot.append('g').attr('class', 'links').selectAll('path')
+        .data(links).join('path')
+        .attr('fill', 'none')
+        .attr('stroke', d => ifColor(d.types[0]))
+        .attr('stroke-width', d => Math.min(4, 1.5 + d.count * 0.5))
+        .attr('stroke-opacity', 0.6)
+        .attr('marker-end', d => 'url(#if-arrow-' + d.types[0] + ')')
+        .attr('marker-start', d => d.direction === 'bidirectional' ? 'url(#if-arrow-rev-' + d.types[0] + ')' : null)
 
-      // Link labels (protocol)
-      const linkLabel = svg.append('g').selectAll('text')
+      // Link labels
+      const linkLabel = graphRoot.append('g').attr('class', 'link-labels').selectAll('text')
         .data(links).join('text')
-        .text(d => d.label)
+        .text(d => d.count > 1 ? d.labels[0] + ' (+' + (d.count - 1) + ')' : d.labels[0])
         .attr('text-anchor', 'middle')
-        .attr('fill', d => ifColor(d.type))
-        .attr('font-size', '9px')
-        .attr('font-weight', '600')
-        .attr('dy', -6)
+        .attr('fill', d => ifColor(d.types[0]))
+        .attr('font-size', '8px')
+        .attr('font-weight', '500')
+        .attr('dy', -8)
+        .attr('opacity', 0.8)
+        .attr('pointer-events', 'none')
+
+      // Integration count badge on links with multiple integrations
+      const linkBadge = graphRoot.append('g').attr('class', 'link-badges').selectAll('g')
+        .data(links.filter(l => l.count > 1)).join('g')
+
+      linkBadge.append('circle')
+        .attr('r', 8)
+        .attr('fill', d => ifColor(d.types[0]))
+        .attr('opacity', 0.9)
+
+      linkBadge.append('text')
+        .text(d => d.count)
+        .attr('text-anchor', 'middle')
+        .attr('dy', '0.35em')
+        .attr('fill', 'white')
+        .attr('font-size', '8px')
+        .attr('font-weight', 'bold')
 
       // Nodes
-      const timeColors = { Invest: '#22c55e', Tolerate: '#eab308', Migrate: '#f97316', Eliminate: '#ef4444' }
-      const node = svg.append('g').selectAll('g')
+      const timeColors = { Invest: '#22c55e', Tolerate: '#eab308', Migrate: '#3b82f6', Eliminate: '#ef4444' }
+      const node = graphRoot.append('g').attr('class', 'nodes').selectAll('g')
         .data(nodes).join('g')
         .call(d3.drag()
-          .on('start', (e, d) => { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y })
+          .on('start', (e, d) => {
+            if (!e.active) simulation.alphaTarget(0.3).restart()
+            d.fx = d.x; d.fy = d.y
+            d3.select(e.sourceEvent.target.closest('g')).select('rect').attr('stroke-width', 3.5)
+          })
           .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y })
-          .on('end', (e, d) => { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null })
+          .on('end', (e, d) => {
+            if (!e.active) simulation.alphaTarget(0)
+            d.fx = null; d.fy = null
+            d3.select(e.sourceEvent.target.closest('g')).select('rect').attr('stroke-width', 2.5)
+          })
         )
         .style('cursor', 'pointer')
         .on('click', (e, d) => { navigateTo('/apps/' + d.id) })
 
-      // Node rectangles (rounded)
+      // Highlight on hover
+      node.on('mouseover', function (e, d) {
+        // Dim all
+        node.attr('opacity', 0.3)
+        link.attr('opacity', 0.08)
+        linkLabel.attr('opacity', 0)
+        linkBadge.attr('opacity', 0.08)
+        // Highlight connected
+        const connectedIds = new Set([d.id])
+        links.forEach(l => {
+          const srcId = typeof l.source === 'object' ? l.source.id : l.source
+          const tgtId = typeof l.target === 'object' ? l.target.id : l.target
+          if (srcId === d.id || tgtId === d.id) {
+            connectedIds.add(srcId)
+            connectedIds.add(tgtId)
+          }
+        })
+        node.filter(n => connectedIds.has(n.id)).attr('opacity', 1)
+        link.filter(l => {
+          const srcId = typeof l.source === 'object' ? l.source.id : l.source
+          const tgtId = typeof l.target === 'object' ? l.target.id : l.target
+          return srcId === d.id || tgtId === d.id
+        }).attr('opacity', 0.85).attr('stroke-width', d2 => Math.min(5, 2.5 + d2.count * 0.5))
+        linkLabel.filter(l => {
+          const srcId = typeof l.source === 'object' ? l.source.id : l.source
+          const tgtId = typeof l.target === 'object' ? l.target.id : l.target
+          return srcId === d.id || tgtId === d.id
+        }).attr('opacity', 1)
+        linkBadge.filter(l => {
+          const srcId = typeof l.source === 'object' ? l.source.id : l.source
+          const tgtId = typeof l.target === 'object' ? l.target.id : l.target
+          return srcId === d.id || tgtId === d.id
+        }).attr('opacity', 1)
+        // Tooltip
+        d3.select(this).select('.node-tooltip').attr('opacity', 1)
+      })
+      .on('mouseout', function () {
+        node.attr('opacity', 1)
+        link.attr('opacity', 0.6).attr('stroke-width', d => Math.min(4, 1.5 + d.count * 0.5))
+        linkLabel.attr('opacity', 0.8)
+        linkBadge.attr('opacity', 0.9)
+        d3.select(this).select('.node-tooltip').attr('opacity', 0)
+      })
+
+      // Node rectangles — scaled by connections
       node.append('rect')
-        .attr('x', -28).attr('y', -18)
-        .attr('width', 56).attr('height', 36)
-        .attr('rx', 8)
-        .attr('fill', '#f8fafc')
+        .attr('x', d => -d.nodeSize)
+        .attr('y', d => -d.nodeSize * 0.55)
+        .attr('width', d => d.nodeSize * 2)
+        .attr('height', d => d.nodeSize * 1.1)
+        .attr('rx', 10)
+        .attr('fill', d => d.id === hubNode.id ? '#eff6ff' : '#f8fafc')
         .attr('stroke', d => timeColors[d.timeQuadrant] || '#94a3b8')
         .attr('stroke-width', 2.5)
+        .attr('filter', 'url(#node-shadow)')
 
-      // Node labels
-      node.append('text')
-        .text(d => d.name.length > 18 ? d.name.slice(0, 16) + '…' : d.name)
-        .attr('x', 0).attr('y', 30)
+      // Connection count badge (top-right corner)
+      const badgeG = node.filter(d => d.connectionCount > 1).append('g')
+      badgeG.append('circle')
+        .attr('cx', d => d.nodeSize - 4)
+        .attr('cy', d => -d.nodeSize * 0.55 + 4)
+        .attr('r', 9)
+        .attr('fill', '#6366f1')
+      badgeG.append('text')
+        .text(d => d.connectionCount)
+        .attr('x', d => d.nodeSize - 4)
+        .attr('y', d => -d.nodeSize * 0.55 + 4)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#374151')
-        .attr('font-size', '10px')
+        .attr('dy', '0.35em')
+        .attr('fill', 'white')
+        .attr('font-size', '8px')
+        .attr('font-weight', 'bold')
 
-      // Small type badge inside rect
+      // App name inside node
+      node.append('text')
+        .text(d => {
+          const maxLen = Math.max(10, Math.floor(d.nodeSize / 4))
+          return d.name.length > maxLen ? d.name.slice(0, maxLen - 1) + '…' : d.name
+        })
+        .attr('x', 0).attr('y', -2)
+        .attr('text-anchor', 'middle')
+        .attr('fill', '#1e293b')
+        .attr('font-size', d => d.connectionCount > 10 ? '11px' : '10px')
+        .attr('font-weight', d => d.connectionCount > 5 ? '600' : '500')
+
+      // Type label below name
       node.append('text')
         .text(d => d.type || '')
-        .attr('x', 0).attr('y', 3)
+        .attr('x', 0).attr('y', 11)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#64748b')
+        .attr('fill', '#94a3b8')
+        .attr('font-size', '8px')
+
+      // Hover tooltip (hidden by default)
+      const tooltip = node.append('g').attr('class', 'node-tooltip').attr('opacity', 0)
+      tooltip.append('rect')
+        .attr('x', d => -60)
+        .attr('y', d => d.nodeSize * 0.55 + 8)
+        .attr('width', 120).attr('height', 28)
+        .attr('rx', 6)
+        .attr('fill', '#1e293b')
+        .attr('opacity', 0.9)
+      tooltip.append('text')
+        .text(d => d.connectionCount + ' Integrationen · ' + d.timeQuadrant)
+        .attr('x', 0)
+        .attr('y', d => d.nodeSize * 0.55 + 26)
+        .attr('text-anchor', 'middle')
+        .attr('fill', 'white')
         .attr('font-size', '9px')
 
       simulation.on('tick', () => {
-        link
-          .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
-          .attr('x2', d => d.target.x).attr('y2', d => d.target.y)
+        link.attr('d', d => {
+          const dx = d.target.x - d.source.x
+          const dy = d.target.y - d.source.y
+          return 'M' + d.source.x + ',' + d.source.y + 'L' + d.target.x + ',' + d.target.y
+        })
         linkLabel
           .attr('x', d => (d.source.x + d.target.x) / 2)
           .attr('y', d => (d.source.y + d.target.y) / 2)
+        linkBadge
+          .attr('transform', d => 'translate(' + ((d.source.x + d.target.x) / 2 + 14) + ',' + ((d.source.y + d.target.y) / 2 + 2) + ')')
         node.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
+      })
+
+      // After simulation settles, auto-fit
+      simulation.on('end', () => {
+        setTimeout(zoomFit, 100)
       })
     }
 
@@ -376,8 +608,9 @@ export default {
 
     return {
       store, navigateTo, graphContainer, ifTypes, ifColor, ifLabel, appName,
-      filterType, filterApp, sortedApps, filtered,
-      showForm, editing, form, editIntegration, saveIntegration, removeIntegration
+      filterType, filterApp, sortedApps, filtered, currentZoom,
+      showForm, editing, form, editIntegration, saveIntegration, removeIntegration,
+      zoomIn, zoomOut, zoomReset, zoomFit
     }
   }
 }

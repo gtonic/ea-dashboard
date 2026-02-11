@@ -29,6 +29,8 @@ import VendorList from './components/vendor-list.js'
 import VendorDetail from './components/vendor-detail.js'
 import VendorForm from './components/vendor-form.js'
 import VendorScorecard from './components/vendor-scorecard.js'
+import EntityList from './components/entity-list.js'
+import EntityDetail from './components/entity-detail.js'
 import DemandList from './components/demand-list.js'
 import DemandDetail from './components/demand-detail.js'
 import DemandForm from './components/demand-form.js'
@@ -75,6 +77,8 @@ app.component('vendor-list', VendorList)
 app.component('vendor-detail', VendorDetail)
 app.component('vendor-form', VendorForm)
 app.component('vendor-scorecard', VendorScorecard)
+app.component('entity-list', EntityList)
+app.component('entity-detail', EntityDetail)
 app.component('demand-list', DemandList)
 app.component('demand-detail', DemandDetail)
 app.component('demand-form', DemandForm)
