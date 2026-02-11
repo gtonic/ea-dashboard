@@ -402,20 +402,20 @@ Erweiterte Finanzübersicht für CIO/CFO:
 
 ### 🔵 Phase 5+ – Weiterentwicklung & Professionalisierung
 
-#### 16. Application Lifecycle Timeline
-- Visuelle Timeline pro App: Planned → Active → End-of-Support → End-of-Life
-- Aggregierte Ansicht: Welche Apps erreichen in den nächsten 12/24 Monaten End-of-Life?
-- Automatische Warnungen bei Apps im "Tolerate"-Quadranten + nahendem EOL
+#### ~~16. Application Lifecycle Timeline~~ ✅
+- ~~Visuelle Timeline pro App: Planned → Active → End-of-Support → End-of-Life~~
+- ~~Aggregierte Ansicht: Welche Apps erreichen in den nächsten 12/24 Monaten End-of-Life?~~
+- ~~Automatische Warnungen bei Apps im "Tolerate"-Quadranten + nahendem EOL~~
 
 #### ~~17. Vendor Dependency Scorecard~~ ✅
 - ~~**Vendor Concentration Risk**: Wie viel % der Mission-Critical Apps laufen bei einem Vendor?~~
 - ~~**Contract Renewal Calendar**: Timeline-View aller auslaufenden Verträge~~
 - ~~**Vendor Health Score**: Kombination aus Anzahl Apps, Kritikalität, Vertragsrestlaufzeit, Kosten~~
 
-#### 18. Total Cost of Ownership (TCO) Rechner
-- Pro Applikation: Lizenzkosten + Betriebskosten + Integrationskosten + Projektkosten
-- TCO pro Capability: Was kostet eine Business-Capability end-to-end?
-- TCO-Vergleich: Was kostet App X vs. Migration auf App Y?
+#### ~~18. Total Cost of Ownership (TCO) Rechner~~ ✅
+- ~~Pro Applikation: Lizenzkosten + Betriebskosten + Integrationskosten + Projektkosten~~
+- ~~TCO pro Capability: Was kostet eine Business-Capability end-to-end?~~
+- ~~TCO-Vergleich: Was kostet App X vs. Migration auf App Y?~~
 
 #### 19. Business Process Impact Map
 - Interaktive Prozesslandkarte: Welche Prozesse sind von App-Änderung betroffen?
@@ -458,5 +458,5 @@ Erweiterte Finanzübersicht für CIO/CFO:
 | **Phase 4** | ~~Szenario-Planung + Ressourcen-Analyse~~ | ✅ Implementiert |
 | **Phase 5** | ~~Globale Volltextsuche + Integration-Map~~ | ✅ Implementiert |
 | **Phase 6** | ~~Capability-Investment + Technologie-Radar + EA Health Score~~ | ✅ Implementiert |
-| **Phase 7** | App Lifecycle Timeline + Vendor Scorecard + TCO Rechner | Nächste Priorität |
-| **Phase 8** | Trend-Analyse + Dark Mode + Erweiterte Exports | Professionalisierung |
+| **Phase 7** | ~~App Lifecycle Timeline + Vendor Scorecard + TCO Rechner~~ | ✅ Implementiert |
+| **Phase 8** | Trend-Analyse + Dark Mode + Erweiterte Exports | Nächste Priorität |
