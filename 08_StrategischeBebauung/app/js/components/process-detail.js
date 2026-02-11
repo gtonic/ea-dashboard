@@ -45,11 +45,21 @@ export default {
         </div>
       </div>
 
-      <!-- Involved Applications (derived via Domain → Capability → Mapping) -->
+      <!-- Involved Applications -->
       <div class="bg-white rounded-xl border border-surface-200 overflow-hidden">
         <div class="px-5 py-3 border-b border-surface-200 bg-surface-50">
-          <h3 class="text-sm font-semibold text-gray-700">Involvierte Applikationen ({{ involvedApps.length }})</h3>
-          <p class="text-[10px] text-gray-400 mt-0.5">Automatisch abgeleitet über Domain → Capability → Mapping</p>
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-semibold text-gray-700">Involvierte Applikationen ({{ involvedApps.length }})</h3>
+              <p v-if="isDirect" class="text-[10px] text-green-600 mt-0.5">✓ Direkt zugewiesen</p>
+              <p v-else class="text-[10px] text-gray-400 mt-0.5">Automatisch abgeleitet über Domain → Capability → Mapping</p>
+            </div>
+            <button v-if="!isDirect && involvedApps.length > 0" @click="convertToDirect"
+                    class="text-[10px] px-2 py-1 border border-amber-300 text-amber-700 rounded hover:bg-amber-50"
+                    title="Applikationsliste fixieren und manuell pflegen">
+              Direkt zuweisen
+            </button>
+          </div>
         </div>
         <div v-if="involvedApps.length" class="divide-y divide-surface-100">
           <a v-for="app in involvedApps" :key="app.id" :href="linkTo('/apps/' + app.id)"
@@ -114,6 +124,18 @@ export default {
       return store.appsForProcess(proc.value.id)
     })
 
+    const isDirect = computed(() => {
+      return proc.value && store.processHasDirectApps(proc.value.id)
+    })
+
+    function convertToDirect () {
+      if (!proc.value) return
+      const appIds = involvedApps.value.map(a => a.id)
+      if (confirm(`${appIds.length} Applikationen direkt zuweisen? Die automatische Ableitung wird deaktiviert. Sie können die Zuordnung jederzeit im Edit-Dialog anpassen.`)) {
+        store.updateProcess(proc.value.id, { applicationIds: appIds })
+      }
+    }
+
     function statusClass (s) {
       return { active: 'bg-green-100 text-green-700', optimization: 'bg-blue-100 text-blue-700', transformation: 'bg-purple-100 text-purple-700' }[s] || 'bg-gray-100 text-gray-600'
     }
@@ -142,6 +164,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, proc, linkedDomains, involvedApps, showForm, statusClass, timeClass, trendClass, trendIcon, kpiProgress, kpiColor, deleteProc }
+    return { store, router, linkTo, proc, linkedDomains, involvedApps, isDirect, convertToDirect, showForm, statusClass, timeClass, trendClass, trendIcon, kpiProgress, kpiColor, deleteProc }
   }
 }

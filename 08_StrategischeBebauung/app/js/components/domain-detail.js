@@ -73,6 +73,24 @@ export default {
         </div>
       </div>
 
+      <!-- Key Applications (Schlüsselsysteme) -->
+      <div v-if="keyApps.length" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 bg-surface-50">
+          <h3 class="text-sm font-semibold text-gray-700">Schlüsselsysteme ({{ keyApps.length }})</h3>
+        </div>
+        <div class="p-5 flex flex-wrap gap-2">
+          <a v-for="app in keyApps" :key="app.id" :href="linkTo('/apps/' + app.id)"
+             class="flex items-center gap-2 px-3 py-2 rounded-lg border border-surface-200 hover:bg-surface-50 hover:shadow-sm transition-all">
+            <span class="text-[10px] font-mono text-gray-400">{{ app.id }}</span>
+            <span class="text-sm font-medium text-gray-700">{{ app.name }}</span>
+            <span v-if="app.timeQuadrant" class="text-[10px] px-1.5 py-0.5 rounded-full"
+                  :class="{'bg-green-100 text-green-700': app.timeQuadrant === 'Invest', 'bg-yellow-100 text-yellow-700': app.timeQuadrant === 'Tolerate', 'bg-blue-100 text-blue-700': app.timeQuadrant === 'Migrate', 'bg-red-100 text-red-700': app.timeQuadrant === 'Eliminate'}">
+              {{ app.timeQuadrant }}
+            </span>
+          </a>
+        </div>
+      </div>
+
       <!-- Domain KPIs -->
       <div v-if="domain.kpis && domain.kpis.length" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
         <div class="px-5 py-3 border-b border-surface-200 bg-surface-50">
@@ -242,6 +260,11 @@ export default {
       return new Set(store.data.capabilityMappings.filter(m => capIds.includes(m.capabilityId)).map(m => m.applicationId))
     })
 
+    const keyApps = computed(() => {
+      if (!domain.value || !domain.value.keyApplicationIds) return []
+      return domain.value.keyApplicationIds.map(id => store.appById(id)).filter(Boolean)
+    })
+
     function appsForCap (capId) { return store.appsForCapability(capId) }
 
     const relatedProjects = computed(() => {
@@ -310,7 +333,7 @@ export default {
 
     return {
       store, domain, router, linkTo, showDomainForm, showCapForm, editCap,
-      subCapCount, avgMat, avgTarget, mappedAppIds, appsForCap,
+      subCapCount, avgMat, avgTarget, mappedAppIds, keyApps, appsForCap,
       relatedProjects, relatedProcesses,
       maturityColor, criticalityClass, statusDot, procStatusClass,
       trendClass, trendIcon, kpiProgress, kpiColor,

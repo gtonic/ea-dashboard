@@ -57,6 +57,34 @@ export default {
           </div>
         </div>
 
+        <!-- Linked Applications (direct) -->
+        <div>
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-medium text-gray-600">Direkt zugewiesene Applikationen</label>
+            <span class="text-[10px] text-gray-400">{{ form.applicationIds.length }} ausgewählt</span>
+          </div>
+          <div class="text-[10px] text-gray-400 mb-1">Wenn leer, wird automatisch über Domains abgeleitet.</div>
+          <input v-model="appSearch" placeholder="App suchen…" class="mt-1 w-full border border-surface-200 rounded-lg px-3 py-1.5 text-xs" />
+          <div class="mt-1 max-h-40 overflow-y-auto border border-surface-200 rounded-lg">
+            <label v-for="app in filteredApps" :key="app.id"
+                   class="flex items-center gap-2 px-3 py-1.5 hover:bg-surface-50 cursor-pointer text-xs border-b border-surface-100 last:border-0">
+              <input type="checkbox" :value="app.id" v-model="form.applicationIds" class="rounded text-primary-600" />
+              <span class="font-mono text-gray-400 w-14 shrink-0">{{ app.id }}</span>
+              <span class="text-gray-700 truncate">{{ app.name }}</span>
+              <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded-full shrink-0"
+                    :class="{'bg-green-100 text-green-700': app.timeQuadrant === 'Invest', 'bg-yellow-100 text-yellow-700': app.timeQuadrant === 'Tolerate', 'bg-blue-100 text-blue-700': app.timeQuadrant === 'Migrate', 'bg-red-100 text-red-700': app.timeQuadrant === 'Eliminate'}">
+                {{ app.timeQuadrant }}
+              </span>
+            </label>
+          </div>
+          <div v-if="form.applicationIds.length" class="mt-2 flex flex-wrap gap-1">
+            <span v-for="aid in form.applicationIds" :key="aid" class="inline-flex items-center gap-1 text-[10px] bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full">
+              {{ appName(aid) }}
+              <button @click="form.applicationIds = form.applicationIds.filter(x => x !== aid)" class="hover:text-red-600">✕</button>
+            </span>
+          </div>
+        </div>
+
         <!-- KPIs -->
         <div>
           <div class="flex items-center justify-between">
@@ -89,8 +117,27 @@ export default {
     const trendOptions = (store.data.enums?.kpiTrend || ['improving', 'stable', 'declining'])
 
     const form = ref({
-      id: '', name: '', owner: '', description: '', status: 'active', domains: [], kpis: []
+      id: '', name: '', owner: '', description: '', status: 'active', domains: [], applicationIds: [], kpis: []
     })
+
+    const appSearch = ref('')
+    const { computed: vComputed } = Vue
+    const filteredApps = vComputed(() => {
+      const q = appSearch.value.toLowerCase()
+      return store.data.applications
+        .filter(a => !q || a.name.toLowerCase().includes(q) || a.id.toLowerCase().includes(q))
+        .sort((a, b) => {
+          const aChecked = form.value.applicationIds.includes(a.id)
+          const bChecked = form.value.applicationIds.includes(b.id)
+          if (aChecked !== bChecked) return aChecked ? -1 : 1
+          return a.name.localeCompare(b.name)
+        })
+    })
+
+    function appName (id) {
+      const a = store.appById(id)
+      return a ? a.name : id
+    }
 
     onMounted(() => {
       if (props.editProcess) {
@@ -102,6 +149,7 @@ export default {
           description: p.description || '',
           status: p.status || 'active',
           domains: [...(p.domains || [])],
+          applicationIds: [...(p.applicationIds || [])],
           kpis: (p.kpis || []).map(k => ({ ...k }))
         }
       }
@@ -117,6 +165,7 @@ export default {
       const data = {
         id: f.id, name: f.name, owner: f.owner, description: f.description,
         status: f.status, domains: f.domains,
+        applicationIds: f.applicationIds,
         kpis: f.kpis.map((k, i) => ({ ...k, id: k.id || ('PKI-' + (i + 1)), current: Number(k.current) || k.current, target: Number(k.target) || k.target }))
       }
       if (props.editProcess) {
@@ -127,6 +176,6 @@ export default {
       emit('saved')
     }
 
-    return { store, form, statusOptions, trendOptions, addKpi, save }
+    return { store, form, statusOptions, trendOptions, appSearch, filteredApps, appName, addKpi, save }
   }
 }

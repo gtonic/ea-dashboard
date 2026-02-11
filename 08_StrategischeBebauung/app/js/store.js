@@ -316,10 +316,24 @@ export const store = reactive({
     return (this.data.e2eProcesses || []).filter(p => p.domains && p.domains.includes(Number(domainId)))
   },
 
-  /** Derive applications involved in an E2E process via domain→capability→mapping chain */
+  /** Get applications for a process — direct assignment or derived via domain→capability→mapping */
   appsForProcess (processId) {
     const proc = this.processById(processId)
-    if (!proc || !proc.domains) return []
+    if (!proc) return []
+
+    // Direct assignment takes priority
+    if (proc.applicationIds && proc.applicationIds.length > 0) {
+      return proc.applicationIds.map(appId => {
+        const app = this.appById(appId)
+        if (!app) return null
+        // Enrich with capability info
+        const caps = this.capabilitiesForApp(appId)
+        return { ...app, capCount: caps.length, roles: 'Direct', source: 'direct' }
+      }).filter(Boolean)
+    }
+
+    // Fallback: derive from domain→capability→mapping chain
+    if (!proc.domains) return []
     const appMap = new Map()
     proc.domains.forEach(domId => {
       const d = this.domainById(domId)
@@ -329,7 +343,7 @@ export const store = reactive({
         mappings.forEach(m => {
           const app = this.appById(m.applicationId)
           if (app && !appMap.has(app.id)) {
-            appMap.set(app.id, { ...app, roles: new Set(), capCount: 0 })
+            appMap.set(app.id, { ...app, roles: new Set(), capCount: 0, source: 'derived' })
           }
           if (app && appMap.has(app.id)) {
             appMap.get(app.id).roles.add(m.role)
@@ -339,8 +353,14 @@ export const store = reactive({
       })
     })
     return Array.from(appMap.values()).map(a => ({
-      ...a, roles: Array.from(a.roles).join(', ')
+      ...a, roles: a.source === 'derived' ? Array.from(a.roles).join(', ') : a.roles
     })).sort((a, b) => b.capCount - a.capCount)
+  },
+
+  /** Check if a process uses direct app assignments */
+  processHasDirectApps (processId) {
+    const proc = this.processById(processId)
+    return proc && proc.applicationIds && proc.applicationIds.length > 0
   },
 
   /** Find all E2E processes that touch an application (derived via mapping chain) */
@@ -600,8 +620,10 @@ export const store = reactive({
 })
 
 // ────────────────────────────────────────────
-// Persistence — localStorage with debounce
+// Persistence — localStorage + server file
 // ────────────────────────────────────────────
+let serverSaveTimer = null
+
 function persist () {
   clearTimeout(debounceTimer)
   debounceTimer = setTimeout(() => {
@@ -613,6 +635,32 @@ function persist () {
       console.warn('[store] persist failed', e)
     }
   }, 500)
+
+  // Debounced server save (2s delay to batch rapid changes)
+  clearTimeout(serverSaveTimer)
+  serverSaveTimer = setTimeout(() => persistToServer(), 2000)
+}
+
+async function persistToServer () {
+  try {
+    const raw = JSON.parse(JSON.stringify(store.data))
+    raw.meta.lastUpdated = new Date().toISOString()
+    const res = await fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(raw)
+    })
+    if (res.ok) {
+      const result = await res.json()
+      console.info('[store] ✓ saved to server', result.timestamp)
+      store._lastServerSave = result.timestamp
+    } else {
+      console.warn('[store] server save failed:', res.status, res.statusText)
+    }
+  } catch (e) {
+    // Server not available (e.g. static hosting) — silently ignore
+    console.debug('[store] server save unavailable (static hosting?)', e.message)
+  }
 }
 
 // Watch deeply and auto-persist
@@ -627,7 +675,17 @@ export function startWatching () {
 // ────────────────────────────────────────────
 // Load — from localStorage or seed JSON
 // ────────────────────────────────────────────
+const CACHE_VERSION = 'v5-2026-02-11-keyapps'
+
 export async function loadData () {
+  // 0. Force reload from seed when cache version changes
+  const currentCacheVersion = localStorage.getItem(STORAGE_KEY + '-version')
+  if (currentCacheVersion !== CACHE_VERSION) {
+    console.info('[store] cache version mismatch — clearing localStorage to load fresh seed data')
+    localStorage.removeItem(STORAGE_KEY)
+    localStorage.setItem(STORAGE_KEY + '-version', CACHE_VERSION)
+  }
+
   // 1. Try localStorage
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved) {
