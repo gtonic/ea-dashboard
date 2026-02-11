@@ -100,6 +100,8 @@ The main dashboard provides an at-a-glance overview of the entire IT landscape.
 
 > **📸 Navigate to:** `#/` to see this view with demo data.
 
+![Dashboard](docs/screenshots/01-dashboard.png)
+
 ---
 
 ### Executive Summary
@@ -123,6 +125,8 @@ A print/PDF-ready management report combining the most important KPIs and findin
 
 > **📸 Navigate to:** `#/executive-summary` to see this view with demo data.
 
+![Executive Summary](docs/screenshots/02-executive-summary.png)
+
 ---
 
 ### Budget Dashboard
@@ -139,6 +143,8 @@ Provides financial visibility into IT spending for CIO and CFO discussions.
 - **Costs by Application Type** — Doughnut chart (SaaS, On-Prem, Custom, PaaS).
 
 > **📸 Navigate to:** `#/budget-dashboard` to see this view with demo data.
+
+![Budget Dashboard](docs/screenshots/03-budget-dashboard.png)
 
 ---
 
@@ -161,6 +167,8 @@ A Gantt-style timeline showing all projects along a quarterly axis.
 
 > **📸 Navigate to:** `#/roadmap` to see this view with demo data.
 
+![Strategy Roadmap](docs/screenshots/04-strategy-roadmap.png)
+
 ---
 
 ### Conformity Scorecard
@@ -177,6 +185,8 @@ Measures how well projects align with enterprise architecture principles and str
 - **Project Table** — All projects sorted by conformity status with color badges, domain, category, and budget.
 
 > **📸 Navigate to:** `#/conformity-scorecard` to see this view with demo data.
+
+![Conformity Scorecard](docs/screenshots/05-conformity-scorecard.png)
 
 ---
 
@@ -209,6 +219,8 @@ These views help enterprise architects manage the application landscape, analyze
 
 > **📸 Navigate to:** `#/domains` to see this view with demo data.
 
+![Domains & Capabilities](docs/screenshots/06-domains.png)
+
 ---
 
 ### Applications
@@ -234,6 +246,8 @@ These views help enterprise architects manage the application landscape, analyze
 
 > **📸 Navigate to:** `#/apps` to see this view with demo data.
 
+![Applications](docs/screenshots/07-applications.png)
+
 ---
 
 ### TIME Quadrant
@@ -252,6 +266,8 @@ Visualizes the application portfolio using the TIME model (Tolerate, Invest, Mig
 **Use case:** Identify applications that are costly but provide low business value (candidates for elimination), or high-value systems that deserve further investment.
 
 > **📸 Navigate to:** `#/time` to see this view with demo data.
+
+![TIME Quadrant](docs/screenshots/08-time-quadrant.png)
 
 ---
 
@@ -293,6 +309,8 @@ An interactive D3-based force-directed network graph showing application-to-appl
 
 > **📸 Navigate to:** `#/integration-map` to see this view with demo data.
 
+![Integration Map](docs/screenshots/09-integration-map.png)
+
 ---
 
 ### Maturity Gap Analysis
@@ -310,6 +328,8 @@ Identifies the gap between current (Ist) and target (Soll) maturity levels for e
 **Use case:** Focus investment on capabilities with the largest gap between current and target maturity.
 
 > **📸 Navigate to:** `#/maturity-gap` to see this view with demo data.
+
+![Maturity Gap Analysis](docs/screenshots/16-maturity-gap.png)
 
 ---
 
@@ -352,6 +372,8 @@ A risk assessment view combining probability × impact analysis with compliance 
 
 > **📸 Navigate to:** `#/risk-heatmap` to see this view with demo data.
 
+![Risk & Compliance](docs/screenshots/10-risk-heatmap.png)
+
 ---
 
 ### Data Quality Dashboard
@@ -371,6 +393,8 @@ Measures the completeness and consistency of the EA data model.
 **Use case:** Track data governance health and identify areas where data entry is incomplete.
 
 > **📸 Navigate to:** `#/data-quality` to see this view with demo data.
+
+![Data Quality Dashboard](docs/screenshots/11-data-quality.png)
 
 ---
 
@@ -394,6 +418,8 @@ A what-if analysis tool for evaluating the impact of strategic decisions.
 **Use case:** Answer questions like "What happens if we cancel the SAP S/4HANA Upgrade?" or "What happens if we retire MPDV HYDRA X?"
 
 > **📸 Navigate to:** `#/scenario-planner` to see this view with demo data.
+
+![Scenario Planner](docs/screenshots/12-scenario-planner.png)
 
 ---
 
@@ -423,6 +449,8 @@ These views support project management offices in tracking initiatives, managing
 
 > **📸 Navigate to:** `#/projects` to see this view with demo data.
 
+![Project Portfolio](docs/screenshots/13-project-portfolio.png)
+
 ---
 
 ### Project Heatmap
@@ -439,6 +467,8 @@ A matrix showing which domains are affected by which projects.
 **Use case:** Quickly identify which domains are under high change pressure and which domains have no active projects.
 
 > **📸 Navigate to:** `#/project-heatmap` to see this view with demo data.
+
+![Project Heatmap](docs/screenshots/15-project-heatmap.png)
 
 ---
 
@@ -525,6 +555,8 @@ A Kanban-style pipeline view for tracking demand lifecycle from submission to pr
 
 > **📸 Navigate to:** `#/demand-pipeline` to see this view with demo data.
 
+![Demand Pipeline](docs/screenshots/14-demand-pipeline.png)
+
 ---
 
 ## For Business Stakeholders — Reference Data & Processes
@@ -568,6 +600,8 @@ Analyzes vendor dependency risk and health across the portfolio.
 **Use case:** Identify vendors that pose a concentration or contract risk, and prioritize vendor diversification.
 
 > **📸 Navigate to:** `#/vendor-scorecard` to see this view with demo data.
+
+![Vendor Scorecard](docs/screenshots/17-vendor-scorecard.png)
 
 ---
 
