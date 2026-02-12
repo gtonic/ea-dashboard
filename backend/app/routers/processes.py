@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.process import E2EProcess
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.process import E2EProcessCreate, E2EProcessRead, E2EProcessUpdate
 
 router = APIRouter(prefix="/processes", tags=["processes"])
@@ -44,33 +45,36 @@ def get_process(process_id: str, db: Session = Depends(get_db), _user: User = De
 
 
 @router.post("", response_model=E2EProcessRead, status_code=201)
-def create_process(data: E2EProcessCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_process(data: E2EProcessCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     process_dict = data.model_dump()
     if process_dict.get("id") is None:
         process_dict["id"] = _generate_process_id(db)
     process = E2EProcess(**process_dict)
     db.add(process)
+    write_audit(db, user, "CREATE", "process", process.id)
     db.commit()
     db.refresh(process)
     return process
 
 
 @router.put("/{process_id}", response_model=E2EProcessRead)
-def update_process(process_id: str, data: E2EProcessUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_process(process_id: str, data: E2EProcessUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     process = db.query(E2EProcess).filter(E2EProcess.id == process_id).first()
     if not process:
         raise HTTPException(status_code=404, detail="Process not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(process, key, value)
+    write_audit(db, user, "UPDATE", "process", process_id)
     db.commit()
     db.refresh(process)
     return process
 
 
 @router.delete("/{process_id}", status_code=204)
-def delete_process(process_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_process(process_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     process = db.query(E2EProcess).filter(E2EProcess.id == process_id).first()
     if not process:
         raise HTTPException(status_code=404, detail="Process not found")
+    write_audit(db, user, "DELETE", "process", process_id)
     db.delete(process)
     db.commit()

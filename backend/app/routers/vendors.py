@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.vendor import Vendor
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.vendor import VendorCreate, VendorRead, VendorUpdate
 
 router = APIRouter(prefix="/vendors", tags=["vendors"])
@@ -47,33 +48,36 @@ def get_vendor(vendor_id: str, db: Session = Depends(get_db), _user: User = Depe
 
 
 @router.post("", response_model=VendorRead, status_code=201)
-def create_vendor(data: VendorCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_vendor(data: VendorCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     vendor_dict = data.model_dump()
     if vendor_dict.get("id") is None:
         vendor_dict["id"] = _generate_vendor_id(db)
     vendor = Vendor(**vendor_dict)
     db.add(vendor)
+    write_audit(db, user, "CREATE", "vendor", vendor.id)
     db.commit()
     db.refresh(vendor)
     return vendor
 
 
 @router.put("/{vendor_id}", response_model=VendorRead)
-def update_vendor(vendor_id: str, data: VendorUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_vendor(vendor_id: str, data: VendorUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
     if not vendor:
         raise HTTPException(status_code=404, detail="Vendor not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(vendor, key, value)
+    write_audit(db, user, "UPDATE", "vendor", vendor_id)
     db.commit()
     db.refresh(vendor)
     return vendor
 
 
 @router.delete("/{vendor_id}", status_code=204)
-def delete_vendor(vendor_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_vendor(vendor_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     vendor = db.query(Vendor).filter(Vendor.id == vendor_id).first()
     if not vendor:
         raise HTTPException(status_code=404, detail="Vendor not found")
+    write_audit(db, user, "DELETE", "vendor", vendor_id)
     db.delete(vendor)
     db.commit()

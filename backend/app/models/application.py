@@ -33,6 +33,7 @@ class Application(Base):
     personnel_cost = Column(Float)
     regulations = Column(JSON, default=list)
     data_classification = Column(String(100))
+    version = Column(Integer, default=1, nullable=False)
 
 
 class CapabilityMapping(Base):

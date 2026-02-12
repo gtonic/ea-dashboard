@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.project import Project, ProjectDependency
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.project import (
     ProjectCreate, ProjectRead, ProjectUpdate,
     ProjectDependencyCreate, ProjectDependencyRead, ProjectDependencyUpdate,
@@ -50,34 +51,37 @@ def get_project(project_id: str, db: Session = Depends(get_db), _user: User = De
 
 
 @router.post("", response_model=ProjectRead, status_code=201)
-def create_project(data: ProjectCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_project(data: ProjectCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     project_dict = data.model_dump()
     if project_dict.get("id") is None:
         project_dict["id"] = _generate_project_id(db)
     project = Project(**project_dict)
     db.add(project)
+    write_audit(db, user, "CREATE", "project", project.id)
     db.commit()
     db.refresh(project)
     return project
 
 
 @router.put("/{project_id}", response_model=ProjectRead)
-def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(project, key, value)
+    write_audit(db, user, "UPDATE", "project", project_id)
     db.commit()
     db.refresh(project)
     return project
 
 
 @router.delete("/{project_id}", status_code=204)
-def delete_project(project_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_project(project_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
+    write_audit(db, user, "DELETE", "project", project_id)
     db.delete(project)
     db.commit()
 
@@ -100,9 +104,10 @@ def list_dependencies(
 
 
 @dep_router.post("", response_model=ProjectDependencyRead, status_code=201)
-def create_dependency(data: ProjectDependencyCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_dependency(data: ProjectDependencyCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     dep = ProjectDependency(**data.model_dump())
     db.add(dep)
+    write_audit(db, user, "CREATE", "project_dependency", f"{dep.source_project_id}/{dep.target_project_id}")
     db.commit()
     db.refresh(dep)
     return dep
@@ -114,7 +119,7 @@ def update_dependency(
     target_id: str,
     data: ProjectDependencyUpdate,
     db: Session = Depends(get_db),
-    _user: User = Depends(require_role("admin", "editor")),
+    user: User = Depends(require_role("admin", "editor")),
 ):
     dep = db.query(ProjectDependency).filter(
         ProjectDependency.source_project_id == source_id,
@@ -124,18 +129,20 @@ def update_dependency(
         raise HTTPException(status_code=404, detail="Dependency not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(dep, key, value)
+    write_audit(db, user, "UPDATE", "project_dependency", f"{source_id}/{target_id}")
     db.commit()
     db.refresh(dep)
     return dep
 
 
 @dep_router.delete("/{source_id}/{target_id}", status_code=204)
-def delete_dependency(source_id: str, target_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_dependency(source_id: str, target_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     dep = db.query(ProjectDependency).filter(
         ProjectDependency.source_project_id == source_id,
         ProjectDependency.target_project_id == target_id,
     ).first()
     if not dep:
         raise HTTPException(status_code=404, detail="Dependency not found")
+    write_audit(db, user, "DELETE", "project_dependency", f"{source_id}/{target_id}")
     db.delete(dep)
     db.commit()

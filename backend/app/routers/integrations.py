@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.integration import Integration
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.integration import IntegrationCreate, IntegrationRead, IntegrationUpdate
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
@@ -50,33 +51,36 @@ def get_integration(integration_id: str, db: Session = Depends(get_db), _user: U
 
 
 @router.post("", response_model=IntegrationRead, status_code=201)
-def create_integration(data: IntegrationCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_integration(data: IntegrationCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     integration_dict = data.model_dump()
     if integration_dict.get("id") is None:
         integration_dict["id"] = _generate_integration_id(db)
     integration = Integration(**integration_dict)
     db.add(integration)
+    write_audit(db, user, "CREATE", "integration", integration.id)
     db.commit()
     db.refresh(integration)
     return integration
 
 
 @router.put("/{integration_id}", response_model=IntegrationRead)
-def update_integration(integration_id: str, data: IntegrationUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_integration(integration_id: str, data: IntegrationUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     integration = db.query(Integration).filter(Integration.id == integration_id).first()
     if not integration:
         raise HTTPException(status_code=404, detail="Integration not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(integration, key, value)
+    write_audit(db, user, "UPDATE", "integration", integration_id)
     db.commit()
     db.refresh(integration)
     return integration
 
 
 @router.delete("/{integration_id}", status_code=204)
-def delete_integration(integration_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_integration(integration_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     integration = db.query(Integration).filter(Integration.id == integration_id).first()
     if not integration:
         raise HTTPException(status_code=404, detail="Integration not found")
+    write_audit(db, user, "DELETE", "integration", integration_id)
     db.delete(integration)
     db.commit()

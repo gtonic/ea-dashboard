@@ -36,6 +36,7 @@ class ApplicationCreate(ApplicationBase):
 
 class ApplicationRead(ApplicationBase):
     id: str
+    version: int = 1
 
     model_config = {"from_attributes": True}
 

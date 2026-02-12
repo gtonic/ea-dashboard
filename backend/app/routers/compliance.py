@@ -5,6 +5,7 @@ from app.database import get_db
 from app.models.compliance import ComplianceAssessment
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.compliance import (
     ComplianceAssessmentCreate, ComplianceAssessmentRead, ComplianceAssessmentUpdate,
 )
@@ -41,7 +42,7 @@ def get_assessment(assessment_id: str, db: Session = Depends(get_db), _user: Use
 
 
 @router.post("", response_model=ComplianceAssessmentRead, status_code=201)
-def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     assessment_dict = data.model_dump()
     if not assessment_dict.get("id"):
         existing = db.query(ComplianceAssessment.id).all()
@@ -55,6 +56,7 @@ def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(ge
         assessment_dict["id"] = f"CA-{max(nums, default=0) + 1:03d}"
     assessment = ComplianceAssessment(**assessment_dict)
     db.add(assessment)
+    write_audit(db, user, "CREATE", "compliance_assessment", assessment.id)
     db.commit()
     db.refresh(assessment)
     return assessment
@@ -65,7 +67,7 @@ def update_assessment(
     assessment_id: str,
     data: ComplianceAssessmentUpdate,
     db: Session = Depends(get_db),
-    _user: User = Depends(require_role("admin", "editor")),
+    user: User = Depends(require_role("admin", "editor")),
 ):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
@@ -74,17 +76,19 @@ def update_assessment(
         raise HTTPException(status_code=404, detail="Assessment not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(assessment, key, value)
+    write_audit(db, user, "UPDATE", "compliance_assessment", assessment_id)
     db.commit()
     db.refresh(assessment)
     return assessment
 
 
 @router.delete("/{assessment_id}", status_code=204)
-def delete_assessment(assessment_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_assessment(assessment_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
     ).first()
     if not assessment:
         raise HTTPException(status_code=404, detail="Assessment not found")
+    write_audit(db, user, "DELETE", "compliance_assessment", assessment_id)
     db.delete(assessment)
     db.commit()

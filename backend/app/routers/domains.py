@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models.domain import Domain, Capability, SubCapability
 from app.models.user import User
 from app.auth import get_current_user, require_role
+from app.services.audit_service import write_audit
 from app.schemas.domain import (
     DomainCreate, DomainRead, DomainUpdate,
     CapabilityCreate, CapabilityRead, CapabilityUpdate,
@@ -29,7 +30,7 @@ def get_domain(domain_id: int, db: Session = Depends(get_db), _user: User = Depe
 
 
 @router.post("", response_model=DomainRead, status_code=201)
-def create_domain(data: DomainCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_domain(data: DomainCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     caps_data = data.capabilities or []
     domain_dict = data.model_dump(exclude={"capabilities"})
     if domain_dict.get("id") is None:
@@ -53,28 +54,31 @@ def create_domain(data: DomainCreate, db: Session = Depends(get_db), _user: User
             if sc_dict.get("id") is None:
                 sc_dict["id"] = f"{capability.id}.{uuid.uuid4().hex[:4]}"
             db.add(SubCapability(**sc_dict))
+    write_audit(db, user, "CREATE", "domain", str(domain.id))
     db.commit()
     db.refresh(domain)
     return domain
 
 
 @router.put("/{domain_id}", response_model=DomainRead)
-def update_domain(domain_id: int, data: DomainUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_domain(domain_id: int, data: DomainUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(domain, key, value)
+    write_audit(db, user, "UPDATE", "domain", str(domain_id))
     db.commit()
     db.refresh(domain)
     return domain
 
 
 @router.delete("/{domain_id}", status_code=204)
-def delete_domain(domain_id: int, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_domain(domain_id: int, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
+    write_audit(db, user, "DELETE", "domain", str(domain_id))
     db.delete(domain)
     db.commit()
 
@@ -87,7 +91,7 @@ def list_capabilities(domain_id: int, db: Session = Depends(get_db), _user: User
 
 
 @router.post("/{domain_id}/capabilities", response_model=CapabilityRead, status_code=201)
-def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
@@ -105,27 +109,30 @@ def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depe
         if sc_dict.get("id") is None:
             sc_dict["id"] = f"{capability.id}.{uuid.uuid4().hex[:4]}"
         db.add(SubCapability(**sc_dict))
+    write_audit(db, user, "CREATE", "capability", capability.id)
     db.commit()
     db.refresh(capability)
     return capability
 
 
 @router.put("/capabilities/{capability_id}", response_model=CapabilityRead)
-def update_capability(capability_id: str, data: CapabilityUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
+def update_capability(capability_id: str, data: CapabilityUpdate, db: Session = Depends(get_db), user: User = Depends(require_role("admin", "editor"))):
     cap = db.query(Capability).filter(Capability.id == capability_id).first()
     if not cap:
         raise HTTPException(status_code=404, detail="Capability not found")
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(cap, key, value)
+    write_audit(db, user, "UPDATE", "capability", capability_id)
     db.commit()
     db.refresh(cap)
     return cap
 
 
 @router.delete("/capabilities/{capability_id}", status_code=204)
-def delete_capability(capability_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
+def delete_capability(capability_id: str, db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     cap = db.query(Capability).filter(Capability.id == capability_id).first()
     if not cap:
         raise HTTPException(status_code=404, detail="Capability not found")
+    write_audit(db, user, "DELETE", "capability", capability_id)
     db.delete(cap)
     db.commit()
