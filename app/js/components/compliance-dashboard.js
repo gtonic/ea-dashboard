@@ -1,7 +1,7 @@
-// compliance-dashboard.js — Compliance overview showing selected regulations and status
+// compliance-dashboard.js — Compliance Dashboard with Gap-Analysis, Cross-Reference & Vendor-Compliance (Phase C2)
 import { store } from '../store.js'
 import { i18n } from '../i18n.js'
-import { navigateTo } from '../router.js'
+import { navigateTo, linkTo } from '../router.js'
 
 export default {
   name: 'ComplianceDashboard',
@@ -21,22 +21,22 @@ export default {
       </div>
 
       <!-- Summary Cards -->
-      <div v-if="selectedRegulations.length > 0" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div v-if="selectedRegulations.length > 0" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
           <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.activeRegulations') }}</div>
           <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ selectedRegulations.length }}</div>
         </div>
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
-          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.affectedApps') }}</div>
-          <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ store.totalApps }}</div>
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.overallScore') }}</div>
+          <div class="mt-2 text-2xl font-bold" :class="scoreColor(store.overallComplianceScore)">{{ store.overallComplianceScore }}%</div>
         </div>
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
-          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.overallStatus') }}</div>
-          <div class="mt-2">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-              {{ t('compliance.partiallyCompliant') }}
-            </span>
-          </div>
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.gaps') }}</div>
+          <div class="mt-2 text-2xl font-bold" :class="filteredGaps.length > 0 ? 'text-red-600' : 'text-green-600'">{{ filteredGaps.length }}</div>
+        </div>
+        <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.totalAssessments') }}</div>
+          <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ totalAssessments }}</div>
         </div>
       </div>
 
@@ -83,6 +83,133 @@ export default {
           </table>
         </div>
       </section>
+
+      <!-- Gap Analysis -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.gapAnalysis') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.gapAnalysisDesc') }}</p>
+        <div v-if="filteredGaps.length === 0" class="text-sm text-gray-500 dark:text-gray-400 italic">{{ t('compliance.noGaps') }}</div>
+        <div v-else class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.application') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulation') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.reason') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="gap in filteredGaps" :key="gap.appId + '-' + gap.regulation"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3">
+                  <a :href="linkTo('/apps/' + gap.appId)" class="text-primary-600 hover:underline font-medium">{{ gap.appName }}</a>
+                </td>
+                <td class="py-2 px-3 text-gray-700 dark:text-gray-300">{{ regLabel(gap.regulation) }}</td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                    {{ gap.reason === 'missing' ? t('compliance.missing') : t('compliance.notAssessed') }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Cross-Reference: Regulation Load Score -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.crossReference') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.crossReferenceDesc') }}</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.application') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.vendor') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulationCount') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulation') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in filteredLoadScores" :key="item.appId"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3">
+                  <a :href="linkTo('/apps/' + item.appId)" class="text-primary-600 hover:underline font-medium">{{ item.appName }}</a>
+                  <div class="text-xs text-gray-400">{{ item.criticality }}</div>
+                </td>
+                <td class="py-2 px-3 text-gray-600 dark:text-gray-400">{{ item.vendor }}</td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
+                        :class="item.count >= 5 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : item.count >= 3 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'">
+                    {{ item.count }}
+                  </span>
+                </td>
+                <td class="py-2 px-3">
+                  <div class="flex flex-wrap gap-1">
+                    <span v-for="reg in item.filteredRegulations" :key="reg"
+                          class="px-1.5 py-0.5 rounded text-xs bg-surface-100 dark:bg-surface-800 text-gray-600 dark:text-gray-400">
+                      {{ reg }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Vendor Compliance -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.vendorCompliance') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.vendorComplianceDesc') }}</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.vendor') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.apps') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.assessments') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.complianceRate') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.status') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="vc in store.vendorComplianceStatus" :key="vc.vendor"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3 font-medium text-gray-800 dark:text-gray-200">{{ vc.vendor }}</td>
+                <td class="py-2 px-3 text-gray-600 dark:text-gray-400">{{ vc.apps }}</td>
+                <td class="py-2 px-3">
+                  <div class="flex items-center gap-2 text-xs">
+                    <span class="text-green-600">{{ vc.compliant }}</span>
+                    <span class="text-yellow-600">{{ vc.partial }}</span>
+                    <span class="text-red-600">{{ vc.nonCompliant }}</span>
+                    <span class="text-gray-400">{{ vc.notAssessed }}</span>
+                  </div>
+                </td>
+                <td class="py-2 px-3">
+                  <div class="flex items-center gap-2">
+                    <div class="flex-1 h-2 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
+                      <div class="h-full rounded-full transition-all"
+                           :class="vc.complianceRate >= 80 ? 'bg-green-500' : vc.complianceRate >= 50 ? 'bg-yellow-500' : 'bg-red-500'"
+                           :style="{ width: vc.complianceRate + '%' }"></div>
+                    </div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 w-10 text-right">{{ vc.complianceRate }}%</span>
+                  </div>
+                </td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                        :class="vc.nonCompliant > 0 ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : vc.partial > 0 || vc.notAssessed > 0 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'">
+                    {{ vc.nonCompliant > 0 ? t('compliance.nonCompliant') : vc.partial > 0 || vc.notAssessed > 0 ? t('compliance.partiallyCompliant') : t('compliance.compliant') }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   `,
   setup () {
@@ -90,28 +217,59 @@ export default {
     const t = (key) => i18n.t(key)
 
     const allRegulations = computed(() => (store.data.enums && store.data.enums.complianceRegulations) || [])
+    const selectedRegVals = computed(() => store.featureToggles.selectedRegulations || [])
 
     const selectedRegulations = computed(() => {
-      const selected = store.featureToggles.selectedRegulations || []
-      return allRegulations.value.filter(r => selected.includes(r.value))
+      return allRegulations.value.filter(r => selectedRegVals.value.includes(r.value))
     })
 
+    // Regulation details computed from real assessment data
     const regulationDetails = computed(() => {
       const apps = store.data.applications || []
-      const total = apps.length || 1
-      return selectedRegulations.value.map((reg, idx) => {
-        // Deterministic example coverage per regulation based on index
-        const coverages = [85, 62, 91, 45, 73, 58, 80]
-        const coverage = coverages[idx % coverages.length]
-        const statuses = ['compliant', 'partial', 'compliant', 'nonCompliant', 'partial', 'partial', 'compliant']
-        return {
-          ...reg,
-          coverage,
-          status: statuses[idx % statuses.length],
-          appCount: Math.max(1, Math.round(total * coverage / 100))
-        }
+      const assessments = store.data.complianceAssessments || []
+      return selectedRegulations.value.map(reg => {
+        // Apps that have this regulation in their list
+        const affectedApps = apps.filter(a => a.regulations && a.regulations.includes(reg.value))
+        const appCount = affectedApps.length
+        // Assessments for this regulation
+        const regAssessments = assessments.filter(a => a.regulation === reg.value && affectedApps.some(app => app.id === a.appId))
+        const compliant = regAssessments.filter(a => a.status === 'compliant').length
+        const partial = regAssessments.filter(a => a.status === 'partial').length
+        const total = appCount || 1
+        const coverage = Math.round(((compliant + partial * 0.5) / total) * 100)
+        // Determine overall regulation status
+        const nonCompliant = regAssessments.filter(a => a.status === 'nonCompliant').length
+        let status = 'compliant'
+        if (nonCompliant > 0 || (appCount - regAssessments.length) > appCount * 0.3) status = 'nonCompliant'
+        else if (partial > 0 || regAssessments.length < appCount) status = 'partial'
+        return { ...reg, coverage, status, appCount }
       })
     })
+
+    // Total assessments across selected regulations
+    const totalAssessments = computed(() => {
+      const assessments = store.data.complianceAssessments || []
+      return assessments.filter(a => selectedRegVals.value.includes(a.regulation)).length
+    })
+
+    // Gap analysis filtered by selected regulations
+    const filteredGaps = computed(() => {
+      return store.complianceGaps.filter(g => selectedRegVals.value.includes(g.regulation))
+    })
+
+    // Regulation load scores filtered by selected regulations
+    const filteredLoadScores = computed(() => {
+      return store.regulationLoadScores.map(item => {
+        const filteredRegs = item.regulations.filter(r => selectedRegVals.value.includes(r))
+        return { ...item, filteredRegulations: filteredRegs, count: filteredRegs.length }
+      }).filter(item => item.count > 0).sort((a, b) => b.count - a.count)
+    })
+
+    // Helper to get regulation label from value
+    function regLabel (value) {
+      const reg = allRegulations.value.find(r => r.value === value)
+      return reg ? reg.label : value
+    }
 
     function statusClass (status) {
       if (status === 'compliant') return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
@@ -125,6 +283,18 @@ export default {
       return t('compliance.nonCompliant')
     }
 
-    return { store, t, selectedRegulations, regulationDetails, statusClass, statusLabel, navigateTo }
+    function scoreColor (score) {
+      if (score >= 80) return 'text-green-600'
+      if (score >= 60) return 'text-yellow-600'
+      return 'text-red-600'
+    }
+
+    return {
+      store, t, linkTo,
+      selectedRegulations, regulationDetails, totalAssessments,
+      filteredGaps, filteredLoadScores,
+      statusClass, statusLabel, scoreColor, regLabel,
+      navigateTo
+    }
   }
 }

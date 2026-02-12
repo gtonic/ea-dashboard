@@ -229,6 +229,42 @@ export default {
           </div>
         </div>
 
+        <!-- Compliance Section (Phase C2) -->
+        <div v-if="complianceEnabled" class="bg-white rounded-xl border border-surface-200 p-5">
+          <h3 class="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wide flex items-center gap-2">
+            <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Compliance Overview
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Compliance Score</div>
+              <div class="text-2xl font-bold mt-1" :style="{ color: store.overallComplianceScore >= 80 ? '#10b981' : store.overallComplianceScore >= 60 ? '#f59e0b' : '#ef4444' }">{{ store.overallComplianceScore }}%</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Active Regulations</div>
+              <div class="text-2xl font-bold mt-1 text-blue-600">{{ selectedRegulationCount }}</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Open Gaps</div>
+              <div class="text-2xl font-bold mt-1" :style="{ color: store.complianceGaps.length > 0 ? '#ef4444' : '#10b981' }">{{ store.complianceGaps.length }}</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Assessments</div>
+              <div class="text-2xl font-bold mt-1 text-gray-700">{{ (store.data.complianceAssessments || []).length }}</div>
+            </div>
+          </div>
+          <div v-if="vendorComplianceSummary.length > 0" class="space-y-2">
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Vendor Compliance Status</div>
+            <div v-for="vc in vendorComplianceSummary" :key="vc.vendor" class="flex items-center gap-3">
+              <span class="text-xs text-gray-600 w-36 truncate">{{ vc.vendor }}</span>
+              <div class="flex-1 h-2 bg-surface-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full" :style="{ width: vc.complianceRate + '%', backgroundColor: vc.complianceRate >= 80 ? '#10b981' : vc.complianceRate >= 50 ? '#f59e0b' : '#ef4444' }"></div>
+              </div>
+              <span class="text-xs font-mono text-gray-700 w-12 text-right">{{ vc.complianceRate }}%</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Footer -->
         <div class="text-center text-[10px] text-gray-400 py-4 border-t border-surface-200">
           {{ store.data.meta.company }} · EA Dashboard · {{ reportDate }} · Confidential
@@ -503,6 +539,11 @@ export default {
       window.print()
     }
 
+    // ── Compliance (Phase C2) ──
+    const complianceEnabled = computed(() => store.featureToggles.complianceEnabled)
+    const selectedRegulationCount = computed(() => (store.featureToggles.selectedRegulations || []).length)
+    const vendorComplianceSummary = computed(() => store.vendorComplianceStatus.slice(0, 5))
+
     return {
       store, linkTo, reportDate, generatedAt,
       summaryKpis, statusCounts, statusPct, statusDot,
@@ -511,6 +552,7 @@ export default {
       topProjects, conformityClass,
       topRisks, actionItems,
       timePct, timeColor, topGaps,
+      complianceEnabled, selectedRegulationCount, vendorComplianceSummary,
       printReport
     }
   }

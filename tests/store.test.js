@@ -1224,3 +1224,99 @@ describe('Feature Toggles', () => {
     expect(store.featureToggles.governanceEnabled).toBe(true)
   })
 })
+
+// ─── Compliance Helpers (Phase C2) ───────────────────────────
+
+describe('Compliance Helpers', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'App One', vendor: 'Vendor A', criticality: 'Mission-Critical', regulations: ['GDPR', 'ISO27001', 'NIS2'] },
+      { id: 'APP-002', name: 'App Two', vendor: 'Vendor A', criticality: 'Business-Critical', regulations: ['GDPR', 'ISO27001'] },
+      { id: 'APP-003', name: 'App Three', vendor: 'Vendor B', criticality: 'Administrative', regulations: ['ISO27001'] }
+    ]
+    store.data.complianceAssessments = [
+      { id: 'CA-001', appId: 'APP-001', regulation: 'GDPR', status: 'compliant', assessedBy: 'Max', assessedDate: '2025-11-15' },
+      { id: 'CA-002', appId: 'APP-001', regulation: 'ISO27001', status: 'partial', assessedBy: 'Max', assessedDate: '2025-11-15' },
+      { id: 'CA-003', appId: 'APP-002', regulation: 'GDPR', status: 'nonCompliant', assessedBy: 'Lisa', assessedDate: '2025-10-01' },
+      { id: 'CA-004', appId: 'APP-002', regulation: 'ISO27001', status: 'compliant', assessedBy: 'Lisa', assessedDate: '2025-10-01' },
+      { id: 'CA-005', appId: 'APP-003', regulation: 'ISO27001', status: 'notAssessed', assessedBy: 'Tom', assessedDate: '2025-09-15' }
+    ]
+  })
+
+  it('assessmentsForApp returns assessments for a given app', () => {
+    const result = store.assessmentsForApp('APP-001')
+    expect(result).toHaveLength(2)
+    expect(result[0].regulation).toBe('GDPR')
+    expect(result[1].regulation).toBe('ISO27001')
+  })
+
+  it('assessmentsForApp returns empty for unknown app', () => {
+    expect(store.assessmentsForApp('APP-999')).toHaveLength(0)
+  })
+
+  it('assessmentsForRegulation returns assessments for a given regulation', () => {
+    const result = store.assessmentsForRegulation('ISO27001')
+    expect(result).toHaveLength(3)
+  })
+
+  it('complianceGaps detects missing assessments', () => {
+    const gaps = store.complianceGaps
+    // APP-001 is missing NIS2 assessment, APP-003 has notAssessed for ISO27001
+    const missingGap = gaps.find(g => g.appId === 'APP-001' && g.regulation === 'NIS2')
+    expect(missingGap).toBeDefined()
+    expect(missingGap.reason).toBe('missing')
+  })
+
+  it('complianceGaps detects notAssessed as a gap', () => {
+    const gaps = store.complianceGaps
+    const notAssessedGap = gaps.find(g => g.appId === 'APP-003' && g.regulation === 'ISO27001')
+    expect(notAssessedGap).toBeDefined()
+    expect(notAssessedGap.reason).toBe('notAssessed')
+  })
+
+  it('regulationLoadScores sorts apps by regulation count descending', () => {
+    const scores = store.regulationLoadScores
+    expect(scores).toHaveLength(3)
+    expect(scores[0].appId).toBe('APP-001')
+    expect(scores[0].count).toBe(3)
+    expect(scores[1].count).toBe(2)
+    expect(scores[2].count).toBe(1)
+  })
+
+  it('vendorComplianceStatus aggregates per vendor', () => {
+    const status = store.vendorComplianceStatus
+    expect(status.length).toBeGreaterThan(0)
+    const vendorA = status.find(v => v.vendor === 'Vendor A')
+    expect(vendorA).toBeDefined()
+    expect(vendorA.apps).toBe(2)
+    expect(vendorA.compliant).toBeGreaterThanOrEqual(1)
+  })
+
+  it('vendorComplianceStatus calculates compliance rate', () => {
+    const status = store.vendorComplianceStatus
+    const vendorB = status.find(v => v.vendor === 'Vendor B')
+    expect(vendorB).toBeDefined()
+    expect(vendorB.complianceRate).toBe(0) // only notAssessed
+  })
+
+  it('overallComplianceScore calculates percentage', () => {
+    const score = store.overallComplianceScore
+    // Total applicable: 3 (APP-001) + 2 (APP-002) + 1 (APP-003) = 6
+    // Compliant: GDPR-APP001(1) + ISO27001-APP002(1) = 2
+    // Partial: ISO27001-APP001(0.5) = 0.5
+    // Total compliant: 2.5 / 6 = 41.67%
+    expect(score).toBe(42) // Math.round(2.5/6*100) = 42
+  })
+
+  it('overallComplianceScore handles empty data', () => {
+    store.data.applications = []
+    store.data.complianceAssessments = []
+    expect(store.overallComplianceScore).toBe(0)
+  })
+
+  it('complianceGaps handles apps without regulations array', () => {
+    store.data.applications.push({ id: 'APP-099', name: 'No Regs App', vendor: 'X' })
+    const gaps = store.complianceGaps
+    expect(gaps.find(g => g.appId === 'APP-099')).toBeUndefined()
+  })
+})

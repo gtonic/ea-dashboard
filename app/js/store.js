@@ -21,6 +21,7 @@ function createEmptyState () {
     demands: [],
     integrations: [],
     legalEntities: [],
+    complianceAssessments: [],
     enums: {}
   }
 }
@@ -486,6 +487,80 @@ export const store = reactive({
     return app.entities.map(id => this.entityById(id)).filter(Boolean)
   },
 
+  // ── Compliance Helpers (Phase C2) ──
+
+  /** All compliance assessments for a given app */
+  assessmentsForApp (appId) {
+    return (this.data.complianceAssessments || []).filter(a => a.appId === appId)
+  },
+
+  /** All compliance assessments for a given regulation */
+  assessmentsForRegulation (regulation) {
+    return (this.data.complianceAssessments || []).filter(a => a.regulation === regulation)
+  },
+
+  /** Gap analysis: apps that have a regulation in their list but no assessment (or notAssessed) */
+  get complianceGaps () {
+    const assessments = this.data.complianceAssessments || []
+    const gaps = []
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.regulations || []).forEach(reg => {
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (!assessment || assessment.status === 'notAssessed') {
+          gaps.push({ appId: app.id, appName: app.name, regulation: reg, reason: assessment ? 'notAssessed' : 'missing' })
+        }
+      })
+    })
+    return gaps
+  },
+
+  /** Regulation load score: apps sorted by number of applicable regulations (descending) */
+  get regulationLoadScores () {
+    return (this.data.applications || [])
+      .filter(a => a.regulations && a.regulations.length > 0)
+      .map(a => ({ appId: a.id, appName: a.name, vendor: a.vendor, criticality: a.criticality, count: a.regulations.length, regulations: a.regulations }))
+      .sort((a, b) => b.count - a.count)
+  },
+
+  /** Vendor compliance: aggregated compliance status per vendor */
+  get vendorComplianceStatus () {
+    const assessments = this.data.complianceAssessments || []
+    const vendorMap = {}
+    ;(this.data.applications || []).forEach(app => {
+      const vendor = app.vendor || 'Unknown'
+      if (!vendorMap[vendor]) vendorMap[vendor] = { vendor, apps: 0, compliant: 0, partial: 0, nonCompliant: 0, notAssessed: 0, total: 0 }
+      vendorMap[vendor].apps++
+      ;(app.regulations || []).forEach(reg => {
+        vendorMap[vendor].total++
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (!assessment || assessment.status === 'notAssessed') vendorMap[vendor].notAssessed++
+        else if (assessment.status === 'compliant') vendorMap[vendor].compliant++
+        else if (assessment.status === 'partial') vendorMap[vendor].partial++
+        else vendorMap[vendor].nonCompliant++
+      })
+    })
+    return Object.values(vendorMap)
+      .filter(v => v.total > 0)
+      .map(v => ({ ...v, complianceRate: v.total ? Math.round((v.compliant / v.total) * 100) : 0 }))
+      .sort((a, b) => b.total - a.total)
+  },
+
+  /** Overall compliance score: percentage of compliant assessments out of all applicable */
+  get overallComplianceScore () {
+    const assessments = this.data.complianceAssessments || []
+    let total = 0
+    let compliant = 0
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.regulations || []).forEach(reg => {
+        total++
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (assessment && assessment.status === 'compliant') compliant++
+        else if (assessment && assessment.status === 'partial') compliant += 0.5
+      })
+    })
+    return total ? Math.round((compliant / total) * 100) : 0
+  },
+
   // ── Demand CRUD ──
 
   get totalDemands () { return (this.data.demands || []).length },
@@ -701,7 +776,7 @@ export function startWatching () {
 // ────────────────────────────────────────────
 // Load — from localStorage or seed JSON
 // ────────────────────────────────────────────
-const CACHE_VERSION = 'v6-2026-02-11-phase7'
+const CACHE_VERSION = 'v7-2026-02-12-phase-c2'
 
 export async function loadData () {
   // 0. Force reload from seed when cache version changes
