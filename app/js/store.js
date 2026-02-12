@@ -626,8 +626,9 @@ export const store = reactive({
   get regulationDeadlineWarnings () {
     const now = new Date()
     const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    const selected = this.featureToggles.selectedRegulations || []
     return regs
-      .filter(r => r.deadline)
+      .filter(r => r.deadline && selected.includes(r.value))
       .map(r => {
         const dl = new Date(r.deadline)
         const diffDays = Math.ceil((dl - now) / (1000 * 60 * 60 * 24))
@@ -640,8 +641,10 @@ export const store = reactive({
   /** Auto-assign regulations to an app based on criticality and data classification */
   autoAssignRegulations (app) {
     const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    const selected = this.featureToggles.selectedRegulations || []
     const assigned = []
     regs.forEach(reg => {
+      if (!selected.includes(reg.value)) return
       const critMatch = !reg.applicableCriticalities || reg.applicableCriticalities.length === 0 ||
         reg.applicableCriticalities.includes(app.criticality)
       const scopeMatch = !reg.applicableScopes || reg.applicableScopes.length === 0 ||
