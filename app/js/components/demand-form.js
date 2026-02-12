@@ -84,18 +84,43 @@ export default {
             </div>
           </div>
 
-          <!-- Step 3: AI & EU AI Act -->
-          <div v-show="step === 2" class="space-y-4">
+          <!-- Step 3: Compliance & AI (if compliance enabled) -->
+          <div v-show="step === (store.featureToggles.complianceEnabled ? 2 : -1)" class="space-y-4">
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800 mb-4">
-              <strong>🤖 EU AI Act Klassifikation:</strong> Prüfen Sie, ob dieses Vorhaben einen KI-Anwendungsfall beinhaltet und ordnen Sie die Risikokategorie gemäß EU AI Act zu.
+              <strong>⚖️ Compliance- & KI-Prüfung:</strong> Welche Regulierungen und Standards sind für dieses Vorhaben relevant? Beinhaltet das Vorhaben einen KI-Anwendungsfall, wählen Sie „EU AI Act“.
             </div>
             <div>
-              <label class="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" v-model="form.isAIUseCase" class="rounded border-gray-300 h-5 w-5" />
-                <span class="text-sm font-medium text-gray-700">Dieses Vorhaben beinhaltet einen AI/KI-Anwendungsfall</span>
-              </label>
+              <label class="block text-xs font-medium text-gray-600 mb-2">Zutreffende Regulierungen</label>
+              <div class="flex flex-wrap gap-2">
+                <div v-for="reg in (store.data.enums.complianceRegulations || [])" :key="reg.value"
+                     @click="toggleRegulation(reg.value)"
+                     class="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-xs cursor-pointer transition-colors"
+                     :class="form.applicableRegulations.includes(reg.value)
+                       ? 'bg-primary-50 border-primary-400 text-primary-700'
+                       : 'border-surface-200 text-gray-600 hover:bg-surface-50'">
+                  <span class="flex items-center justify-center w-4 h-4 rounded border transition-colors"
+                        :class="form.applicableRegulations.includes(reg.value) ? 'bg-primary-600 border-primary-600' : 'border-gray-300'">
+                    <svg v-if="form.applicableRegulations.includes(reg.value)" class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="font-medium">{{ reg.label }}</div>
+                    <div class="text-[10px] text-gray-400">{{ reg.description }}</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div v-if="form.isAIUseCase" class="space-y-4 mt-2">
+            <div v-if="form.applicableRegulations.length > 0" class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+              ℹ️ <strong>{{ form.applicableRegulations.length }} Regulierung(en)</strong> ausgewählt.
+              Nach Genehmigung wird ein Compliance-Assessment für jede Regulierung erforderlich.
+            </div>
+
+            <!-- EU AI Act details (shown when EUAIACT is selected) -->
+            <div v-if="form.applicableRegulations.includes('EUAIACT')" class="mt-2 p-4 bg-indigo-50 border border-indigo-200 rounded-xl space-y-4">
+              <h4 class="text-sm font-semibold text-indigo-800 flex items-center gap-2">
+                <span class="text-base">🤖</span> EU AI Act – KI-Details
+              </h4>
               <div>
                 <label class="block text-xs font-medium text-gray-600 mb-1">EU AI Act Risikokategorie *</label>
                 <select v-model="form.aiRiskCategory" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
@@ -112,14 +137,14 @@ export default {
                 ℹ️ <strong>Begrenztes Risiko:</strong> Transparenzpflichten beachten – Nutzer müssen informiert werden, dass sie mit einem KI-System interagieren (Art. 52 EU AI Act).
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">AI-Beschreibung & Begründung</label>
-                <textarea v-model="form.aiDescription" rows="4" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical" placeholder="Beschreiben Sie den KI-Anwendungsfall, die verwendete Technologie und die Begründung für die Risikokategorie…"></textarea>
+                <label class="block text-xs font-medium text-gray-600 mb-1">KI-Beschreibung & Begründung</label>
+                <textarea v-model="form.aiDescription" rows="3" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical" placeholder="Beschreiben Sie den KI-Anwendungsfall und die Begründung für die Risikokategorie…"></textarea>
               </div>
             </div>
           </div>
 
-          <!-- Step 4: Linking -->
-          <div v-show="step === 3" class="space-y-4">
+          <!-- Step 4 (or 3): Linking -->
+          <div v-show="step === (store.featureToggles.complianceEnabled ? 3 : 2)" class="space-y-4">
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Primäre Domäne</label>
               <select v-model.number="form.primaryDomain" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
@@ -176,7 +201,9 @@ export default {
   setup (props, { emit }) {
     const { ref, onMounted } = Vue
 
-    const steps = ['Business Beschreibung', 'Klassifikation', 'AI & EU AI Act', 'Verknüpfungen']
+    const steps = store.featureToggles.complianceEnabled
+      ? ['Business Beschreibung', 'Klassifikation', 'Compliance & AI', 'Verknüpfungen']
+      : ['Business Beschreibung', 'Klassifikation', 'Verknüpfungen']
     const step = ref(0)
 
     const emptyChecklist = () => ({
@@ -198,6 +225,7 @@ export default {
       requestedBy: '', requestDate: new Date().toISOString().slice(0, 10),
       estimatedBudget: 0, primaryDomain: null,
       relatedDomains: [], relatedApps: [], relatedVendors: [],
+      applicableRegulations: [],
       isAIUseCase: false, aiRiskCategory: 'Kein AI-Usecase', aiDescription: '',
       checklistSecurity: emptyChecklist(),
       checklistLegal: emptyLegalChecklist(),
@@ -212,11 +240,18 @@ export default {
           ...defaultForm(),
           ...JSON.parse(JSON.stringify(props.editDemand))
         }
+        // Backward compat: if old demand has isAIUseCase but no EUAIACT in applicableRegulations, add it
+        if (!form.value.applicableRegulations) form.value.applicableRegulations = []
+        if (form.value.isAIUseCase && !form.value.applicableRegulations.includes('EUAIACT')) {
+          form.value.applicableRegulations.push('EUAIACT')
+        }
       }
     })
 
     function save () {
       const data = { ...form.value }
+      // Derive isAIUseCase from regulation selection for backward compat
+      data.isAIUseCase = data.applicableRegulations.includes('EUAIACT')
       if (!data.isAIUseCase) {
         data.aiRiskCategory = 'Kein AI-Usecase'
         data.aiDescription = ''
@@ -229,6 +264,12 @@ export default {
       emit('saved')
     }
 
-    return { store, steps, step, form, save }
+    function toggleRegulation (value) {
+      const idx = form.value.applicableRegulations.indexOf(value)
+      if (idx >= 0) form.value.applicableRegulations.splice(idx, 1)
+      else form.value.applicableRegulations.push(value)
+    }
+
+    return { store, steps, step, form, save, toggleRegulation }
   }
 }

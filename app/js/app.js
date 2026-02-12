@@ -54,6 +54,7 @@ import AppLifecycleTimeline from './components/app-lifecycle-timeline.js'
 import TcoCalculator from './components/tco-calculator.js'
 import ComplianceDashboard from './components/compliance-dashboard.js'
 import ComplianceAudit from './components/compliance-audit.js'
+import ComplianceAssessment from './components/compliance-assessment.js'
 
 // Create app
 const app = createApp(Layout)
@@ -109,6 +110,7 @@ app.component('app-lifecycle-timeline', AppLifecycleTimeline)
 app.component('tco-calculator', TcoCalculator)
 app.component('compliance-dashboard', ComplianceDashboard)
 app.component('compliance-audit', ComplianceAudit)
+app.component('compliance-assessment', ComplianceAssessment)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

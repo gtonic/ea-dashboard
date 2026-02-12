@@ -172,7 +172,9 @@ export default {
                 :class="complianceSummary.color">{{ complianceSummary.label }}</span>
         </div>
         <div class="divide-y divide-surface-100 dark:divide-surface-800">
-          <div v-for="reg in appRegulations" :key="reg.value" class="flex items-center justify-between px-5 py-3">
+          <div v-for="reg in appRegulations" :key="reg.value"
+               @click="assessingReg = reg.value"
+               class="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors group">
             <div class="flex items-center gap-3 min-w-0">
               <svg class="w-4 h-4 shrink-0" :class="assessmentIcon(reg.assessment?.status).color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="assessmentIcon(reg.assessment?.status).path"/>
@@ -183,9 +185,13 @@ export default {
               </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
+              <div v-if="reg.assessment && reg.assessment.score != null" class="flex items-center gap-1.5">
+                <div class="w-16 bg-gray-200 rounded-full h-1.5"><div class="h-1.5 rounded-full transition-all" :class="reg.assessment.score >= 80 ? 'bg-green-500' : reg.assessment.score >= 50 ? 'bg-yellow-500' : 'bg-red-500'" :style="'width:' + reg.assessment.score + '%'"></div></div>
+                <span class="text-xs font-bold w-8 text-right" :class="reg.assessment.score >= 80 ? 'text-green-600' : reg.assessment.score >= 50 ? 'text-yellow-600' : 'text-red-600'">{{ reg.assessment.score }}%</span>
+              </div>
               <span v-if="reg.assessment" class="text-xs px-2 py-0.5 rounded-full font-medium"
                     :class="statusBadge(reg.assessment.status)">{{ statusText(reg.assessment.status) }}</span>
-              <span v-else class="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Nicht bewertet</span>
+              <span v-else class="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 group-hover:bg-blue-100">Assessment starten →</span>
               <div v-if="reg.assessment" class="text-right">
                 <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedBy }}</div>
                 <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedDate }}</div>
@@ -195,6 +201,9 @@ export default {
         </div>
       </div>
 
+      <!-- Compliance Assessment Modal -->
+      <compliance-assessment v-if="assessingReg" :app-id="app.id" :regulation="assessingReg" @close="assessingReg = null" @saved="onAssessmentSaved"></compliance-assessment>
+
       <!-- Edit Modal -->
       <app-form v-if="showEdit" :edit-app="app" @close="showEdit = false" @saved="showEdit = false"></app-form>
     </div>
@@ -203,6 +212,11 @@ export default {
   setup () {
     const { ref, computed } = Vue
     const showEdit = ref(false)
+    const assessingReg = ref(null)
+
+    function onAssessmentSaved () {
+      assessingReg.value = null
+    }
 
     const app = computed(() => store.appById(router.params.id))
 
@@ -333,6 +347,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, appRegulations, complianceSummary, assessmentIcon, statusBadge, statusText, primaryVendorName, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
+    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, appRegulations, complianceSummary, assessmentIcon, statusBadge, statusText, primaryVendorName, showEdit, assessingReg, onAssessmentSaved, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
   }
 }

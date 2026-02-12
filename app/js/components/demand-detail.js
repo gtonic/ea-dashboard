@@ -52,8 +52,8 @@ export default {
         </div>
       </div>
 
-      <!-- AI Use Case / EU AI Act -->
-      <div v-if="demand.isAIUseCase" class="bg-white rounded-xl border border-surface-200 p-5">
+      <!-- AI Use Case / EU AI Act (legacy, shown when compliance is off but AI data exists) -->
+      <div v-if="!store.featureToggles.complianceEnabled && demand.isAIUseCase" class="bg-white rounded-xl border border-surface-200 p-5">
         <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
           <span class="text-lg">🤖</span> AI Use Case – EU AI Act Klassifikation
         </h3>
@@ -72,6 +72,58 @@ export default {
         </div>
         <div v-if="demand.aiRiskCategory === 'Unannehmbares Risiko'" class="mt-3 bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-800">
           🚫 <strong>Verboten gemäß EU AI Act:</strong> Dieses System fällt unter die verbotenen KI-Praktiken und darf nicht eingesetzt werden.
+        </div>
+      </div>
+
+      <!-- Compliance / Regulierungen (if compliance enabled and regulations assigned) -->
+      <div v-if="store.featureToggles.complianceEnabled && demandRegulations.length > 0" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 bg-surface-50 flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            <span class="text-base">⚖️</span> Compliance-Anforderungen ({{ demandRegulations.length }})
+          </h3>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">Assessment erforderlich</span>
+        </div>
+        <div class="divide-y divide-surface-100">
+          <div v-for="reg in demandRegulations" :key="reg.value" class="px-5 py-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{{ reg.value }}</span>
+                <div>
+                  <div class="text-sm font-medium text-gray-800">{{ reg.label }}</div>
+                  <div class="text-xs text-gray-400">{{ reg.description }}</div>
+                </div>
+              </div>
+              <span v-if="reg.deadline" class="text-[10px] text-gray-400">Deadline: {{ reg.deadline }}</span>
+            </div>
+            <!-- AI details inline for EUAIACT -->
+            <div v-if="reg.value === 'EUAIACT' && demand.aiRiskCategory && demand.aiRiskCategory !== 'Kein AI-Usecase'" class="mt-3 ml-8 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <div class="text-[10px] text-gray-500 uppercase">Risikokategorie</div>
+                  <span class="inline-block mt-0.5 text-xs px-2 py-0.5 rounded-full font-medium" :class="aiRiskClass(demand.aiRiskCategory)">{{ demand.aiRiskCategory }}</span>
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-[10px] text-gray-500 uppercase">KI-Beschreibung</div>
+                  <div class="text-xs text-gray-700 mt-0.5">{{ demand.aiDescription || '—' }}</div>
+                </div>
+              </div>
+              <div v-if="demand.aiRiskCategory === 'Hohes Risiko'" class="mt-2 bg-orange-50 border border-orange-200 rounded p-2 text-xs text-orange-800">
+                ⚠️ Konformitätsbewertung, CE-Kennzeichnung, Risikomanagement-System, Daten-Governance, technische Dokumentation und menschliche Aufsicht erforderlich.
+              </div>
+              <div v-if="demand.aiRiskCategory === 'Unannehmbares Risiko'" class="mt-2 bg-red-50 border border-red-200 rounded p-2 text-xs text-red-800">
+                🚫 Dieses System fällt unter die verbotenen KI-Praktiken und darf nicht eingesetzt werden.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
+          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
+        </div>
+      </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
+          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
         </div>
       </div>
 
@@ -241,6 +293,15 @@ export default {
       return demand.value.relatedVendors.map(id => store.vendorById(id)).filter(Boolean)
     })
 
+    const demandRegulations = computed(() => {
+      if (!demand.value || !demand.value.applicableRegulations) return []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      return demand.value.applicableRegulations.map(val => {
+        const meta = allRegs.find(r => r.value === val)
+        return meta || { value: val, label: val, description: '' }
+      })
+    })
+
     function checklistItems (checklist) {
       if (!checklist) return { total: 0, done: 0 }
       const items = Object.entries(checklist).filter(([k]) => k !== 'notes')
@@ -328,6 +389,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
+    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, demandRegulations, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
   }
 }

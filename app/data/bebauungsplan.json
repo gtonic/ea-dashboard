@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2026-02-11T21:20:01.286238",
+    "lastUpdated": "2026-02-12T03:31:01.754273",
     "owner": "Enterprise Architecture",
     "company": "Metallwerk Vorarlberg GmbH",
     "description": "Strategischer Bebauungsplan — Datenmodell für ein mittelständisches Industrieunternehmen"
@@ -2543,7 +2543,7 @@
     {
       "id": "APP-017",
       "name": "Atlassian Confluence",
-      "vendor": "Atlassian",
+      "vendor": "",
       "category": "Knowledge Management",
       "type": "SaaS",
       "criticality": "Business-Operational",
@@ -2578,9 +2578,12 @@
       "integrationCost": 2000,
       "personnelCost": 1000,
       "regulations": [
-        "ISO27001"
+        "ISO27001",
+        "GDPR",
+        "NIS2"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "vendors": []
     },
     {
       "id": "APP-018",
@@ -4155,7 +4158,7 @@
       "title": "HR Chatbot für Mitarbeiteranfragen",
       "description": "GenAI-basierter Chatbot zur Beantwortung von HR-Standardfragen (Urlaub, Gehaltsabrechnung, Benefits). Entlastung des HR-Teams.",
       "category": "Bereichsvorhaben (< 50k)",
-      "status": "Eingereicht",
+      "status": "In Bewertung",
       "priority": "Mittel",
       "requestedBy": "HR-Leitung",
       "requestDate": "2026-02-05",
@@ -4194,7 +4197,11 @@
         "technologyApproved": false,
         "scalabilityCheck": false,
         "notes": ""
-      }
+      },
+      "applicableRegulations": [
+        "EUAIACT",
+        "GDPR"
+      ]
     }
   ],
   "integrations": [
@@ -5383,12 +5390,22 @@
       "id": "CA-032",
       "appId": "APP-017",
       "regulation": "ISO27001",
-      "status": "notAssessed",
-      "assessedBy": "Anna Schmidt",
-      "assessedDate": "2025-03-30",
-      "notes": "Bewertung ausstehend. Atlassian Cloud Security Review geplant.",
-      "workflowStatus": "open",
-      "deadline": "2025-02-05",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "iso-01": "compliant",
+        "iso-02": "compliant",
+        "iso-03": "compliant",
+        "iso-04": "compliant",
+        "iso-05": "compliant",
+        "iso-06": "compliant",
+        "iso-07": "compliant",
+        "iso-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
       "auditTrail": [
         {
           "timestamp": "2025-03-30T09:00:00Z",
@@ -5397,6 +5414,13 @@
           "fromStatus": null,
           "toStatus": "open",
           "comment": "Erstbewertung angelegt"
+        },
+        {
+          "timestamp": "2026-02-12T02:23:22.055Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_updated",
+          "status": "compliant",
+          "score": 100
         }
       ]
     },
@@ -5790,6 +5814,66 @@
           "fromStatus": "inReview",
           "toStatus": "assessed",
           "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-1770862969222",
+      "appId": "APP-017",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "gdpr-01": "compliant",
+        "gdpr-02": "compliant",
+        "gdpr-03": "compliant",
+        "gdpr-04": "compliant",
+        "gdpr-05": "compliant",
+        "gdpr-06": "compliant",
+        "gdpr-07": "compliant",
+        "gdpr-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
+      "auditTrail": [
+        {
+          "timestamp": "2026-02-12T02:22:49.222Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_created",
+          "status": "compliant",
+          "score": 100
+        }
+      ]
+    },
+    {
+      "id": "CA-1770862984439",
+      "appId": "APP-017",
+      "regulation": "NIS2",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "nis2-01": "compliant",
+        "nis2-02": "compliant",
+        "nis2-03": "compliant",
+        "nis2-04": "compliant",
+        "nis2-05": "compliant",
+        "nis2-06": "compliant",
+        "nis2-07": "compliant",
+        "nis2-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
+      "auditTrail": [
+        {
+          "timestamp": "2026-02-12T02:23:04.439Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_created",
+          "status": "compliant",
+          "score": 100
         }
       ]
     }
