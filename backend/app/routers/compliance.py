@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.compliance import ComplianceAssessment
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.compliance import (
     ComplianceAssessmentCreate, ComplianceAssessmentRead, ComplianceAssessmentUpdate,
 )
@@ -16,6 +18,7 @@ def list_assessments(
     regulation: str | None = Query(None),
     status: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(ComplianceAssessment)
     if app_id:
@@ -28,7 +31,7 @@ def list_assessments(
 
 
 @router.get("/{assessment_id}", response_model=ComplianceAssessmentRead)
-def get_assessment(assessment_id: str, db: Session = Depends(get_db)):
+def get_assessment(assessment_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
     ).first()
@@ -38,7 +41,7 @@ def get_assessment(assessment_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=ComplianceAssessmentRead, status_code=201)
-def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db)):
+def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     assessment_dict = data.model_dump()
     if not assessment_dict.get("id"):
         existing = db.query(ComplianceAssessment.id).all()
@@ -62,6 +65,7 @@ def update_assessment(
     assessment_id: str,
     data: ComplianceAssessmentUpdate,
     db: Session = Depends(get_db),
+    _user: User = Depends(require_role("admin", "editor")),
 ):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
@@ -76,7 +80,7 @@ def update_assessment(
 
 
 @router.delete("/{assessment_id}", status_code=204)
-def delete_assessment(assessment_id: str, db: Session = Depends(get_db)):
+def delete_assessment(assessment_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
     ).first()

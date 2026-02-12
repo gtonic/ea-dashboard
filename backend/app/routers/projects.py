@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.project import Project, ProjectDependency
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.project import (
     ProjectCreate, ProjectRead, ProjectUpdate,
     ProjectDependencyCreate, ProjectDependencyRead, ProjectDependencyUpdate,
@@ -29,6 +31,7 @@ def list_projects(
     category: str | None = Query(None),
     status: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(Project)
     if category:
@@ -39,7 +42,7 @@ def list_projects(
 
 
 @router.get("/{project_id}", response_model=ProjectRead)
-def get_project(project_id: str, db: Session = Depends(get_db)):
+def get_project(project_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -47,7 +50,7 @@ def get_project(project_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=ProjectRead, status_code=201)
-def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
+def create_project(data: ProjectCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     project_dict = data.model_dump()
     if project_dict.get("id") is None:
         project_dict["id"] = _generate_project_id(db)
@@ -59,7 +62,7 @@ def create_project(data: ProjectCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{project_id}", response_model=ProjectRead)
-def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db)):
+def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -71,7 +74,7 @@ def update_project(project_id: str, data: ProjectUpdate, db: Session = Depends(g
 
 
 @router.delete("/{project_id}", status_code=204)
-def delete_project(project_id: str, db: Session = Depends(get_db)):
+def delete_project(project_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     project = db.query(Project).filter(Project.id == project_id).first()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -88,6 +91,7 @@ dep_router = APIRouter(prefix="/project-dependencies", tags=["project-dependenci
 def list_dependencies(
     source_project_id: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(ProjectDependency)
     if source_project_id:
@@ -96,7 +100,7 @@ def list_dependencies(
 
 
 @dep_router.post("", response_model=ProjectDependencyRead, status_code=201)
-def create_dependency(data: ProjectDependencyCreate, db: Session = Depends(get_db)):
+def create_dependency(data: ProjectDependencyCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     dep = ProjectDependency(**data.model_dump())
     db.add(dep)
     db.commit()
@@ -110,6 +114,7 @@ def update_dependency(
     target_id: str,
     data: ProjectDependencyUpdate,
     db: Session = Depends(get_db),
+    _user: User = Depends(require_role("admin", "editor")),
 ):
     dep = db.query(ProjectDependency).filter(
         ProjectDependency.source_project_id == source_id,
@@ -125,7 +130,7 @@ def update_dependency(
 
 
 @dep_router.delete("/{source_id}/{target_id}", status_code=204)
-def delete_dependency(source_id: str, target_id: str, db: Session = Depends(get_db)):
+def delete_dependency(source_id: str, target_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     dep = db.query(ProjectDependency).filter(
         ProjectDependency.source_project_id == source_id,
         ProjectDependency.target_project_id == target_id,

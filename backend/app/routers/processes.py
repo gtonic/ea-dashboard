@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.process import E2EProcess
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.process import E2EProcessCreate, E2EProcessRead, E2EProcessUpdate
 
 router = APIRouter(prefix="/processes", tags=["processes"])
@@ -25,6 +27,7 @@ def _generate_process_id(db: Session) -> str:
 def list_processes(
     status: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(E2EProcess)
     if status:
@@ -33,7 +36,7 @@ def list_processes(
 
 
 @router.get("/{process_id}", response_model=E2EProcessRead)
-def get_process(process_id: str, db: Session = Depends(get_db)):
+def get_process(process_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     process = db.query(E2EProcess).filter(E2EProcess.id == process_id).first()
     if not process:
         raise HTTPException(status_code=404, detail="Process not found")
@@ -41,7 +44,7 @@ def get_process(process_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=E2EProcessRead, status_code=201)
-def create_process(data: E2EProcessCreate, db: Session = Depends(get_db)):
+def create_process(data: E2EProcessCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     process_dict = data.model_dump()
     if process_dict.get("id") is None:
         process_dict["id"] = _generate_process_id(db)
@@ -53,7 +56,7 @@ def create_process(data: E2EProcessCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{process_id}", response_model=E2EProcessRead)
-def update_process(process_id: str, data: E2EProcessUpdate, db: Session = Depends(get_db)):
+def update_process(process_id: str, data: E2EProcessUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     process = db.query(E2EProcess).filter(E2EProcess.id == process_id).first()
     if not process:
         raise HTTPException(status_code=404, detail="Process not found")
@@ -65,7 +68,7 @@ def update_process(process_id: str, data: E2EProcessUpdate, db: Session = Depend
 
 
 @router.delete("/{process_id}", status_code=204)
-def delete_process(process_id: str, db: Session = Depends(get_db)):
+def delete_process(process_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     process = db.query(E2EProcess).filter(E2EProcess.id == process_id).first()
     if not process:
         raise HTTPException(status_code=404, detail="Process not found")

@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.integration import Integration
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.integration import IntegrationCreate, IntegrationRead, IntegrationUpdate
 
 router = APIRouter(prefix="/integrations", tags=["integrations"])
@@ -27,6 +29,7 @@ def list_integrations(
     target_app_id: str | None = Query(None),
     status: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(Integration)
     if source_app_id:
@@ -39,7 +42,7 @@ def list_integrations(
 
 
 @router.get("/{integration_id}", response_model=IntegrationRead)
-def get_integration(integration_id: str, db: Session = Depends(get_db)):
+def get_integration(integration_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     integration = db.query(Integration).filter(Integration.id == integration_id).first()
     if not integration:
         raise HTTPException(status_code=404, detail="Integration not found")
@@ -47,7 +50,7 @@ def get_integration(integration_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=IntegrationRead, status_code=201)
-def create_integration(data: IntegrationCreate, db: Session = Depends(get_db)):
+def create_integration(data: IntegrationCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     integration_dict = data.model_dump()
     if integration_dict.get("id") is None:
         integration_dict["id"] = _generate_integration_id(db)
@@ -59,7 +62,7 @@ def create_integration(data: IntegrationCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{integration_id}", response_model=IntegrationRead)
-def update_integration(integration_id: str, data: IntegrationUpdate, db: Session = Depends(get_db)):
+def update_integration(integration_id: str, data: IntegrationUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     integration = db.query(Integration).filter(Integration.id == integration_id).first()
     if not integration:
         raise HTTPException(status_code=404, detail="Integration not found")
@@ -71,7 +74,7 @@ def update_integration(integration_id: str, data: IntegrationUpdate, db: Session
 
 
 @router.delete("/{integration_id}", status_code=204)
-def delete_integration(integration_id: str, db: Session = Depends(get_db)):
+def delete_integration(integration_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     integration = db.query(Integration).filter(Integration.id == integration_id).first()
     if not integration:
         raise HTTPException(status_code=404, detail="Integration not found")

@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.entity import LegalEntity
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.entity import LegalEntityCreate, LegalEntityRead, LegalEntityUpdate
 
 router = APIRouter(prefix="/entities", tags=["entities"])
@@ -25,6 +27,7 @@ def _generate_entity_id(db: Session) -> str:
 def list_entities(
     country: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(LegalEntity)
     if country:
@@ -33,7 +36,7 @@ def list_entities(
 
 
 @router.get("/{entity_id}", response_model=LegalEntityRead)
-def get_entity(entity_id: str, db: Session = Depends(get_db)):
+def get_entity(entity_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     entity = db.query(LegalEntity).filter(LegalEntity.id == entity_id).first()
     if not entity:
         raise HTTPException(status_code=404, detail="Entity not found")
@@ -41,7 +44,7 @@ def get_entity(entity_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=LegalEntityRead, status_code=201)
-def create_entity(data: LegalEntityCreate, db: Session = Depends(get_db)):
+def create_entity(data: LegalEntityCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     entity_dict = data.model_dump()
     if entity_dict.get("id") is None:
         entity_dict["id"] = _generate_entity_id(db)
@@ -53,7 +56,7 @@ def create_entity(data: LegalEntityCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{entity_id}", response_model=LegalEntityRead)
-def update_entity(entity_id: str, data: LegalEntityUpdate, db: Session = Depends(get_db)):
+def update_entity(entity_id: str, data: LegalEntityUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     entity = db.query(LegalEntity).filter(LegalEntity.id == entity_id).first()
     if not entity:
         raise HTTPException(status_code=404, detail="Entity not found")
@@ -65,7 +68,7 @@ def update_entity(entity_id: str, data: LegalEntityUpdate, db: Session = Depends
 
 
 @router.delete("/{entity_id}", status_code=204)
-def delete_entity(entity_id: str, db: Session = Depends(get_db)):
+def delete_entity(entity_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     entity = db.query(LegalEntity).filter(LegalEntity.id == entity_id).first()
     if not entity:
         raise HTTPException(status_code=404, detail="Entity not found")

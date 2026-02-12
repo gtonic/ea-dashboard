@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.domain import Domain, Capability, SubCapability
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.domain import (
     DomainCreate, DomainRead, DomainUpdate,
     CapabilityCreate, CapabilityRead, CapabilityUpdate,
@@ -14,12 +16,12 @@ router = APIRouter(prefix="/domains", tags=["domains"])
 
 
 @router.get("", response_model=list[DomainRead])
-def list_domains(db: Session = Depends(get_db)):
+def list_domains(db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     return db.query(Domain).all()
 
 
 @router.get("/{domain_id}", response_model=DomainRead)
-def get_domain(domain_id: int, db: Session = Depends(get_db)):
+def get_domain(domain_id: int, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
@@ -27,7 +29,7 @@ def get_domain(domain_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=DomainRead, status_code=201)
-def create_domain(data: DomainCreate, db: Session = Depends(get_db)):
+def create_domain(data: DomainCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     caps_data = data.capabilities or []
     domain_dict = data.model_dump(exclude={"capabilities"})
     if domain_dict.get("id") is None:
@@ -57,7 +59,7 @@ def create_domain(data: DomainCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{domain_id}", response_model=DomainRead)
-def update_domain(domain_id: int, data: DomainUpdate, db: Session = Depends(get_db)):
+def update_domain(domain_id: int, data: DomainUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
@@ -69,7 +71,7 @@ def update_domain(domain_id: int, data: DomainUpdate, db: Session = Depends(get_
 
 
 @router.delete("/{domain_id}", status_code=204)
-def delete_domain(domain_id: int, db: Session = Depends(get_db)):
+def delete_domain(domain_id: int, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
@@ -80,12 +82,12 @@ def delete_domain(domain_id: int, db: Session = Depends(get_db)):
 # --- Capability sub-routes ---
 
 @router.get("/{domain_id}/capabilities", response_model=list[CapabilityRead])
-def list_capabilities(domain_id: int, db: Session = Depends(get_db)):
+def list_capabilities(domain_id: int, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     return db.query(Capability).filter(Capability.domain_id == domain_id).all()
 
 
 @router.post("/{domain_id}/capabilities", response_model=CapabilityRead, status_code=201)
-def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depends(get_db)):
+def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     domain = db.query(Domain).filter(Domain.id == domain_id).first()
     if not domain:
         raise HTTPException(status_code=404, detail="Domain not found")
@@ -109,7 +111,7 @@ def create_capability(domain_id: int, data: CapabilityCreate, db: Session = Depe
 
 
 @router.put("/capabilities/{capability_id}", response_model=CapabilityRead)
-def update_capability(capability_id: str, data: CapabilityUpdate, db: Session = Depends(get_db)):
+def update_capability(capability_id: str, data: CapabilityUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     cap = db.query(Capability).filter(Capability.id == capability_id).first()
     if not cap:
         raise HTTPException(status_code=404, detail="Capability not found")
@@ -121,7 +123,7 @@ def update_capability(capability_id: str, data: CapabilityUpdate, db: Session = 
 
 
 @router.delete("/capabilities/{capability_id}", status_code=204)
-def delete_capability(capability_id: str, db: Session = Depends(get_db)):
+def delete_capability(capability_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     cap = db.query(Capability).filter(Capability.id == capability_id).first()
     if not cap:
         raise HTTPException(status_code=404, detail="Capability not found")

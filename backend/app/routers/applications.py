@@ -4,10 +4,12 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.application import Application, CapabilityMapping
+from app.models.user import User
 from app.schemas.application import (
     ApplicationCreate, ApplicationRead, ApplicationUpdate,
     CapabilityMappingCreate, CapabilityMappingRead, CapabilityMappingUpdate,
 )
+from app.auth import get_current_user, require_role
 
 router = APIRouter(prefix="/applications", tags=["applications"])
 
@@ -31,6 +33,7 @@ def list_applications(
     criticality: str | None = Query(None),
     lifecycle_status: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(Application)
     if category:
@@ -43,7 +46,7 @@ def list_applications(
 
 
 @router.get("/{app_id}", response_model=ApplicationRead)
-def get_application(app_id: str, db: Session = Depends(get_db)):
+def get_application(app_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     app = db.query(Application).filter(Application.id == app_id).first()
     if not app:
         raise HTTPException(status_code=404, detail="Application not found")
@@ -51,7 +54,7 @@ def get_application(app_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=ApplicationRead, status_code=201)
-def create_application(data: ApplicationCreate, db: Session = Depends(get_db)):
+def create_application(data: ApplicationCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     app_dict = data.model_dump()
     if app_dict.get("id") is None:
         app_dict["id"] = _generate_app_id(db)
@@ -63,7 +66,7 @@ def create_application(data: ApplicationCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{app_id}", response_model=ApplicationRead)
-def update_application(app_id: str, data: ApplicationUpdate, db: Session = Depends(get_db)):
+def update_application(app_id: str, data: ApplicationUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     app = db.query(Application).filter(Application.id == app_id).first()
     if not app:
         raise HTTPException(status_code=404, detail="Application not found")
@@ -75,7 +78,7 @@ def update_application(app_id: str, data: ApplicationUpdate, db: Session = Depen
 
 
 @router.delete("/{app_id}", status_code=204)
-def delete_application(app_id: str, db: Session = Depends(get_db)):
+def delete_application(app_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     app = db.query(Application).filter(Application.id == app_id).first()
     if not app:
         raise HTTPException(status_code=404, detail="Application not found")
@@ -93,6 +96,7 @@ def list_mappings(
     application_id: str | None = Query(None),
     capability_id: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(CapabilityMapping)
     if application_id:
@@ -103,7 +107,7 @@ def list_mappings(
 
 
 @mapping_router.post("", response_model=CapabilityMappingRead, status_code=201)
-def create_mapping(data: CapabilityMappingCreate, db: Session = Depends(get_db)):
+def create_mapping(data: CapabilityMappingCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     mapping = CapabilityMapping(**data.model_dump())
     db.add(mapping)
     db.commit()
@@ -117,6 +121,7 @@ def update_mapping(
     application_id: str,
     data: CapabilityMappingUpdate,
     db: Session = Depends(get_db),
+    _user: User = Depends(require_role("admin", "editor")),
 ):
     m = db.query(CapabilityMapping).filter(
         CapabilityMapping.capability_id == capability_id,
@@ -132,7 +137,7 @@ def update_mapping(
 
 
 @mapping_router.delete("/{capability_id}/{application_id}", status_code=204)
-def delete_mapping(capability_id: str, application_id: str, db: Session = Depends(get_db)):
+def delete_mapping(capability_id: str, application_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     m = db.query(CapabilityMapping).filter(
         CapabilityMapping.capability_id == capability_id,
         CapabilityMapping.application_id == application_id,

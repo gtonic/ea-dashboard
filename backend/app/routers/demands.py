@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.demand import Demand
+from app.models.user import User
+from app.auth import get_current_user, require_role
 from app.schemas.demand import DemandCreate, DemandRead, DemandUpdate
 
 router = APIRouter(prefix="/demands", tags=["demands"])
@@ -27,6 +29,7 @@ def list_demands(
     status: str | None = Query(None),
     priority: str | None = Query(None),
     db: Session = Depends(get_db),
+    _user: User = Depends(get_current_user),
 ):
     q = db.query(Demand)
     if category:
@@ -39,7 +42,7 @@ def list_demands(
 
 
 @router.get("/{demand_id}", response_model=DemandRead)
-def get_demand(demand_id: str, db: Session = Depends(get_db)):
+def get_demand(demand_id: str, db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     demand = db.query(Demand).filter(Demand.id == demand_id).first()
     if not demand:
         raise HTTPException(status_code=404, detail="Demand not found")
@@ -47,7 +50,7 @@ def get_demand(demand_id: str, db: Session = Depends(get_db)):
 
 
 @router.post("", response_model=DemandRead, status_code=201)
-def create_demand(data: DemandCreate, db: Session = Depends(get_db)):
+def create_demand(data: DemandCreate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     demand_dict = data.model_dump()
     if demand_dict.get("id") is None:
         demand_dict["id"] = _generate_demand_id(db)
@@ -59,7 +62,7 @@ def create_demand(data: DemandCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{demand_id}", response_model=DemandRead)
-def update_demand(demand_id: str, data: DemandUpdate, db: Session = Depends(get_db)):
+def update_demand(demand_id: str, data: DemandUpdate, db: Session = Depends(get_db), _user: User = Depends(require_role("admin", "editor"))):
     demand = db.query(Demand).filter(Demand.id == demand_id).first()
     if not demand:
         raise HTTPException(status_code=404, detail="Demand not found")
@@ -71,7 +74,7 @@ def update_demand(demand_id: str, data: DemandUpdate, db: Session = Depends(get_
 
 
 @router.delete("/{demand_id}", status_code=204)
-def delete_demand(demand_id: str, db: Session = Depends(get_db)):
+def delete_demand(demand_id: str, db: Session = Depends(get_db), _user: User = Depends(require_role("admin"))):
     demand = db.query(Demand).filter(Demand.id == demand_id).first()
     if not demand:
         raise HTTPException(status_code=404, detail="Demand not found")

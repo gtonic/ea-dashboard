@@ -3,14 +3,34 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 from app.config import settings
-from app.database import Base, engine
+from app.database import Base, engine, SessionLocal
+from app.models.user import User
+from app.services.auth_service import hash_password
 from app.routers import (
     domains, applications, projects, vendors, demands,
     integrations, processes, entities, compliance, kpis,
     seed, export,
 )
+from app.routers import auth as auth_router
+from app.routers import admin as admin_router
+
+
+def _ensure_admin(db):
+    """Create default admin user if no users exist."""
+    if db.query(User).count() == 0:
+        admin = User(
+            email=settings.ADMIN_EMAIL,
+            name=settings.ADMIN_NAME,
+            password_hash=hash_password(settings.ADMIN_PASSWORD),
+            role="admin",
+            is_active=True,
+        )
+        db.add(admin)
+        db.commit()
 
 
 @asynccontextmanager
@@ -20,10 +40,20 @@ async def lifespan(application: FastAPI):
         db_path = url.replace("sqlite:///", "")
         os.makedirs(os.path.dirname(db_path) or ".", exist_ok=True)
     Base.metadata.create_all(bind=engine)
+    db = SessionLocal()
+    try:
+        _ensure_admin(db)
+    finally:
+        db.close()
     yield
 
 
-app = FastAPI(title="EA Dashboard API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="EA Dashboard API", version="0.2.0", lifespan=lifespan)
+
+# Rate limiter (used by auth endpoints)
+from app.routers.auth import limiter  # noqa: E402
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,6 +63,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Auth & Admin
+app.include_router(auth_router.router, prefix="/api")
+app.include_router(admin_router.router, prefix="/api")
+
+# Entity CRUD
 app.include_router(domains.router, prefix="/api")
 app.include_router(applications.router, prefix="/api")
 app.include_router(applications.mapping_router, prefix="/api")

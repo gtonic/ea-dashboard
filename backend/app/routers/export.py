@@ -3,6 +3,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models.user import User
+from app.auth import get_current_user
 from app.models.domain import Domain, Capability, SubCapability
 from app.models.application import Application, CapabilityMapping
 from app.models.project import Project, ProjectDependency
@@ -23,7 +25,7 @@ def _to_camel(name: str) -> str:
 
 
 @router.get("/json")
-def export_json(db: Session = Depends(get_db)):
+def export_json(db: Session = Depends(get_db), _user: User = Depends(get_current_user)):
     domains = db.query(Domain).all()
     domains_out = []
     for d in domains:
