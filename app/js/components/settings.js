@@ -1,6 +1,6 @@
 // settings.js — Import/export JSON, reset to seed data
 import { store } from '../store.js'
-import { exportJSON, importJSON, resetToSeed } from '../store.js'
+import { exportJSON, importJSON, resetToSeed, domainTemplates, applyDomainTemplate } from '../store.js'
 import { i18n } from '../i18n.js'
 
 export default {
@@ -63,6 +63,34 @@ export default {
               <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
                     :class="store.featureToggles.complianceEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
             </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Domain / Capability Templates -->
+      <section class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('settings.domainTemplates') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('settings.domainTemplatesDesc') }}</p>
+        <div class="space-y-3">
+          <div v-for="tpl in templates" :key="tpl.id"
+               @click="selectTemplate(tpl.id)"
+               class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+               :class="isActiveTemplate(tpl.id)
+                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-600'
+                 : 'border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800'">
+            <div class="flex items-center justify-center w-5 h-5 rounded-full border-2 shrink-0 transition-colors"
+                 :class="isActiveTemplate(tpl.id)
+                   ? 'bg-primary-600 border-primary-600 text-white'
+                   : 'border-gray-300 dark:border-gray-600'">
+              <svg v-if="isActiveTemplate(tpl.id)" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t(tpl.labelKey) }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ t(tpl.descKey) }}</div>
+            </div>
+            <span class="text-xs text-gray-400">{{ tpl.domains.length }} {{ t('settings.templateDomains') }}</span>
           </div>
         </div>
       </section>
@@ -217,6 +245,22 @@ export default {
 
     const availableRegulations = computed(() => (store.data.enums && store.data.enums.complianceRegulations) || [])
 
+    // Domain Templates
+    const templates = domainTemplates
+
+    function isActiveTemplate (id) {
+      return (store.featureToggles.selectedDomainTemplate || '') === id
+    }
+
+    function selectTemplate (id) {
+      if (isActiveTemplate(id)) return
+      if (!confirm(t('settings.domainTemplateConfirm'))) return
+      if (applyDomainTemplate(id)) {
+        store.featureToggles.selectedDomainTemplate = id
+        showToast(t('settings.domainTemplateApplied'))
+      }
+    }
+
     function regLabel (value) {
       const key = 'regulation.' + value + '.label'
       const translated = t(key)
@@ -249,6 +293,6 @@ export default {
       }
     }
 
-    return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation, regLabel, regDesc }
+    return { store, stats, toast, doExport, doImport, confirmReset, t, templates, isActiveTemplate, selectTemplate, availableRegulations, isRegulationSelected, toggleRegulation, regLabel, regDesc }
   }
 }

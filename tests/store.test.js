@@ -1559,3 +1559,73 @@ describe('Compliance Phase C3 — Domain Compliance Scorecard', () => {
     expect(scorecard).toHaveLength(0)
   })
 })
+
+// ─── Domain Template Tests ────────────────────────────────
+
+import { domainTemplates, applyDomainTemplate } from '../app/js/store.js'
+
+describe('Domain Templates', () => {
+  it('domainTemplates contains at least 5 industry templates', () => {
+    expect(domainTemplates.length).toBeGreaterThanOrEqual(5)
+  })
+
+  it('each template has required fields', () => {
+    for (const tpl of domainTemplates) {
+      expect(tpl.id).toBeTruthy()
+      expect(tpl.labelKey).toBeTruthy()
+      expect(tpl.descKey).toBeTruthy()
+      expect(Array.isArray(tpl.domains)).toBe(true)
+      expect(tpl.domains.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('each template domain has capabilities with sub-capabilities', () => {
+    for (const tpl of domainTemplates) {
+      for (const domain of tpl.domains) {
+        expect(domain.id).toBeTruthy()
+        expect(domain.name).toBeTruthy()
+        expect(domain.color).toBeTruthy()
+        expect(Array.isArray(domain.capabilities)).toBe(true)
+        expect(domain.capabilities.length).toBeGreaterThan(0)
+        for (const cap of domain.capabilities) {
+          expect(cap.id).toBeTruthy()
+          expect(cap.name).toBeTruthy()
+          expect(typeof cap.maturity).toBe('number')
+          expect(typeof cap.targetMaturity).toBe('number')
+          expect(Array.isArray(cap.subCapabilities)).toBe(true)
+        }
+      }
+    }
+  })
+
+  it('applyDomainTemplate replaces domains with template data', () => {
+    store.data.domains = [{ id: 99, name: 'Old Domain', capabilities: [] }]
+    store.data.capabilityMappings = [{ capabilityId: '99.1', appId: 'APP-001' }]
+    const result = applyDomainTemplate('financial-services')
+    expect(result).toBe(true)
+    expect(store.data.domains[0].name).toBe('Core Banking')
+    expect(store.data.capabilityMappings).toHaveLength(0)
+  })
+
+  it('applyDomainTemplate returns false for unknown template', () => {
+    const result = applyDomainTemplate('nonexistent')
+    expect(result).toBe(false)
+  })
+
+  it('applyDomainTemplate deep-copies template data', () => {
+    applyDomainTemplate('healthcare')
+    const originalTpl = domainTemplates.find(t => t.id === 'healthcare')
+    store.data.domains[0].name = 'Modified Name'
+    expect(originalTpl.domains[0].name).not.toBe('Modified Name')
+  })
+
+  it('template ids include manufacturing, financial-services, healthcare, retail, technology, public-sector', () => {
+    const ids = domainTemplates.map(t => t.id)
+    expect(ids).toContain('manufacturing')
+    expect(ids).toContain('financial-services')
+    expect(ids).toContain('healthcare')
+    expect(ids).toContain('retail')
+    expect(ids).toContain('technology')
+    expect(ids).toContain('public-sector')
+  })
+})
