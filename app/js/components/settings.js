@@ -72,15 +72,25 @@ export default {
         <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('settings.complianceRegulations') }}</h2>
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('settings.complianceRegulationsDesc') }}</p>
         <div class="space-y-3">
-          <label v-for="reg in availableRegulations" :key="reg.value"
-                 class="flex items-center gap-3 p-3 rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 cursor-pointer transition-colors">
-            <input type="checkbox" :checked="isRegulationSelected(reg.value)" @change="toggleRegulation(reg.value)"
-                   class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+          <div v-for="reg in availableRegulations" :key="reg.value"
+               @click="toggleRegulation(reg.value)"
+               class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+               :class="isRegulationSelected(reg.value)
+                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-600'
+                 : 'border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800'">
+            <div class="flex items-center justify-center w-5 h-5 rounded border-2 shrink-0 transition-colors"
+                 :class="isRegulationSelected(reg.value)
+                   ? 'bg-primary-600 border-primary-600 text-white'
+                   : 'border-gray-300 dark:border-gray-600'">
+              <svg v-if="isRegulationSelected(reg.value)" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
             <div class="flex-1">
               <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ reg.label }}</div>
               <div class="text-xs text-gray-500 dark:text-gray-400">{{ reg.description }}</div>
             </div>
-          </label>
+          </div>
         </div>
       </section>
 
@@ -224,6 +234,5 @@ export default {
     }
 
     return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation }
-  }
   }
 }
