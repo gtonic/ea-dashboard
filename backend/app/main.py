@@ -1,13 +1,16 @@
 import os
+import time
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy import text
 
 from app.config import settings
 from app.database import Base, engine, SessionLocal
+from app.logging_config import RequestLoggingMiddleware, setup_logging
 from app.models.user import User
 from app.services.auth_service import hash_password
 from app.routers import (
@@ -17,6 +20,10 @@ from app.routers import (
 )
 from app.routers import auth as auth_router
 from app.routers import admin as admin_router
+
+setup_logging()
+
+_start_time = time.time()
 
 
 def _ensure_admin(db):
@@ -50,7 +57,7 @@ async def lifespan(application: FastAPI):
 
 app = FastAPI(
     title="EA Dashboard API",
-    version="0.3.0",
+    version="0.5.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
@@ -69,6 +76,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Structured request logging (adds X-Request-ID header)
+app.add_middleware(RequestLoggingMiddleware)
 
 # Auth & Admin
 app.include_router(auth_router.router, prefix="/api")
@@ -99,4 +109,18 @@ app.include_router(audit.router, prefix="/api")
 
 @app.get("/api/health")
 def health_check():
-    return {"status": "healthy"}
+    """Enhanced health check with DB connectivity and uptime."""
+    db_ok = True
+    db_type = "sqlite" if settings.DATABASE_URL.startswith("sqlite") else "postgresql"
+    try:
+        db = SessionLocal()
+        db.execute(text("SELECT 1"))
+        db.close()
+    except Exception:
+        db_ok = False
+    return {
+        "status": "healthy" if db_ok else "degraded",
+        "database": {"type": db_type, "connected": db_ok},
+        "uptime_seconds": round(time.time() - _start_time),
+        "version": "0.5.0",
+    }
