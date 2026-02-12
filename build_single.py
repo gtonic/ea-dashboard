@@ -77,6 +77,10 @@ COMPONENTS = [
     ('tco-calculator.js',      'TcoCalculator'),
     ('compliance-dashboard.js', 'ComplianceDashboard'),
     ('compliance-audit.js',     'ComplianceAudit'),
+    ('login.js',                'LoginView'),
+    ('admin-users.js',          'AdminUsers'),
+    ('admin-audit-log.js',      'AdminAuditLog'),
+    ('toast-container.js',      'ToastContainer'),
     ('layout.js',           'AppLayout'),
 ]
 
@@ -157,6 +161,23 @@ sc.append('\n// ══════ STORE ══════')
 sc.append(store_code)
 sc.append('\n// ══════ ROUTER ══════')
 sc.append(router_code)
+sc.append('\n// ══════ API-CLIENT STUB (standalone mode) ══════')
+sc.append('''const auth = reactive({ accessToken: null, refreshToken: null, user: null, isLoggedIn: false, isAdmin: false, isEditor: false });
+const toasts = reactive([]);
+let _toastId = 0;
+function addToast(message, type, duration) {
+  const id = ++_toastId;
+  toasts.push({ id, message, type: type || "info" });
+  if ((duration || 4000) > 0) setTimeout(() => removeToast(id), duration || 4000);
+}
+function removeToast(id) {
+  const idx = toasts.findIndex(t => t.id === id);
+  if (idx !== -1) toasts.splice(idx, 1);
+}
+function login() { return Promise.reject(new Error("Server mode required")); }
+function logout() {}
+const adminApi = { listUsers: () => Promise.resolve([]), getAuditLog: () => Promise.resolve({ total: 0, entries: [] }) };
+''')
 sc.append('\n// ══════ COMPONENTS ══════')
 for block in component_blocks:
     sc.append('\n' + block)
@@ -215,6 +236,10 @@ app.component('app-lifecycle-timeline', AppLifecycleTimeline);
 app.component('tco-calculator', TcoCalculator);
 app.component('compliance-dashboard', ComplianceDashboard);
 app.component('compliance-audit', ComplianceAudit);
+app.component('login-view', LoginView);
+app.component('admin-users', AdminUsers);
+app.component('admin-audit-log', AdminAuditLog);
+app.component('toast-container', ToastContainer);
 
 initRouter();
 loadData();

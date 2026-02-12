@@ -48,6 +48,9 @@ const routes = [
   { pattern: /^\/tco-calculator$/,         component: 'tco-calculator' },
   { pattern: /^\/compliance-dashboard$/,   component: 'compliance-dashboard' },
   { pattern: /^\/compliance-audit$/,       component: 'compliance-audit' },
+  { pattern: /^\/login$/,                  component: 'login-view' },
+  { pattern: /^\/admin\/users$/,           component: 'admin-users' },
+  { pattern: /^\/admin\/audit-log$/,       component: 'admin-audit-log' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]

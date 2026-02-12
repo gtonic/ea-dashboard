@@ -2,6 +2,7 @@
 import { store } from '../store.js'
 import { i18n } from '../i18n.js'
 import { router, linkTo, navigateTo } from '../router.js'
+import { auth } from '../api-client.js'
 
 // ────────────────────────────────────────────
 // SVG icon library (reusable)
@@ -129,6 +130,15 @@ function buildNavGroups () {
       items: [
         { path: '/compliance-dashboard', labelKey: 'nav.complianceDashboard', icon: icons.compliance, pageKey: 'page.complianceDashboard' },
         { path: '/compliance-audit', labelKey: 'nav.complianceAudit', icon: icons.compliance, pageKey: 'page.complianceAudit' },
+      ]
+    },
+    {
+      id: 'admin',
+      labelKey: 'nav.admin',
+      icon: icons.settings,
+      items: [
+        { path: '/admin/users', labelKey: 'nav.adminUsers', icon: icons.settings, pageKey: 'page.adminUsers' },
+        { path: '/admin/audit-log', labelKey: 'nav.adminAuditLog', icon: icons.conformity, pageKey: 'page.adminAuditLog' },
       ]
     },
     {
@@ -482,6 +492,7 @@ export default {
           </div>
         </div>
       </teleport>
+      <toast-container></toast-container>
     </div>
   `,
   setup () {
@@ -497,6 +508,10 @@ export default {
         if (g.id === 'analysis' && !store.featureToggles.analysisEnabled) return false
         if (g.id === 'governance' && !store.featureToggles.governanceEnabled) return false
         if (g.id === 'compliance' && !store.featureToggles.complianceEnabled) return false
+        if (g.id === 'admin') {
+          // Only show admin nav when running in server mode and user is admin
+          if (typeof auth === 'undefined' || !auth.isLoggedIn || !auth.isAdmin) return false
+        }
         return true
       })
     })
@@ -539,6 +554,9 @@ export default {
       'capability-investment': 'page.capabilityInvestment',
       'conformity-scorecard': 'page.conformityScorecard',
       'compliance-dashboard': 'page.complianceDashboard',
+      'login-view': 'page.login',
+      'admin-users': 'page.adminUsers',
+      'admin-audit-log': 'page.adminAuditLog',
     }
 
     const currentComponent = computed(() => router.component || 'dashboard-view')

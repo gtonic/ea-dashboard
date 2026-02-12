@@ -340,6 +340,14 @@ const translations = {
     'regulation.TISAX.description': 'Automotive Informationssicherheit – branchenspezifisch',
     'regulation.PCIDSS.label': 'PCI DSS',
     'regulation.PCIDSS.description': 'Payment Card Industry Data Security Standard – Zahlungsdaten',
+
+    // ── Admin ──
+    'nav.admin': 'Administration',
+    'nav.adminUsers': 'Benutzerverwaltung',
+    'nav.adminAuditLog': 'Audit-Log',
+    'page.adminUsers': 'Benutzerverwaltung',
+    'page.adminAuditLog': 'Audit-Log',
+    'page.login': 'Anmelden',
   },
 
   en: {
@@ -661,5 +669,13 @@ const translations = {
     'regulation.TISAX.description': 'Automotive Information Security – Industry-specific standard',
     'regulation.PCIDSS.label': 'PCI DSS',
     'regulation.PCIDSS.description': 'Payment Card Industry Data Security Standard',
+
+    // ── Admin ──
+    'nav.admin': 'Administration',
+    'nav.adminUsers': 'User Management',
+    'nav.adminAuditLog': 'Audit Log',
+    'page.adminUsers': 'User Management',
+    'page.adminAuditLog': 'Audit Log',
+    'page.login': 'Login',
   }
 }

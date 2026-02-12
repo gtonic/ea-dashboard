@@ -27274,6 +27274,9 @@ const routes = [
   { pattern: /^\/tco-calculator$/,         component: 'tco-calculator' },
   { pattern: /^\/compliance-dashboard$/,   component: 'compliance-dashboard' },
   { pattern: /^\/compliance-audit$/,       component: 'compliance-audit' },
+  { pattern: /^\/login$/,                  component: 'login-view' },
+  { pattern: /^\/admin\/users$/,           component: 'admin-users' },
+  { pattern: /^\/admin\/audit-log$/,       component: 'admin-audit-log' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
@@ -27328,6 +27331,24 @@ function initRouter () {
 function linkTo (path) {
   return '#' + path
 }
+
+
+// ══════ API-CLIENT STUB (standalone mode) ══════
+const auth = reactive({ accessToken: null, refreshToken: null, user: null, isLoggedIn: false, isAdmin: false, isEditor: false });
+const toasts = reactive([]);
+let _toastId = 0;
+function addToast(message, type, duration) {
+  const id = ++_toastId;
+  toasts.push({ id, message, type: type || "info" });
+  if ((duration || 4000) > 0) setTimeout(() => removeToast(id), duration || 4000);
+}
+function removeToast(id) {
+  const idx = toasts.findIndex(t => t.id === id);
+  if (idx !== -1) toasts.splice(idx, 1);
+}
+function login() { return Promise.reject(new Error("Server mode required")); }
+function logout() {}
+const adminApi = { listUsers: () => Promise.resolve([]), getAuditLog: () => Promise.resolve({ total: 0, entries: [] }) };
 
 
 // ══════ COMPONENTS ══════
@@ -39635,6 +39656,487 @@ const ComplianceAudit = {
 }
 
 
+// ── LoginView (login.js) ──
+// login.js — Login form component
+
+const LoginView = {
+  name: 'LoginView',
+  setup () {
+    return { store, auth, i18n }
+  },
+  data () {
+    return {
+      email: '',
+      password: '',
+      loading: false,
+      error: null
+    }
+  },
+  computed: {
+    t () { return this.i18n.t }
+  },
+  methods: {
+    async handleLogin () {
+      this.error = null
+      this.loading = true
+      try {
+        await login(this.email, this.password)
+        addToast('Erfolgreich eingeloggt', 'success')
+        navigateTo('/')
+      } catch (e) {
+        this.error = e?.message || 'Login fehlgeschlagen'
+      } finally {
+        this.loading = false
+      }
+    },
+    handleLogout () {
+      logout()
+    }
+  },
+  template: `
+    <div class="min-h-[60vh] flex items-center justify-center">
+      <div v-if="!auth.isLoggedIn" class="w-full max-w-md">
+        <div class="bg-white dark:bg-surface-800 rounded-xl shadow-lg p-8">
+          <div class="text-center mb-6">
+            <div class="w-16 h-16 mx-auto mb-4 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">EA Dashboard Login</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Melden Sie sich an, um fortzufahren</p>
+          </div>
+
+          <div v-if="error" class="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-300 text-sm">
+            {{ error }}
+          </div>
+
+          <form @submit.prevent="handleLogin" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail</label>
+              <input v-model="email" type="email" required autofocus
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                placeholder="admin@example.com" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Passwort</label>
+              <input v-model="password" type="password" required
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                placeholder="••••••••" />
+            </div>
+            <button type="submit" :disabled="loading"
+              class="w-full py-2.5 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <span v-if="loading">Anmelden...</span>
+              <span v-else>Anmelden</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div v-else class="w-full max-w-md">
+        <div class="bg-white dark:bg-surface-800 rounded-xl shadow-lg p-8 text-center">
+          <div class="w-16 h-16 mx-auto mb-4 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">Eingeloggt als {{ auth.user?.name || auth.user?.email }}</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Rolle: {{ auth.user?.role }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ auth.user?.email }}</p>
+          <div class="flex gap-3 justify-center">
+            <button @click="$root.$emit && navigateTo('/')" onclick="window.location.hash='#/'"
+              class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
+              Zum Dashboard
+            </button>
+            <button @click="handleLogout"
+              class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
+              Abmelden
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+}
+
+
+// ── AdminUsers (admin-users.js) ──
+// admin-users.js — Admin user management component
+
+const AdminUsers = {
+  name: 'AdminUsers',
+  setup () {
+    return { store, auth, i18n }
+  },
+  data () {
+    return {
+      users: [],
+      loading: true,
+      showForm: false,
+      editingUser: null,
+      form: { email: '', name: '', password: '', role: 'viewer', is_active: true },
+      formError: null
+    }
+  },
+  async mounted () {
+    await this.loadUsers()
+  },
+  methods: {
+    async loadUsers () {
+      this.loading = true
+      try {
+        this.users = await adminApi.listUsers()
+      } catch (e) {
+        addToast(e.message || 'Fehler beim Laden der Benutzer', 'error')
+      } finally {
+        this.loading = false
+      }
+    },
+    openCreateForm () {
+      this.editingUser = null
+      this.form = { email: '', name: '', password: '', role: 'viewer', is_active: true }
+      this.formError = null
+      this.showForm = true
+    },
+    openEditForm (user) {
+      this.editingUser = user
+      this.form = { email: user.email, name: user.name, password: '', role: user.role, is_active: user.is_active }
+      this.formError = null
+      this.showForm = true
+    },
+    async saveUser () {
+      this.formError = null
+      try {
+        const payload = { ...this.form }
+        if (!payload.password) delete payload.password
+        if (this.editingUser) {
+          await adminApi.updateUser(this.editingUser.id, payload)
+          addToast('Benutzer aktualisiert', 'success')
+        } else {
+          await adminApi.createUser(payload)
+          addToast('Benutzer erstellt', 'success')
+        }
+        this.showForm = false
+        await this.loadUsers()
+      } catch (e) {
+        this.formError = e.message || 'Fehler beim Speichern'
+      }
+    },
+    async deleteUser (user) {
+      if (!confirm('Benutzer "' + user.email + '" wirklich löschen?')) return
+      try {
+        await adminApi.deleteUser(user.id)
+        addToast('Benutzer gelöscht', 'success')
+        await this.loadUsers()
+      } catch (e) {
+        addToast(e.message || 'Fehler beim Löschen', 'error')
+      }
+    },
+    roleLabel (role) {
+      return { admin: 'Admin', editor: 'Editor', viewer: 'Viewer' }[role] || role
+    },
+    roleBadgeClass (role) {
+      return {
+        admin: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+        editor: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+        viewer: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+      }[role] || 'bg-gray-100 text-gray-700'
+    }
+  },
+  template: `
+    <div>
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Benutzerverwaltung</h2>
+        <button @click="openCreateForm"
+          class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
+          + Neuer Benutzer
+        </button>
+      </div>
+
+      <!-- User Form Modal -->
+      <div v-if="showForm" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div class="bg-white dark:bg-surface-800 rounded-xl shadow-2xl p-6 w-full max-w-md mx-4">
+          <h3 class="text-lg font-bold mb-4 text-gray-800 dark:text-gray-200">
+            {{ editingUser ? 'Benutzer bearbeiten' : 'Neuer Benutzer' }}
+          </h3>
+          <div v-if="formError" class="mb-3 p-2 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded text-red-700 dark:text-red-300 text-sm">
+            {{ formError }}
+          </div>
+          <form @submit.prevent="saveUser" class="space-y-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">E-Mail</label>
+              <input v-model="form.email" type="email" required
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+              <input v-model="form.name" type="text"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Passwort {{ editingUser ? '(leer = unverändert)' : '' }}
+              </label>
+              <input v-model="form.password" type="password" :required="!editingUser"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rolle</label>
+              <select v-model="form.role"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-gray-800 dark:text-gray-200">
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="viewer">Viewer</option>
+              </select>
+            </div>
+            <div class="flex items-center gap-2">
+              <input v-model="form.is_active" type="checkbox" id="user-active"
+                class="rounded border-gray-300 dark:border-gray-600" />
+              <label for="user-active" class="text-sm text-gray-700 dark:text-gray-300">Aktiv</label>
+            </div>
+            <div class="flex gap-2 pt-2">
+              <button type="submit"
+                class="flex-1 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
+                Speichern
+              </button>
+              <button type="button" @click="showForm = false"
+                class="flex-1 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors">
+                Abbrechen
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div v-if="loading" class="text-center py-12 text-gray-500">Laden...</div>
+
+      <!-- User Table -->
+      <div v-else class="bg-white dark:bg-surface-800 rounded-xl shadow overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-surface-700">
+            <tr>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Name</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">E-Mail</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Rolle</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Status</th>
+              <th class="px-4 py-3 text-right font-medium text-gray-500 dark:text-gray-400">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+            <tr v-for="user in users" :key="user.id" class="hover:bg-gray-50 dark:hover:bg-surface-700/50">
+              <td class="px-4 py-3 text-gray-800 dark:text-gray-200">{{ user.name || '—' }}</td>
+              <td class="px-4 py-3 text-gray-600 dark:text-gray-400">{{ user.email }}</td>
+              <td class="px-4 py-3">
+                <span :class="roleBadgeClass(user.role)" class="px-2 py-0.5 rounded-full text-xs font-medium">
+                  {{ roleLabel(user.role) }}
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <span v-if="user.is_active" class="text-green-600 dark:text-green-400 text-xs font-medium">Aktiv</span>
+                <span v-else class="text-gray-400 text-xs">Inaktiv</span>
+              </td>
+              <td class="px-4 py-3 text-right space-x-2">
+                <button @click="openEditForm(user)"
+                  class="text-primary-600 dark:text-primary-400 hover:underline text-xs">Bearbeiten</button>
+                <button @click="deleteUser(user)"
+                  class="text-red-600 dark:text-red-400 hover:underline text-xs">Löschen</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="users.length === 0" class="text-center py-8 text-gray-500">Keine Benutzer vorhanden</div>
+      </div>
+    </div>
+  `
+}
+
+
+// ── AdminAuditLog (admin-audit-log.js) ──
+// admin-audit-log.js — Audit log viewer component (admin only)
+
+const AdminAuditLog = {
+  name: 'AdminAuditLog',
+  setup () {
+    return { store, auth }
+  },
+  data () {
+    return {
+      entries: [],
+      total: 0,
+      loading: true,
+      filters: { entity_type: '', action: '', user_email: '' },
+      limit: 50,
+      offset: 0
+    }
+  },
+  async mounted () {
+    await this.loadEntries()
+  },
+  computed: {
+    hasMore () { return this.offset + this.limit < this.total }
+  },
+  methods: {
+    async loadEntries () {
+      this.loading = true
+      try {
+        const data = await adminApi.getAuditLog({
+          ...this.filters,
+          limit: this.limit,
+          offset: this.offset
+        })
+        this.entries = data.entries
+        this.total = data.total
+      } catch (e) {
+        addToast(e.message || 'Fehler beim Laden des Audit-Logs', 'error')
+      } finally {
+        this.loading = false
+      }
+    },
+    applyFilters () {
+      this.offset = 0
+      this.loadEntries()
+    },
+    nextPage () {
+      this.offset += this.limit
+      this.loadEntries()
+    },
+    prevPage () {
+      this.offset = Math.max(0, this.offset - this.limit)
+      this.loadEntries()
+    },
+    actionBadgeClass (action) {
+      return {
+        CREATE: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+        UPDATE: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+        DELETE: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
+      }[action] || 'bg-gray-100 text-gray-700'
+    },
+    formatDate (iso) {
+      if (!iso) return '—'
+      const d = new Date(iso)
+      return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+    }
+  },
+  template: `
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">Audit-Log</h2>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-3 mb-4">
+        <select v-model="filters.entity_type" @change="applyFilters"
+          class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-sm text-gray-800 dark:text-gray-200">
+          <option value="">Alle Entitäten</option>
+          <option value="domain">Domain</option>
+          <option value="capability">Capability</option>
+          <option value="application">Application</option>
+          <option value="project">Project</option>
+          <option value="vendor">Vendor</option>
+          <option value="demand">Demand</option>
+          <option value="integration">Integration</option>
+          <option value="process">Process</option>
+          <option value="legal_entity">Legal Entity</option>
+          <option value="compliance_assessment">Compliance</option>
+          <option value="kpi">KPI</option>
+          <option value="seed">Seed</option>
+        </select>
+        <select v-model="filters.action" @change="applyFilters"
+          class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-sm text-gray-800 dark:text-gray-200">
+          <option value="">Alle Aktionen</option>
+          <option value="CREATE">CREATE</option>
+          <option value="UPDATE">UPDATE</option>
+          <option value="DELETE">DELETE</option>
+        </select>
+        <input v-model="filters.user_email" @keyup.enter="applyFilters" placeholder="E-Mail filtern..."
+          class="px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-surface-700 text-sm text-gray-800 dark:text-gray-200 w-48" />
+      </div>
+
+      <!-- Summary -->
+      <div class="text-sm text-gray-500 dark:text-gray-400 mb-3">
+        {{ total }} Einträge gesamt · Zeige {{ offset + 1 }}–{{ Math.min(offset + limit, total) }}
+      </div>
+
+      <!-- Loading -->
+      <div v-if="loading" class="text-center py-12 text-gray-500">Laden...</div>
+
+      <!-- Table -->
+      <div v-else class="bg-white dark:bg-surface-800 rounded-xl shadow overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-surface-700">
+            <tr>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">Zeitpunkt</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Benutzer</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Aktion</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Entität</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">ID</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500 dark:text-gray-400">Detail</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+            <tr v-for="e in entries" :key="e.id" class="hover:bg-gray-50 dark:hover:bg-surface-700/50">
+              <td class="px-4 py-2.5 text-gray-600 dark:text-gray-400 whitespace-nowrap">{{ formatDate(e.timestamp) }}</td>
+              <td class="px-4 py-2.5 text-gray-700 dark:text-gray-300">{{ e.userEmail || '—' }}</td>
+              <td class="px-4 py-2.5">
+                <span :class="actionBadgeClass(e.action)" class="px-2 py-0.5 rounded-full text-xs font-medium">{{ e.action }}</span>
+              </td>
+              <td class="px-4 py-2.5 text-gray-700 dark:text-gray-300">{{ e.entityType }}</td>
+              <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 font-mono text-xs">{{ e.entityId || '—' }}</td>
+              <td class="px-4 py-2.5 text-gray-500 dark:text-gray-400 text-xs max-w-xs truncate">{{ e.detail || '—' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="entries.length === 0" class="text-center py-8 text-gray-500">Keine Einträge gefunden</div>
+
+        <!-- Pagination -->
+        <div v-if="total > limit" class="flex items-center justify-between px-4 py-3 border-t border-gray-100 dark:border-gray-700">
+          <button @click="prevPage" :disabled="offset === 0"
+            class="px-3 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 disabled:opacity-40">← Zurück</button>
+          <button @click="nextPage" :disabled="!hasMore"
+            class="px-3 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 disabled:opacity-40">Weiter →</button>
+        </div>
+      </div>
+    </div>
+  `
+}
+
+
+// ── ToastContainer (toast-container.js) ──
+// toast-container.js — Global toast notification overlay
+
+const ToastContainer = {
+  name: 'ToastContainer',
+  setup () {
+    return { toasts, removeToast }
+  },
+  template: `
+    <div class="fixed bottom-4 right-4 z-[9999] space-y-2 max-w-sm">
+      <transition-group name="toast">
+        <div v-for="toast in toasts" :key="toast.id"
+          :class="[
+            'flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg text-sm font-medium cursor-pointer transition-all',
+            toast.type === 'success' ? 'bg-green-600 text-white' :
+            toast.type === 'error' ? 'bg-red-600 text-white' :
+            toast.type === 'warning' ? 'bg-yellow-500 text-white' :
+            'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-800'
+          ]"
+          @click="removeToast(toast.id)">
+          <svg v-if="toast.type === 'success'" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <svg v-else-if="toast.type === 'error'" class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <svg v-else class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>{{ toast.message }}</span>
+        </div>
+      </transition-group>
+    </div>
+  `
+}
+
+
 // ── AppLayout (layout.js) ──
 // layout.js — App shell with grouped sidebar navigation, breadcrumbs, i18n, favorites
 
@@ -39764,6 +40266,15 @@ function buildNavGroups () {
       items: [
         { path: '/compliance-dashboard', labelKey: 'nav.complianceDashboard', icon: icons.compliance, pageKey: 'page.complianceDashboard' },
         { path: '/compliance-audit', labelKey: 'nav.complianceAudit', icon: icons.compliance, pageKey: 'page.complianceAudit' },
+      ]
+    },
+    {
+      id: 'admin',
+      labelKey: 'nav.admin',
+      icon: icons.settings,
+      items: [
+        { path: '/admin/users', labelKey: 'nav.adminUsers', icon: icons.settings, pageKey: 'page.adminUsers' },
+        { path: '/admin/audit-log', labelKey: 'nav.adminAuditLog', icon: icons.conformity, pageKey: 'page.adminAuditLog' },
       ]
     },
     {
@@ -40117,6 +40628,7 @@ const AppLayout = {
           </div>
         </div>
       </teleport>
+      <toast-container></toast-container>
     </div>
   `,
   setup () {
@@ -40132,6 +40644,10 @@ const AppLayout = {
         if (g.id === 'analysis' && !store.featureToggles.analysisEnabled) return false
         if (g.id === 'governance' && !store.featureToggles.governanceEnabled) return false
         if (g.id === 'compliance' && !store.featureToggles.complianceEnabled) return false
+        if (g.id === 'admin') {
+          // Only show admin nav when running in server mode and user is admin
+          if (typeof auth === 'undefined' || !auth.isLoggedIn || !auth.isAdmin) return false
+        }
         return true
       })
     })
@@ -40174,6 +40690,9 @@ const AppLayout = {
       'capability-investment': 'page.capabilityInvestment',
       'conformity-scorecard': 'page.conformityScorecard',
       'compliance-dashboard': 'page.complianceDashboard',
+      'login-view': 'page.login',
+      'admin-users': 'page.adminUsers',
+      'admin-audit-log': 'page.adminAuditLog',
     }
 
     const currentComponent = computed(() => router.component || 'dashboard-view')
@@ -40463,6 +40982,10 @@ app.component('app-lifecycle-timeline', AppLifecycleTimeline);
 app.component('tco-calculator', TcoCalculator);
 app.component('compliance-dashboard', ComplianceDashboard);
 app.component('compliance-audit', ComplianceAudit);
+app.component('login-view', LoginView);
+app.component('admin-users', AdminUsers);
+app.component('admin-audit-log', AdminAuditLog);
+app.component('toast-container', ToastContainer);
 
 initRouter();
 loadData();
