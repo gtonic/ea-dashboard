@@ -1,5 +1,6 @@
 // store.js — Reactive application store (Vue 3 Composition API)
 import { reactive, watch, computed, toRaw } from 'vue'
+import { domainTemplates } from './domain-templates.js'
 
 const STORAGE_KEY = 'ea-bebauungsplan-v1'
 let debounceTimer = null
@@ -978,4 +979,17 @@ export function importJSON (file) {
 export function resetToSeed () {
   localStorage.removeItem(STORAGE_KEY)
   return loadData()
+}
+
+// ────────────────────────────────────────────
+// Domain / Capability Templates
+// ────────────────────────────────────────────
+export { domainTemplates }
+
+export function applyDomainTemplate (templateId) {
+  const tpl = domainTemplates.find(t => t.id === templateId)
+  if (!tpl) return false
+  store.data.domains = JSON.parse(JSON.stringify(tpl.domains))
+  store.data.capabilityMappings = []
+  return true
 }

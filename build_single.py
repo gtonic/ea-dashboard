@@ -87,6 +87,12 @@ seed_json = read(os.path.join(APP, 'data', 'bebauungsplan.json'))
 json.loads(seed_json)
 print(f'  Seed data: {len(seed_json)} bytes')
 
+# 1b. Read and convert domain-templates.js
+templates_raw = read(os.path.join(JS, 'domain-templates.js'))
+templates_code = strip_imports(templates_raw)
+templates_code = strip_exports(templates_code)
+print(f'  Domain templates: {len(templates_code)} chars')
+
 # 2. Read and convert store.js
 store_raw = read(os.path.join(JS, 'store.js'))
 store_code = strip_imports(store_raw)
@@ -145,7 +151,9 @@ sc.append('// ── Vue API destructuring (global build) ──')
 sc.append('const { reactive, watch } = Vue;\n')
 sc.append('// ── SEED DATA ──')
 sc.append(f'const SEED_DATA = {seed_json};\n')
-sc.append('// ══════ STORE ══════')
+sc.append('// ══════ DOMAIN TEMPLATES ══════')
+sc.append(templates_code)
+sc.append('\n// ══════ STORE ══════')
 sc.append(store_code)
 sc.append('\n// ══════ ROUTER ══════')
 sc.append(router_code)
