@@ -84,6 +84,7 @@ def export_json(db: Session = Depends(get_db), _user: User = Depends(get_current
             "personnelCost": a.personnel_cost,
             "regulations": a.regulations or [],
             "dataClassification": a.data_classification,
+            "version": a.version or 1,
         })
 
     mappings = db.query(CapabilityMapping).all()

@@ -13,7 +13,7 @@ from app.services.auth_service import hash_password
 from app.routers import (
     domains, applications, projects, vendors, demands,
     integrations, processes, entities, compliance, kpis,
-    seed, export,
+    seed, export, dashboard, audit,
 )
 from app.routers import auth as auth_router
 from app.routers import admin as admin_router
@@ -48,7 +48,14 @@ async def lifespan(application: FastAPI):
     yield
 
 
-app = FastAPI(title="EA Dashboard API", version="0.2.0", lifespan=lifespan)
+app = FastAPI(
+    title="EA Dashboard API",
+    version="0.3.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
+    lifespan=lifespan,
+)
 
 # Rate limiter (used by auth endpoints)
 from app.routers.auth import limiter  # noqa: E402
@@ -67,6 +74,9 @@ app.add_middleware(
 app.include_router(auth_router.router, prefix="/api")
 app.include_router(admin_router.router, prefix="/api")
 
+# Dashboard
+app.include_router(dashboard.router, prefix="/api")
+
 # Entity CRUD
 app.include_router(domains.router, prefix="/api")
 app.include_router(applications.router, prefix="/api")
@@ -82,6 +92,9 @@ app.include_router(compliance.router, prefix="/api")
 app.include_router(kpis.router, prefix="/api")
 app.include_router(seed.router, prefix="/api")
 app.include_router(export.router, prefix="/api")
+
+# Audit log (admin-only)
+app.include_router(audit.router, prefix="/api")
 
 
 @app.get("/api/health")
