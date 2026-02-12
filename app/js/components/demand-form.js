@@ -226,6 +226,7 @@ export default {
       estimatedBudget: 0, primaryDomain: null,
       relatedDomains: [], relatedApps: [], relatedVendors: [],
       applicableRegulations: [],
+      complianceChecks: {},
       isAIUseCase: false, aiRiskCategory: 'Kein AI-Usecase', aiDescription: '',
       checklistSecurity: emptyChecklist(),
       checklistLegal: emptyLegalChecklist(),
