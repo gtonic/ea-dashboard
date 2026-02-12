@@ -112,6 +112,26 @@ export default {
               <label class="block text-xs font-medium text-gray-600 mb-1">Technical Health (1-10)</label>
               <input v-model.number="form.technicalHealth" type="number" min="1" max="10" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" />
             </div>
+            <div class="sm:col-span-2" v-if="store.featureToggles.complianceEnabled && availableRegulations.length > 0">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Zutreffende Regulierungen</label>
+              <div class="flex flex-wrap gap-2">
+                <div v-for="reg in availableRegulations" :key="reg.value"
+                     @click="toggleRegulation(reg.value)"
+                     class="flex items-center gap-1.5 px-2.5 py-1.5 border rounded-lg text-xs cursor-pointer transition-colors"
+                     :class="isRegSelected(reg.value)
+                       ? 'bg-primary-50 border-primary-400 text-primary-700'
+                       : 'border-surface-200 text-gray-600 hover:bg-surface-50'">
+                  <span class="flex items-center justify-center w-3.5 h-3.5 rounded border transition-colors"
+                        :class="isRegSelected(reg.value) ? 'bg-primary-600 border-primary-600' : 'border-gray-300'">
+                    <svg v-if="isRegSelected(reg.value)" class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <span>{{ reg.label }}</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-gray-400 mt-1">Welche Regulierungen / Standards gelten für diese Applikation?</div>
+            </div>
             <div class="sm:col-span-2">
               <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
               <textarea v-model="form.description" rows="3" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical"></textarea>
@@ -129,12 +149,27 @@ export default {
     const { ref, onMounted } = Vue
 
     const defaultForm = () => ({
-      name: '', vendors: [{ vendorId: '', vendorName: '', role: 'Hersteller' }], entities: [], category: '', type: 'On-Prem',
+      name: '', vendors: [{ vendorId: '', vendorName: '', role: 'Hersteller' }], entities: [], regulations: [], category: '', type: 'On-Prem',
       criticality: 'Business-Operational', timeQuadrant: 'Tolerate',
       riskProbability: 'Niedrig', riskImpact: 'Mittel', lifecycleStatus: 'Active',
       costPerYear: 0, userCount: 0, businessOwner: '', itOwner: '',
       goLiveDate: '', businessValue: 5, technicalHealth: 5, description: ''
     })
+
+    const availableRegulations = Vue.computed(() => {
+      return (store.data.enums && store.data.enums.complianceRegulations) || []
+    })
+
+    function isRegSelected (value) {
+      return (form.value.regulations || []).includes(value)
+    }
+
+    function toggleRegulation (value) {
+      if (!form.value.regulations) form.value.regulations = []
+      const idx = form.value.regulations.indexOf(value)
+      if (idx >= 0) form.value.regulations.splice(idx, 1)
+      else form.value.regulations.push(value)
+    }
 
     const form = ref(defaultForm())
 
@@ -157,6 +192,8 @@ export default {
         }
         // Ensure entities array exists
         if (!base.entities || !Array.isArray(base.entities)) base.entities = []
+        // Ensure regulations array exists
+        if (!base.regulations || !Array.isArray(base.regulations)) base.regulations = []
         // Ensure vendors array exists
         if (!base.vendors || !Array.isArray(base.vendors) || base.vendors.length === 0) {
           base.vendors = [{ vendorId: '', vendorName: props.editApp.vendor || '', role: 'Hersteller' }]
@@ -194,6 +231,6 @@ export default {
       emit('saved')
     }
 
-    return { store, form, save, availableVendors, allEntities, addVendor, removeVendor, onVendorSelect, entityFlag }
+    return { store, form, save, availableVendors, allEntities, availableRegulations, isRegSelected, toggleRegulation, addVendor, removeVendor, onVendorSelect, entityFlag }
   }
 }

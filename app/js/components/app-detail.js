@@ -1,6 +1,7 @@
-// app-detail.js — Application detail view with capabilities, projects, edit/delete
+// app-detail.js — Application detail view with capabilities, projects, compliance, edit/delete
 import { store } from '../store.js'
 import { router, linkTo, navigateTo } from '../router.js'
+import { i18n } from '../i18n.js'
 
 export default {
   name: 'AppDetail',
@@ -163,6 +164,37 @@ export default {
         </div>
       </div>
 
+      <!-- Compliance & Regulations -->
+      <div v-if="store.featureToggles.complianceEnabled && appRegulations.length > 0" class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800 flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Compliance & Regulierungen ({{ appRegulations.length }})</h3>
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium"
+                :class="complianceSummary.color">{{ complianceSummary.label }}</span>
+        </div>
+        <div class="divide-y divide-surface-100 dark:divide-surface-800">
+          <div v-for="reg in appRegulations" :key="reg.value" class="flex items-center justify-between px-5 py-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <svg class="w-4 h-4 shrink-0" :class="assessmentIcon(reg.assessment?.status).color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="assessmentIcon(reg.assessment?.status).path"/>
+              </svg>
+              <div class="min-w-0">
+                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ reg.label }}</div>
+                <div class="text-xs text-gray-400">{{ reg.description }}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span v-if="reg.assessment" class="text-xs px-2 py-0.5 rounded-full font-medium"
+                    :class="statusBadge(reg.assessment.status)">{{ statusText(reg.assessment.status) }}</span>
+              <span v-else class="text-xs px-2 py-0.5 rounded-full font-medium bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400">Nicht bewertet</span>
+              <div v-if="reg.assessment" class="text-right">
+                <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedBy }}</div>
+                <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedDate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Edit Modal -->
       <app-form v-if="showEdit" :edit-app="app" @close="showEdit = false" @saved="showEdit = false"></app-form>
     </div>
@@ -193,6 +225,51 @@ export default {
       if (!app.value) return []
       return store.processesForApp(app.value.id)
     })
+
+    const t = (key) => i18n.t(key)
+
+    // Compliance: regulations assigned to this app + their latest assessment
+    const appRegulations = computed(() => {
+      if (!app.value || !app.value.regulations) return []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const assessments = store.data.complianceAssessments || []
+      return app.value.regulations.map(regValue => {
+        const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
+        // Find the latest assessment for this app + regulation
+        const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
+        const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
+        return { ...regMeta, assessment: latest }
+      })
+    })
+
+    const complianceSummary = computed(() => {
+      if (appRegulations.value.length === 0) return { label: '—', color: 'bg-gray-100 text-gray-500' }
+      const statuses = appRegulations.value.map(r => r.assessment?.status)
+      if (statuses.some(s => s === 'nonCompliant')) return { label: t('compliance.nonCompliant'), color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }
+      if (statuses.some(s => s === 'partial' || !s || s === 'notAssessed')) return { label: t('compliance.partiallyCompliant'), color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' }
+      return { label: t('compliance.compliant'), color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' }
+    })
+
+    function assessmentIcon (status) {
+      if (status === 'compliant') return { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-green-500' }
+      if (status === 'partial') return { path: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-yellow-500' }
+      if (status === 'nonCompliant') return { path: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-red-500' }
+      return { path: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-gray-400' }
+    }
+
+    function statusBadge (status) {
+      if (status === 'compliant') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+      if (status === 'partial') return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+      if (status === 'nonCompliant') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+      return 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'
+    }
+
+    function statusText (status) {
+      if (status === 'compliant') return t('compliance.compliant')
+      if (status === 'partial') return t('compliance.partiallyCompliant')
+      if (status === 'nonCompliant') return t('compliance.nonCompliant')
+      return t('compliance.notAssessed')
+    }
 
     const appVendors = computed(() => {
       if (!app.value) return []
@@ -256,6 +333,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, primaryVendorName, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
+    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, appRegulations, complianceSummary, assessmentIcon, statusBadge, statusText, primaryVendorName, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
   }
 }
