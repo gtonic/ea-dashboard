@@ -62,7 +62,8 @@ export default {
     formatDate (iso) {
       if (!iso) return '—'
       const d = new Date(iso)
-      return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      const locale = this.i18n?.locale === 'en' ? 'en-US' : 'de-DE'
+      return d.toLocaleString(locale, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
     }
   },
   template: `

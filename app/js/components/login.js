@@ -7,7 +7,7 @@ import { navigateTo } from '../router.js'
 export default {
   name: 'LoginView',
   setup () {
-    return { store, auth, i18n }
+    return { store, auth, i18n, navigateTo }
   },
   data () {
     return {
@@ -26,7 +26,7 @@ export default {
       this.loading = true
       try {
         await login(this.email, this.password)
-        addToast('Erfolgreich eingeloggt', 'success')
+        addToast(t('login.success'), 'success')
         navigateTo('/')
       } catch (e) {
         this.error = e?.message || 'Login fehlgeschlagen'
@@ -89,7 +89,7 @@ export default {
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Rolle: {{ auth.user?.role }}</p>
           <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">{{ auth.user?.email }}</p>
           <div class="flex gap-3 justify-center">
-            <button @click="$root.$emit && navigateTo('/')" onclick="window.location.hash='#/'"
+            <button @click="navigateTo('/')"
               class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors">
               Zum Dashboard
             </button>

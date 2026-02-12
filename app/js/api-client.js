@@ -69,6 +69,17 @@ export function removeToast (id) {
 }
 
 // ────────────────────────────────────────────
+// Custom API Error class
+// ────────────────────────────────────────────
+export class ApiError extends Error {
+  constructor (type, message, data = null) {
+    super(message)
+    this.type = type
+    this.data = data
+  }
+}
+
+// ────────────────────────────────────────────
 // Core HTTP request with JWT
 // ────────────────────────────────────────────
 let isRefreshing = false
@@ -92,24 +103,24 @@ async function request (method, path, body = null, options = {}) {
     if (refreshed) return request(method, path, body, options)
     clearTokens()
     window.location.hash = '#/login'
-    throw { type: 'AUTH_EXPIRED', message: 'Session expired' }
+    throw new ApiError('AUTH_EXPIRED', 'Session expired')
   }
 
   // 409 → Optimistic Locking conflict
   if (res.status === 409) {
     const detail = await res.json().catch(() => ({}))
-    throw { type: 'CONFLICT', message: detail.detail || 'Conflict: entity was modified by another user', data: detail }
+    throw new ApiError('CONFLICT', detail.detail || 'Conflict: entity was modified by another user', detail)
   }
 
   // 403 → Forbidden
   if (res.status === 403) {
-    throw { type: 'FORBIDDEN', message: 'Keine Berechtigung für diese Aktion' }
+    throw new ApiError('FORBIDDEN', 'Forbidden')
   }
 
   // Other errors
   if (!res.ok) {
     const text = await res.text().catch(() => res.statusText)
-    throw { type: 'HTTP_ERROR', status: res.status, message: text }
+    throw new ApiError('HTTP_ERROR', text)
   }
 
   // 204 No Content

@@ -348,6 +348,9 @@ const translations = {
     'page.adminUsers': 'Benutzerverwaltung',
     'page.adminAuditLog': 'Audit-Log',
     'page.login': 'Anmelden',
+    'login.success': 'Erfolgreich eingeloggt',
+    'login.title': 'EA Dashboard Login',
+    'login.subtitle': 'Melden Sie sich an, um fortzufahren',
   },
 
   en: {
@@ -677,5 +680,8 @@ const translations = {
     'page.adminUsers': 'User Management',
     'page.adminAuditLog': 'Audit Log',
     'page.login': 'Login',
+    'login.success': 'Successfully logged in',
+    'login.title': 'EA Dashboard Login',
+    'login.subtitle': 'Sign in to continue',
   }
 }
