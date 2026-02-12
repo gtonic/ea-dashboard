@@ -46,6 +46,7 @@ const routes = [
   { pattern: /^\/ea-health-score$/,        component: 'ea-health-score' },
   { pattern: /^\/app-lifecycle-timeline$/, component: 'app-lifecycle-timeline' },
   { pattern: /^\/tco-calculator$/,         component: 'tco-calculator' },
+  { pattern: /^\/compliance-dashboard$/,   component: 'compliance-dashboard' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]

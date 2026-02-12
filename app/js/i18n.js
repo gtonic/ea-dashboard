@@ -213,6 +213,26 @@ const translations = {
     'settings.featureToggles': 'Funktionsbereiche',
     'settings.analysisDesc': 'Erweiterte Analysefunktionen ein-/ausblenden',
     'settings.governanceDesc': 'Governance-Funktionen ein-/ausblenden',
+    'settings.complianceDesc': 'Compliance-Funktionen ein-/ausblenden',
+    'settings.complianceRegulations': 'Regulatorien',
+    'settings.complianceRegulationsDesc': 'Zutreffende Regulierungen auswählen',
+
+    // ── Compliance ──
+    'nav.compliance': 'Compliance',
+    'nav.complianceDashboard': 'Compliance-Dashboard',
+    'page.complianceDashboard': 'Compliance-Dashboard',
+    'compliance.title': 'Compliance-Übersicht',
+    'compliance.activeRegulations': 'Aktive Regulierungen',
+    'compliance.noRegulations': 'Keine Regulierungen ausgewählt. Bitte in den Einstellungen konfigurieren.',
+    'compliance.overallStatus': 'Gesamtstatus',
+    'compliance.compliant': 'Konform',
+    'compliance.partiallyCompliant': 'Teilweise konform',
+    'compliance.nonCompliant': 'Nicht konform',
+    'compliance.regulation': 'Regulierung',
+    'compliance.status': 'Status',
+    'compliance.coverage': 'Abdeckung',
+    'compliance.affectedApps': 'Betroffene Applikationen',
+    'compliance.goToSettings': 'Einstellungen öffnen',
   },
 
   en: {
@@ -407,5 +427,25 @@ const translations = {
     'settings.featureToggles': 'Feature Toggles',
     'settings.analysisDesc': 'Show/hide extended analysis features',
     'settings.governanceDesc': 'Show/hide governance features',
+    'settings.complianceDesc': 'Show/hide compliance features',
+    'settings.complianceRegulations': 'Regulations',
+    'settings.complianceRegulationsDesc': 'Select applicable regulations',
+
+    // ── Compliance ──
+    'nav.compliance': 'Compliance',
+    'nav.complianceDashboard': 'Compliance Dashboard',
+    'page.complianceDashboard': 'Compliance Dashboard',
+    'compliance.title': 'Compliance Overview',
+    'compliance.activeRegulations': 'Active Regulations',
+    'compliance.noRegulations': 'No regulations selected. Please configure in Settings.',
+    'compliance.overallStatus': 'Overall Status',
+    'compliance.compliant': 'Compliant',
+    'compliance.partiallyCompliant': 'Partially Compliant',
+    'compliance.nonCompliant': 'Non-Compliant',
+    'compliance.regulation': 'Regulation',
+    'compliance.status': 'Status',
+    'compliance.coverage': 'Coverage',
+    'compliance.affectedApps': 'Affected Applications',
+    'compliance.goToSettings': 'Open Settings',
   }
 }

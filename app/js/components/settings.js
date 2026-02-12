@@ -52,6 +52,35 @@ export default {
                     :class="store.featureToggles.governanceEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
             </button>
           </div>
+          <div class="flex items-center justify-between border-t border-surface-100 dark:border-surface-700 pt-4">
+            <div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('nav.compliance') }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ t('settings.complianceDesc') }}</div>
+            </div>
+            <button @click="store.featureToggles.complianceEnabled = !store.featureToggles.complianceEnabled"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    :class="store.featureToggles.complianceEnabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-surface-700'">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                    :class="store.featureToggles.complianceEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Compliance Regulations -->
+      <section v-if="store.featureToggles.complianceEnabled" class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('settings.complianceRegulations') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('settings.complianceRegulationsDesc') }}</p>
+        <div class="space-y-3">
+          <label v-for="reg in availableRegulations" :key="reg.value"
+                 class="flex items-center gap-3 p-3 rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 cursor-pointer transition-colors">
+            <input type="checkbox" :checked="isRegulationSelected(reg.value)" @change="toggleRegulation(reg.value)"
+                   class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+            <div class="flex-1">
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ reg.label }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ reg.description }}</div>
+            </div>
+          </label>
         </div>
       </section>
 
@@ -176,6 +205,25 @@ export default {
       }
     }
 
-    return { store, stats, toast, doExport, doImport, confirmReset, t }
+    const availableRegulations = computed(() => (store.data.enums && store.data.enums.complianceRegulations) || [])
+
+    function isRegulationSelected (value) {
+      return (store.featureToggles.selectedRegulations || []).includes(value)
+    }
+
+    function toggleRegulation (value) {
+      if (!store.featureToggles.selectedRegulations) {
+        store.featureToggles.selectedRegulations = []
+      }
+      const idx = store.featureToggles.selectedRegulations.indexOf(value)
+      if (idx >= 0) {
+        store.featureToggles.selectedRegulations.splice(idx, 1)
+      } else {
+        store.featureToggles.selectedRegulations.push(value)
+      }
+    }
+
+    return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation }
+  }
   }
 }
