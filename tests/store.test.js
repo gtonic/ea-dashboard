@@ -1320,3 +1320,242 @@ describe('Compliance Helpers', () => {
     expect(gaps.find(g => g.appId === 'APP-099')).toBeUndefined()
   })
 })
+
+// ─── Compliance Helpers (Phase C3) ───────────────────────────
+
+describe('Compliance Phase C3 — Workflow Transitions', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'App One', vendor: 'Vendor A', criticality: 'Mission-Critical', dataClassification: 'personenbezogeneDaten', regulations: ['GDPR', 'ISO27001'] },
+      { id: 'APP-002', name: 'App Two', vendor: 'Vendor A', criticality: 'Administrative', dataClassification: 'intern', regulations: ['ISO27001'] }
+    ]
+    store.data.complianceAssessments = [
+      { id: 'CA-001', appId: 'APP-001', regulation: 'GDPR', status: 'compliant', workflowStatus: 'open', assessedBy: 'Max', assessedDate: '2025-01-15', deadline: '2025-06-30', auditTrail: [] },
+      { id: 'CA-002', appId: 'APP-001', regulation: 'ISO27001', status: 'partial', workflowStatus: 'inReview', assessedBy: 'Max', assessedDate: '2025-02-10', deadline: '2025-03-15', auditTrail: [] },
+      { id: 'CA-003', appId: 'APP-002', regulation: 'ISO27001', status: 'nonCompliant', workflowStatus: 'assessed', assessedBy: 'Lisa', assessedDate: '2025-01-20', deadline: '2025-12-31', auditTrail: [] }
+    ]
+    store.data.enums = {
+      complianceRegulations: [
+        { value: 'GDPR', label: 'GDPR / DSGVO', description: 'General Data Protection Regulation', deadline: '2018-05-25', applicableScopes: ['personenbezogeneDaten'], applicableCriticalities: ['Mission-Critical', 'Business-Critical', 'Administrative'] },
+        { value: 'ISO27001', label: 'ISO 27001', description: 'Information Security Management', deadline: '2025-10-31', applicableScopes: ['alle'], applicableCriticalities: ['Mission-Critical', 'Business-Critical'] },
+        { value: 'DORA', label: 'DORA', description: 'Digital Operational Resilience Act', deadline: '2025-01-17', applicableScopes: ['finanzdaten', 'kritischeInfrastruktur'], applicableCriticalities: ['Mission-Critical'] }
+      ]
+    }
+    store.data.domains = [
+      { id: 1, name: 'IT', color: '#3b82f6', capabilities: [{ id: '1.1' }] }
+    ]
+    store.data.capabilityMappings = [
+      { capabilityId: '1.1', applicationId: 'APP-001', role: 'Primary' }
+    ]
+  })
+
+  it('valid transition open → inReview succeeds', () => {
+    const result = store.assessmentWorkflowTransition('CA-001', 'inReview', 'Max', 'Starting review')
+    expect(result).toBe(true)
+    const a = store.data.complianceAssessments.find(x => x.id === 'CA-001')
+    expect(a.workflowStatus).toBe('inReview')
+  })
+
+  it('valid transition inReview → assessed succeeds', () => {
+    const result = store.assessmentWorkflowTransition('CA-002', 'assessed', 'Max', 'Done')
+    expect(result).toBe(true)
+    const a = store.data.complianceAssessments.find(x => x.id === 'CA-002')
+    expect(a.workflowStatus).toBe('assessed')
+  })
+
+  it('invalid transition open → assessed fails', () => {
+    const result = store.assessmentWorkflowTransition('CA-001', 'assessed', 'Max')
+    expect(result).toBe(false)
+    const a = store.data.complianceAssessments.find(x => x.id === 'CA-001')
+    expect(a.workflowStatus).toBe('open')
+  })
+
+  it('transition for unknown assessment returns false', () => {
+    expect(store.assessmentWorkflowTransition('CA-999', 'inReview', 'Max')).toBe(false)
+  })
+
+  it('transition adds audit trail entry', () => {
+    store.assessmentWorkflowTransition('CA-001', 'inReview', 'Max', 'Review started')
+    const trail = store.auditTrailForAssessment('CA-001')
+    expect(trail.length).toBe(1)
+    expect(trail[0].action).toBe('statusChange')
+    expect(trail[0].fromStatus).toBe('open')
+    expect(trail[0].toStatus).toBe('inReview')
+    expect(trail[0].user).toBe('Max')
+    expect(trail[0].comment).toBe('Review started')
+  })
+})
+
+describe('Compliance Phase C3 — Audit Trail', () => {
+  beforeEach(() => {
+    store.data.complianceAssessments = [
+      { id: 'CA-001', appId: 'APP-001', regulation: 'GDPR', status: 'compliant', auditTrail: [
+        { timestamp: '2025-01-15T09:00:00Z', user: 'Max', action: 'created', fromStatus: null, toStatus: 'open', comment: 'Created' }
+      ] },
+      { id: 'CA-002', appId: 'APP-002', regulation: 'ISO27001', status: 'partial', auditTrail: [] }
+    ]
+  })
+
+  it('auditTrailForAssessment returns trail', () => {
+    const trail = store.auditTrailForAssessment('CA-001')
+    expect(trail).toHaveLength(1)
+    expect(trail[0].user).toBe('Max')
+  })
+
+  it('auditTrailForAssessment returns empty for no trail', () => {
+    expect(store.auditTrailForAssessment('CA-002')).toHaveLength(0)
+  })
+
+  it('auditTrailForAssessment returns empty for unknown', () => {
+    expect(store.auditTrailForAssessment('CA-999')).toHaveLength(0)
+  })
+})
+
+describe('Compliance Phase C3 — Deadline Warnings', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'App One', vendor: 'V', regulations: ['GDPR'] }
+    ]
+    const now = new Date()
+    const soon = new Date(now.getTime() + 10 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+    const past = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+    const far = new Date(now.getTime() + 200 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+    store.data.complianceAssessments = [
+      { id: 'CA-001', appId: 'APP-001', regulation: 'GDPR', status: 'partial', deadline: soon, workflowStatus: 'inReview', auditTrail: [] },
+      { id: 'CA-002', appId: 'APP-001', regulation: 'ISO', status: 'compliant', deadline: past, workflowStatus: 'assessed', auditTrail: [] },
+      { id: 'CA-003', appId: 'APP-001', regulation: 'NIS2', status: 'compliant', deadline: far, workflowStatus: 'assessed', auditTrail: [] }
+    ]
+  })
+
+  it('deadlineWarnings includes soon and expired, excludes far', () => {
+    const warnings = store.deadlineWarnings
+    expect(warnings.find(w => w.assessmentId === 'CA-001')).toBeDefined()
+    expect(warnings.find(w => w.assessmentId === 'CA-002')).toBeDefined()
+    expect(warnings.find(w => w.assessmentId === 'CA-003')).toBeUndefined()
+  })
+
+  it('deadlineWarnings marks expired correctly', () => {
+    const warnings = store.deadlineWarnings
+    const expired = warnings.find(w => w.assessmentId === 'CA-002')
+    expect(expired.expired).toBe(true)
+    expect(expired.daysRemaining).toBeLessThan(0)
+  })
+
+  it('deadlineWarnings sorted by daysRemaining ascending', () => {
+    const warnings = store.deadlineWarnings
+    for (let i = 1; i < warnings.length; i++) {
+      expect(warnings[i].daysRemaining).toBeGreaterThanOrEqual(warnings[i - 1].daysRemaining)
+    }
+  })
+})
+
+describe('Compliance Phase C3 — Regulation Deadline Warnings', () => {
+  beforeEach(() => {
+    store.data.enums = {
+      complianceRegulations: [
+        { value: 'GDPR', label: 'GDPR', description: 'GDPR', deadline: '2018-05-25' },
+        { value: 'DORA', label: 'DORA', description: 'DORA', deadline: '2025-01-17' },
+        { value: 'FUTURE', label: 'Future Reg', description: 'Future', deadline: '2099-01-01' }
+      ]
+    }
+  })
+
+  it('regulationDeadlineWarnings includes expired and close deadlines', () => {
+    const warnings = store.regulationDeadlineWarnings
+    expect(warnings.find(w => w.value === 'GDPR')).toBeDefined()
+    expect(warnings.find(w => w.value === 'DORA')).toBeDefined()
+  })
+
+  it('regulationDeadlineWarnings excludes far-future deadlines', () => {
+    const warnings = store.regulationDeadlineWarnings
+    expect(warnings.find(w => w.value === 'FUTURE')).toBeUndefined()
+  })
+})
+
+describe('Compliance Phase C3 — Auto-Assign Regulations', () => {
+  beforeEach(() => {
+    store.data.enums = {
+      complianceRegulations: [
+        { value: 'GDPR', label: 'GDPR', description: 'GDPR', applicableScopes: ['personenbezogeneDaten'], applicableCriticalities: ['Mission-Critical', 'Business-Critical', 'Administrative'] },
+        { value: 'ISO27001', label: 'ISO 27001', description: 'ISO', applicableScopes: ['alle'], applicableCriticalities: ['Mission-Critical', 'Business-Critical'] },
+        { value: 'DORA', label: 'DORA', description: 'DORA', applicableScopes: ['finanzdaten', 'kritischeInfrastruktur'], applicableCriticalities: ['Mission-Critical'] },
+        { value: 'BAIT', label: 'BAIT', description: 'BAIT', applicableScopes: ['finanzdaten'], applicableCriticalities: ['Mission-Critical'] }
+      ]
+    }
+  })
+
+  it('assigns GDPR and ISO27001 to Mission-Critical app with personenbezogeneDaten', () => {
+    const regs = store.autoAssignRegulations({ criticality: 'Mission-Critical', dataClassification: 'personenbezogeneDaten' })
+    expect(regs).toContain('GDPR')
+    expect(regs).toContain('ISO27001')
+  })
+
+  it('assigns DORA to Mission-Critical with finanzdaten', () => {
+    const regs = store.autoAssignRegulations({ criticality: 'Mission-Critical', dataClassification: 'finanzdaten' })
+    expect(regs).toContain('DORA')
+    expect(regs).toContain('BAIT')
+  })
+
+  it('does not assign DORA to Administrative app', () => {
+    const regs = store.autoAssignRegulations({ criticality: 'Administrative', dataClassification: 'finanzdaten' })
+    expect(regs).not.toContain('DORA')
+  })
+
+  it('assigns GDPR to Administrative app with personenbezogeneDaten', () => {
+    const regs = store.autoAssignRegulations({ criticality: 'Administrative', dataClassification: 'personenbezogeneDaten' })
+    expect(regs).toContain('GDPR')
+    expect(regs).not.toContain('ISO27001')
+  })
+})
+
+describe('Compliance Phase C3 — Domain Compliance Scorecard', () => {
+  beforeEach(() => {
+    store.data.domains = [
+      { id: 1, name: 'IT Ops', color: '#3b82f6', capabilities: [{ id: '1.1' }, { id: '1.2' }] },
+      { id: 2, name: 'Finance', color: '#10b981', capabilities: [{ id: '2.1' }] }
+    ]
+    store.data.applications = [
+      { id: 'APP-001', name: 'App One', regulations: ['GDPR', 'ISO27001'] },
+      { id: 'APP-002', name: 'App Two', regulations: ['GDPR'] }
+    ]
+    store.data.capabilityMappings = [
+      { capabilityId: '1.1', applicationId: 'APP-001' },
+      { capabilityId: '2.1', applicationId: 'APP-002' }
+    ]
+    store.data.complianceAssessments = [
+      { id: 'CA-001', appId: 'APP-001', regulation: 'GDPR', status: 'compliant' },
+      { id: 'CA-002', appId: 'APP-001', regulation: 'ISO27001', status: 'partial' },
+      { id: 'CA-003', appId: 'APP-002', regulation: 'GDPR', status: 'nonCompliant' }
+    ]
+  })
+
+  it('returns scorecard per domain', () => {
+    const scorecard = store.complianceScorecardByDomain
+    expect(scorecard.length).toBe(2)
+  })
+
+  it('calculates correct score for IT Ops domain', () => {
+    const scorecard = store.complianceScorecardByDomain
+    const itOps = scorecard.find(d => d.domainId === 1)
+    expect(itOps).toBeDefined()
+    expect(itOps.appCount).toBe(1)
+    expect(itOps.compliant).toBe(1)
+    expect(itOps.partial).toBe(1)
+    // score = (1 + 0.5) / 2 * 100 = 75
+    expect(itOps.score).toBe(75)
+  })
+
+  it('calculates correct score for Finance domain', () => {
+    const scorecard = store.complianceScorecardByDomain
+    const finance = scorecard.find(d => d.domainId === 2)
+    expect(finance).toBeDefined()
+    expect(finance.nonCompliant).toBe(1)
+    expect(finance.score).toBe(0)
+  })
+
+  it('excludes domains with no apps mapped', () => {
+    store.data.capabilityMappings = []
+    const scorecard = store.complianceScorecardByDomain
+    expect(scorecard).toHaveLength(0)
+  })
+})
