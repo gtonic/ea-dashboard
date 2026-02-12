@@ -18772,14 +18772,38 @@ const SEED_DATA = {
       "Commodity"
     ],
     "vendorType": [
-      { "value": "MSP", "label": "Managed Service Provider" },
-      { "value": "HYP", "label": "Hyperscaler" },
-      { "value": "INF", "label": "Infrastruktur" },
-      { "value": "SAAS-I", "label": "SaaS (Infrastruktur)" },
-      { "value": "SAAS-S", "label": "SaaS (Spezialisiert)" },
-      { "value": "LIC", "label": "Lizenz-Software" },
-      { "value": "MKT", "label": "Marktprodukt" },
-      { "value": "PBR", "label": "Beratung / Professional Services" }
+      {
+        "value": "MSP",
+        "label": "Managed Service Provider"
+      },
+      {
+        "value": "HYP",
+        "label": "Hyperscaler"
+      },
+      {
+        "value": "INF",
+        "label": "Infrastruktur"
+      },
+      {
+        "value": "SAAS-I",
+        "label": "SaaS (Infrastruktur)"
+      },
+      {
+        "value": "SAAS-S",
+        "label": "SaaS (Spezialisiert)"
+      },
+      {
+        "value": "LIC",
+        "label": "Lizenz-Software"
+      },
+      {
+        "value": "MKT",
+        "label": "Marktprodukt"
+      },
+      {
+        "value": "PBR",
+        "label": "Beratung / Professional Services"
+      }
     ],
     "demandCategory": [
       "Idee",
@@ -18869,13 +18893,41 @@ const SEED_DATA = {
       "Hold"
     ],
     "complianceRegulations": [
-      { "value": "GDPR", "label": "GDPR / DSGVO", "description": "General Data Protection Regulation" },
-      { "value": "SOX", "label": "SOX", "description": "Sarbanes-Oxley Act" },
-      { "value": "ISO27001", "label": "ISO 27001", "description": "Information Security Management" },
-      { "value": "DORA", "label": "DORA", "description": "Digital Operational Resilience Act" },
-      { "value": "NIS2", "label": "NIS2", "description": "Network and Information Security Directive" },
-      { "value": "BAIT", "label": "BAIT", "description": "Bankaufsichtliche Anforderungen an die IT" },
-      { "value": "KRITIS", "label": "KRITIS", "description": "Kritische Infrastrukturen" }
+      {
+        "value": "GDPR",
+        "label": "GDPR / DSGVO",
+        "description": "General Data Protection Regulation"
+      },
+      {
+        "value": "SOX",
+        "label": "SOX",
+        "description": "Sarbanes-Oxley Act"
+      },
+      {
+        "value": "ISO27001",
+        "label": "ISO 27001",
+        "description": "Information Security Management"
+      },
+      {
+        "value": "DORA",
+        "label": "DORA",
+        "description": "Digital Operational Resilience Act"
+      },
+      {
+        "value": "NIS2",
+        "label": "NIS2",
+        "description": "Network and Information Security Directive"
+      },
+      {
+        "value": "BAIT",
+        "label": "BAIT",
+        "description": "Bankaufsichtliche Anforderungen an die IT"
+      },
+      {
+        "value": "KRITIS",
+        "label": "KRITIS",
+        "description": "Kritische Infrastrukturen"
+      }
     ]
   },
   "domains": [
@@ -20419,7 +20471,15 @@ const SEED_DATA = {
       "licenseCost": 280000,
       "operationsCost": 120000,
       "integrationCost": 30000,
-      "personnelCost": 20000
+      "personnelCost": 20000,
+      "regulations": [
+        "ISO27001",
+        "GDPR",
+        "SOX",
+        "DORA",
+        "NIS2",
+        "KRITIS"
+      ]
     },
     {
       "id": "APP-002",
@@ -20458,7 +20518,11 @@ const SEED_DATA = {
       "licenseCost": 90000,
       "operationsCost": 15000,
       "integrationCost": 10000,
-      "personnelCost": 5000
+      "personnelCost": 5000,
+      "regulations": [
+        "ISO27001",
+        "GDPR"
+      ]
     },
     {
       "id": "APP-003",
@@ -20494,7 +20558,12 @@ const SEED_DATA = {
       "licenseCost": 100000,
       "operationsCost": 50000,
       "integrationCost": 20000,
-      "personnelCost": 10000
+      "personnelCost": 10000,
+      "regulations": [
+        "ISO27001",
+        "NIS2",
+        "KRITIS"
+      ]
     },
     {
       "id": "APP-004",
@@ -20532,7 +20601,10 @@ const SEED_DATA = {
       "licenseCost": 80000,
       "operationsCost": 40000,
       "integrationCost": 15000,
-      "personnelCost": 10000
+      "personnelCost": 10000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-005",
@@ -20574,7 +20646,13 @@ const SEED_DATA = {
       "licenseCost": 85000,
       "operationsCost": 10000,
       "integrationCost": 5000,
-      "personnelCost": 0
+      "personnelCost": 0,
+      "regulations": [
+        "ISO27001",
+        "GDPR",
+        "NIS2",
+        "KRITIS"
+      ]
     },
     {
       "id": "APP-006",
@@ -20615,7 +20693,11 @@ const SEED_DATA = {
       "licenseCost": 0,
       "operationsCost": 5000,
       "integrationCost": 10000,
-      "personnelCost": 3000
+      "personnelCost": 3000,
+      "regulations": [
+        "ISO27001",
+        "GDPR"
+      ]
     },
     {
       "id": "APP-007",
@@ -20653,7 +20735,12 @@ const SEED_DATA = {
       "licenseCost": 45000,
       "operationsCost": 8000,
       "integrationCost": 5000,
-      "personnelCost": 2000
+      "personnelCost": 2000,
+      "regulations": [
+        "ISO27001",
+        "SOX",
+        "DORA"
+      ]
     },
     {
       "id": "APP-008",
@@ -20690,7 +20777,10 @@ const SEED_DATA = {
       "licenseCost": 65000,
       "operationsCost": 15000,
       "integrationCost": 10000,
-      "personnelCost": 5000
+      "personnelCost": 5000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-009",
@@ -20728,7 +20818,11 @@ const SEED_DATA = {
       "licenseCost": 35000,
       "operationsCost": 5000,
       "integrationCost": 3000,
-      "personnelCost": 2000
+      "personnelCost": 2000,
+      "regulations": [
+        "ISO27001",
+        "GDPR"
+      ]
     },
     {
       "id": "APP-010",
@@ -20764,7 +20858,10 @@ const SEED_DATA = {
       "licenseCost": 50000,
       "operationsCost": 12000,
       "integrationCost": 3000,
-      "personnelCost": 0
+      "personnelCost": 0,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-011",
@@ -20801,7 +20898,12 @@ const SEED_DATA = {
       "licenseCost": 60000,
       "operationsCost": 40000,
       "integrationCost": 10000,
-      "personnelCost": 10000
+      "personnelCost": 10000,
+      "regulations": [
+        "ISO27001",
+        "NIS2",
+        "KRITIS"
+      ]
     },
     {
       "id": "APP-012",
@@ -20838,7 +20940,10 @@ const SEED_DATA = {
       "licenseCost": 0,
       "operationsCost": 15000,
       "integrationCost": 3000,
-      "personnelCost": 2000
+      "personnelCost": 2000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-013",
@@ -20873,7 +20978,11 @@ const SEED_DATA = {
       "licenseCost": 12000,
       "operationsCost": 5000,
       "integrationCost": 0,
-      "personnelCost": 3000
+      "personnelCost": 3000,
+      "regulations": [
+        "ISO27001",
+        "SOX"
+      ]
     },
     {
       "id": "APP-014",
@@ -20909,7 +21018,10 @@ const SEED_DATA = {
       "licenseCost": 0,
       "operationsCost": 2000,
       "integrationCost": 0,
-      "personnelCost": 3000
+      "personnelCost": 3000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-015",
@@ -20945,7 +21057,10 @@ const SEED_DATA = {
       "licenseCost": 15000,
       "operationsCost": 5000,
       "integrationCost": 2000,
-      "personnelCost": 3000
+      "personnelCost": 3000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-016",
@@ -20983,7 +21098,10 @@ const SEED_DATA = {
       "licenseCost": 20000,
       "operationsCost": 3000,
       "integrationCost": 5000,
-      "personnelCost": 2000
+      "personnelCost": 2000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-017",
@@ -21021,7 +21139,10 @@ const SEED_DATA = {
       "licenseCost": 12000,
       "operationsCost": 3000,
       "integrationCost": 2000,
-      "personnelCost": 1000
+      "personnelCost": 1000,
+      "regulations": [
+        "ISO27001"
+      ]
     },
     {
       "id": "APP-018",
@@ -21057,7 +21178,13 @@ const SEED_DATA = {
       "licenseCost": 8000,
       "operationsCost": 4000,
       "integrationCost": 0,
-      "personnelCost": 3000
+      "personnelCost": 3000,
+      "regulations": [
+        "ISO27001",
+        "SOX",
+        "DORA",
+        "BAIT"
+      ]
     }
   ],
   "capabilityMappings": [
@@ -22848,6 +22975,413 @@ const SEED_DATA = {
       "region": "Headquarters",
       "parentEntity": "ENT-001"
     }
+  ],
+  "complianceAssessments": [
+    {
+      "id": "CA-001",
+      "appId": "APP-001",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "assessedBy": "Max Mustermann",
+      "assessedDate": "2025-01-15",
+      "notes": "Alle DSGVO-Anforderungen erfüllt. Datenschutz-Folgenabschätzung durchgeführt."
+    },
+    {
+      "id": "CA-002",
+      "appId": "APP-001",
+      "regulation": "ISO27001",
+      "status": "partial",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-02-10",
+      "notes": "Zertifizierung läuft, kleinere Abweichungen bei Zugangskontrollen festgestellt."
+    },
+    {
+      "id": "CA-003",
+      "appId": "APP-001",
+      "regulation": "SOX",
+      "status": "compliant",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-01-20",
+      "notes": "Interne Kontrollen geprüft und bestätigt."
+    },
+    {
+      "id": "CA-004",
+      "appId": "APP-001",
+      "regulation": "DORA",
+      "status": "partial",
+      "assessedBy": "Lisa Hoffmann",
+      "assessedDate": "2025-03-05",
+      "notes": "ICT-Risikomanagement teilweise umgesetzt. Incident-Reporting-Prozess fehlt noch."
+    },
+    {
+      "id": "CA-005",
+      "appId": "APP-001",
+      "regulation": "NIS2",
+      "status": "partial",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-02-28",
+      "notes": "Meldepflichten implementiert, Supply-Chain-Sicherheit in Arbeit."
+    },
+    {
+      "id": "CA-006",
+      "appId": "APP-002",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "assessedBy": "Maria Becker",
+      "assessedDate": "2025-01-25",
+      "notes": "Auftragsverarbeitungsvertrag aktuell. Datenlöschkonzept umgesetzt."
+    },
+    {
+      "id": "CA-007",
+      "appId": "APP-002",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-02-12",
+      "notes": "Salesforce SOC2-Bericht geprüft, konform."
+    },
+    {
+      "id": "CA-008",
+      "appId": "APP-003",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-03-01",
+      "notes": "Sicherheitskontrollen vollständig implementiert."
+    },
+    {
+      "id": "CA-009",
+      "appId": "APP-003",
+      "regulation": "NIS2",
+      "status": "partial",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-03-10",
+      "notes": "Netzwerksegmentierung abgeschlossen, Logging noch unvollständig."
+    },
+    {
+      "id": "CA-010",
+      "appId": "APP-004",
+      "regulation": "ISO27001",
+      "status": "partial",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-01-30",
+      "notes": "Zugriffskontrollen grundsätzlich konform, Protokollierung unvollständig."
+    },
+    {
+      "id": "CA-011",
+      "appId": "APP-005",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-02-15",
+      "notes": "Microsoft-Compliance-Zertifikate geprüft."
+    },
+    {
+      "id": "CA-012",
+      "appId": "APP-005",
+      "regulation": "GDPR",
+      "status": "partial",
+      "assessedBy": "Max Mustermann",
+      "assessedDate": "2025-02-20",
+      "notes": "DLP-Richtlinien teilweise aktiv. E-Mail-Verschlüsselung wird ausgerollt."
+    },
+    {
+      "id": "CA-013",
+      "appId": "APP-005",
+      "regulation": "NIS2",
+      "status": "compliant",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-03-15",
+      "notes": "Alle NIS2-Anforderungen durch Microsoft-Sicherheitsfeatures abgedeckt."
+    },
+    {
+      "id": "CA-014",
+      "appId": "APP-005",
+      "regulation": "KRITIS",
+      "status": "nonCompliant",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-03-18",
+      "notes": "BSI-Meldewege nicht vollständig eingerichtet. Nachbesserung erforderlich."
+    },
+    {
+      "id": "CA-015",
+      "appId": "APP-006",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-02-05",
+      "notes": "Berechtigungskonzept dokumentiert und umgesetzt."
+    },
+    {
+      "id": "CA-016",
+      "appId": "APP-006",
+      "regulation": "GDPR",
+      "status": "partial",
+      "assessedBy": "Maria Becker",
+      "assessedDate": "2025-02-22",
+      "notes": "Aufbewahrungsfristen teilweise konfiguriert."
+    },
+    {
+      "id": "CA-017",
+      "appId": "APP-007",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-01-18",
+      "notes": "Datenzugriff über RLS gesichert."
+    },
+    {
+      "id": "CA-018",
+      "appId": "APP-007",
+      "regulation": "SOX",
+      "status": "nonCompliant",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-03-20",
+      "notes": "Audit-Trail unvollständig. Änderungsprotokollierung muss nachgerüstet werden."
+    },
+    {
+      "id": "CA-019",
+      "appId": "APP-008",
+      "regulation": "ISO27001",
+      "status": "partial",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-02-08",
+      "notes": "ITSM-Prozesse weitgehend konform. Kleinere Lücken bei Change-Management-Dokumentation."
+    },
+    {
+      "id": "CA-020",
+      "appId": "APP-009",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "assessedBy": "Max Mustermann",
+      "assessedDate": "2025-01-28",
+      "notes": "Personalakten DSGVO-konform. Löschkonzept implementiert."
+    },
+    {
+      "id": "CA-021",
+      "appId": "APP-009",
+      "regulation": "ISO27001",
+      "status": "partial",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-03-02",
+      "notes": "MFA aktiviert, aber Passwort-Policy nicht vollständig durchgesetzt."
+    },
+    {
+      "id": "CA-022",
+      "appId": "APP-010",
+      "regulation": "ISO27001",
+      "status": "notAssessed",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-25",
+      "notes": "Bewertung steht noch aus. Termin für Q2 2025 geplant."
+    },
+    {
+      "id": "CA-023",
+      "appId": "APP-011",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-01-10",
+      "notes": "Azure-Compliance-Zertifikate vollständig geprüft."
+    },
+    {
+      "id": "CA-024",
+      "appId": "APP-011",
+      "regulation": "NIS2",
+      "status": "compliant",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-02-18",
+      "notes": "Cloud-Infrastruktur NIS2-konform konfiguriert."
+    },
+    {
+      "id": "CA-025",
+      "appId": "APP-011",
+      "regulation": "KRITIS",
+      "status": "partial",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-03-08",
+      "notes": "Notfallpläne vorhanden, BSI-Meldeprozess wird optimiert."
+    },
+    {
+      "id": "CA-026",
+      "appId": "APP-012",
+      "regulation": "ISO27001",
+      "status": "notAssessed",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-03-28",
+      "notes": "Monitoring-Tool noch nicht formal bewertet."
+    },
+    {
+      "id": "CA-027",
+      "appId": "APP-013",
+      "regulation": "ISO27001",
+      "status": "nonCompliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-01-22",
+      "notes": "End-of-Life erreicht. Keine Sicherheitsupdates mehr verfügbar."
+    },
+    {
+      "id": "CA-028",
+      "appId": "APP-013",
+      "regulation": "SOX",
+      "status": "nonCompliant",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-01-25",
+      "notes": "Finanzreporting nicht mehr auditierbar. Migration dringend erforderlich."
+    },
+    {
+      "id": "CA-029",
+      "appId": "APP-014",
+      "regulation": "ISO27001",
+      "status": "nonCompliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-02-01",
+      "notes": "Keine Zugriffskontrolle, keine Versionierung. Ablösung geplant."
+    },
+    {
+      "id": "CA-030",
+      "appId": "APP-015",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-02-25",
+      "notes": "Backup-Verschlüsselung und Zugriffsschutz konform."
+    },
+    {
+      "id": "CA-031",
+      "appId": "APP-016",
+      "regulation": "ISO27001",
+      "status": "partial",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-03-12",
+      "notes": "DLP-Policies für Power Apps teilweise konfiguriert."
+    },
+    {
+      "id": "CA-032",
+      "appId": "APP-017",
+      "regulation": "ISO27001",
+      "status": "notAssessed",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-30",
+      "notes": "Bewertung ausstehend. Atlassian Cloud Security Review geplant."
+    },
+    {
+      "id": "CA-033",
+      "appId": "APP-018",
+      "regulation": "ISO27001",
+      "status": "nonCompliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-01-12",
+      "notes": "Veraltete Verschlüsselung. End-of-Life-System."
+    },
+    {
+      "id": "CA-034",
+      "appId": "APP-018",
+      "regulation": "SOX",
+      "status": "partial",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-01-15",
+      "notes": "Transaktionsprotokolle vorhanden, aber nicht revisionssicher archiviert."
+    },
+    {
+      "id": "CA-035",
+      "appId": "APP-018",
+      "regulation": "DORA",
+      "status": "nonCompliant",
+      "assessedBy": "Lisa Hoffmann",
+      "assessedDate": "2025-02-05",
+      "notes": "ICT-Drittanbieter-Risikomanagement nicht implementiert. System wird abgelöst."
+    },
+    {
+      "id": "CA-036",
+      "appId": "APP-001",
+      "regulation": "KRITIS",
+      "status": "notAssessed",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-04-01",
+      "notes": "KRITIS-Prüfung für SAP in Vorbereitung."
+    },
+    {
+      "id": "CA-037",
+      "appId": "APP-003",
+      "regulation": "KRITIS",
+      "status": "notAssessed",
+      "assessedBy": "Thomas Weber",
+      "assessedDate": "2025-04-02",
+      "notes": "KRITIS-Einstufung der Produktionsanlage wird geprüft."
+    },
+    {
+      "id": "CA-038",
+      "appId": "APP-007",
+      "regulation": "DORA",
+      "status": "partial",
+      "assessedBy": "Lisa Hoffmann",
+      "assessedDate": "2025-04-05",
+      "notes": "Reporting-Resilienz teilweise nachgewiesen."
+    },
+    {
+      "id": "CA-039",
+      "appId": "APP-002",
+      "regulation": "GDPR",
+      "status": "partial",
+      "assessedBy": "Maria Becker",
+      "assessedDate": "2025-04-10",
+      "notes": "Nachprüfung: Consent-Management muss aktualisiert werden."
+    },
+    {
+      "id": "CA-040",
+      "appId": "APP-009",
+      "regulation": "GDPR",
+      "status": "notAssessed",
+      "assessedBy": "Max Mustermann",
+      "assessedDate": "2025-04-08",
+      "notes": "Nachprüfung noch nicht durchgeführt. Termin für Q2 2025 geplant."
+    },
+    {
+      "id": "CA-041",
+      "appId": "APP-011",
+      "regulation": "KRITIS",
+      "status": "compliant",
+      "assessedBy": "Klaus Fischer",
+      "assessedDate": "2025-04-12",
+      "notes": "Nachprüfung: BSI-Meldeprozess nun vollständig implementiert."
+    },
+    {
+      "id": "CA-042",
+      "appId": "APP-005",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "assessedBy": "Max Mustermann",
+      "assessedDate": "2025-04-15",
+      "notes": "Nachprüfung: DLP-Richtlinien vollständig aktiviert."
+    },
+    {
+      "id": "CA-043",
+      "appId": "APP-018",
+      "regulation": "BAIT",
+      "status": "notAssessed",
+      "assessedBy": "Lisa Hoffmann",
+      "assessedDate": "2025-04-18",
+      "notes": "BAIT-Bewertung zurückgestellt wegen geplanter Systemablösung."
+    },
+    {
+      "id": "CA-044",
+      "appId": "APP-006",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "assessedBy": "Maria Becker",
+      "assessedDate": "2025-04-20",
+      "notes": "Nachprüfung: Aufbewahrungsfristen nun korrekt konfiguriert."
+    },
+    {
+      "id": "CA-045",
+      "appId": "APP-016",
+      "regulation": "ISO27001",
+      "status": "compliant",
+      "assessedBy": "Stefan Braun",
+      "assessedDate": "2025-04-22",
+      "notes": "Nachprüfung: DLP-Policies vollständig umgesetzt."
+    }
   ]
 };
 
@@ -22874,6 +23408,7 @@ function createEmptyState () {
     demands: [],
     integrations: [],
     legalEntities: [],
+    complianceAssessments: [],
     enums: {}
   }
 }
@@ -23339,6 +23874,80 @@ const store = reactive({
     return app.entities.map(id => this.entityById(id)).filter(Boolean)
   },
 
+  // ── Compliance Helpers (Phase C2) ──
+
+  /** All compliance assessments for a given app */
+  assessmentsForApp (appId) {
+    return (this.data.complianceAssessments || []).filter(a => a.appId === appId)
+  },
+
+  /** All compliance assessments for a given regulation */
+  assessmentsForRegulation (regulation) {
+    return (this.data.complianceAssessments || []).filter(a => a.regulation === regulation)
+  },
+
+  /** Gap analysis: apps that have a regulation in their list but no assessment (or notAssessed) */
+  get complianceGaps () {
+    const assessments = this.data.complianceAssessments || []
+    const gaps = []
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.regulations || []).forEach(reg => {
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (!assessment || assessment.status === 'notAssessed') {
+          gaps.push({ appId: app.id, appName: app.name, regulation: reg, reason: assessment ? 'notAssessed' : 'missing' })
+        }
+      })
+    })
+    return gaps
+  },
+
+  /** Regulation load score: apps sorted by number of applicable regulations (descending) */
+  get regulationLoadScores () {
+    return (this.data.applications || [])
+      .filter(a => a.regulations && a.regulations.length > 0)
+      .map(a => ({ appId: a.id, appName: a.name, vendor: a.vendor, criticality: a.criticality, count: a.regulations.length, regulations: a.regulations }))
+      .sort((a, b) => b.count - a.count)
+  },
+
+  /** Vendor compliance: aggregated compliance status per vendor */
+  get vendorComplianceStatus () {
+    const assessments = this.data.complianceAssessments || []
+    const vendorMap = {}
+    ;(this.data.applications || []).forEach(app => {
+      const vendor = app.vendor || 'Unknown'
+      if (!vendorMap[vendor]) vendorMap[vendor] = { vendor, apps: 0, compliant: 0, partial: 0, nonCompliant: 0, notAssessed: 0, total: 0 }
+      vendorMap[vendor].apps++
+      ;(app.regulations || []).forEach(reg => {
+        vendorMap[vendor].total++
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (!assessment || assessment.status === 'notAssessed') vendorMap[vendor].notAssessed++
+        else if (assessment.status === 'compliant') vendorMap[vendor].compliant++
+        else if (assessment.status === 'partial') vendorMap[vendor].partial++
+        else vendorMap[vendor].nonCompliant++
+      })
+    })
+    return Object.values(vendorMap)
+      .filter(v => v.total > 0)
+      .map(v => ({ ...v, complianceRate: v.total ? Math.round((v.compliant / v.total) * 100) : 0 }))
+      .sort((a, b) => b.total - a.total)
+  },
+
+  /** Overall compliance score: percentage of compliant assessments out of all applicable */
+  get overallComplianceScore () {
+    const assessments = this.data.complianceAssessments || []
+    let total = 0
+    let compliant = 0
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.regulations || []).forEach(reg => {
+        total++
+        const assessment = assessments.find(a => a.appId === app.id && a.regulation === reg)
+        if (assessment && assessment.status === 'compliant') compliant++
+        else if (assessment && assessment.status === 'partial') compliant += 0.5
+      })
+    })
+    return total ? Math.round((compliant / total) * 100) : 0
+  },
+
   // ── Demand CRUD ──
 
   get totalDemands () { return (this.data.demands || []).length },
@@ -23554,7 +24163,7 @@ function startWatching () {
 // ────────────────────────────────────────────
 // Load — from localStorage or seed JSON
 // ────────────────────────────────────────────
-const CACHE_VERSION = 'v6-2026-02-11-phase7'
+const CACHE_VERSION = 'v7-2026-02-12-phase-c2'
 
 function loadData () {
   const saved = localStorage.getItem(STORAGE_KEY)
@@ -25400,15 +26009,25 @@ const SettingsView = {
         <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('settings.complianceRegulations') }}</h2>
         <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('settings.complianceRegulationsDesc') }}</p>
         <div class="space-y-3">
-          <label v-for="reg in availableRegulations" :key="reg.value"
-                 class="flex items-center gap-3 p-3 rounded-lg border border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 cursor-pointer transition-colors">
-            <input type="checkbox" :checked="isRegulationSelected(reg.value)" @change="toggleRegulation(reg.value)"
-                   class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+          <div v-for="reg in availableRegulations" :key="reg.value"
+               @click="toggleRegulation(reg.value)"
+               class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+               :class="isRegulationSelected(reg.value)
+                 ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 dark:border-primary-600'
+                 : 'border-surface-200 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800'">
+            <div class="flex items-center justify-center w-5 h-5 rounded border-2 shrink-0 transition-colors"
+                 :class="isRegulationSelected(reg.value)
+                   ? 'bg-primary-600 border-primary-600 text-white'
+                   : 'border-gray-300 dark:border-gray-600'">
+              <svg v-if="isRegulationSelected(reg.value)" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
             <div class="flex-1">
               <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ reg.label }}</div>
               <div class="text-xs text-gray-500 dark:text-gray-400">{{ reg.description }}</div>
             </div>
-          </label>
+          </div>
         </div>
       </section>
 
@@ -25552,7 +26171,6 @@ const SettingsView = {
     }
 
     return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation }
-  }
   }
 }
 
@@ -30450,6 +31068,42 @@ const ExecutiveSummary = {
           </div>
         </div>
 
+        <!-- Compliance Section (Phase C2) -->
+        <div v-if="complianceEnabled" class="bg-white rounded-xl border border-surface-200 p-5">
+          <h3 class="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wide flex items-center gap-2">
+            <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Compliance Overview
+          </h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Compliance Score</div>
+              <div class="text-2xl font-bold mt-1" :style="{ color: store.overallComplianceScore >= 80 ? '#10b981' : store.overallComplianceScore >= 60 ? '#f59e0b' : '#ef4444' }">{{ store.overallComplianceScore }}%</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Active Regulations</div>
+              <div class="text-2xl font-bold mt-1 text-blue-600">{{ selectedRegulationCount }}</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Open Gaps</div>
+              <div class="text-2xl font-bold mt-1" :style="{ color: store.complianceGaps.length > 0 ? '#ef4444' : '#10b981' }">{{ store.complianceGaps.length }}</div>
+            </div>
+            <div class="border border-surface-200 rounded-lg p-3 text-center">
+              <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wide">Assessments</div>
+              <div class="text-2xl font-bold mt-1 text-gray-700">{{ (store.data.complianceAssessments || []).length }}</div>
+            </div>
+          </div>
+          <div v-if="vendorComplianceSummary.length > 0" class="space-y-2">
+            <div class="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Vendor Compliance Status</div>
+            <div v-for="vc in vendorComplianceSummary" :key="vc.vendor" class="flex items-center gap-3">
+              <span class="text-xs text-gray-600 w-36 truncate">{{ vc.vendor }}</span>
+              <div class="flex-1 h-2 bg-surface-100 rounded-full overflow-hidden">
+                <div class="h-full rounded-full" :style="{ width: vc.complianceRate + '%', backgroundColor: vc.complianceRate >= 80 ? '#10b981' : vc.complianceRate >= 50 ? '#f59e0b' : '#ef4444' }"></div>
+              </div>
+              <span class="text-xs font-mono text-gray-700 w-12 text-right">{{ vc.complianceRate }}%</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Footer -->
         <div class="text-center text-[10px] text-gray-400 py-4 border-t border-surface-200">
           {{ store.data.meta.company }} · EA Dashboard · {{ reportDate }} · Confidential
@@ -30724,6 +31378,11 @@ const ExecutiveSummary = {
       window.print()
     }
 
+    // ── Compliance (Phase C2) ──
+    const complianceEnabled = computed(() => store.featureToggles.complianceEnabled)
+    const selectedRegulationCount = computed(() => (store.featureToggles.selectedRegulations || []).length)
+    const vendorComplianceSummary = computed(() => store.vendorComplianceStatus.slice(0, 5))
+
     return {
       store, linkTo, reportDate, generatedAt,
       summaryKpis, statusCounts, statusPct, statusDot,
@@ -30732,6 +31391,7 @@ const ExecutiveSummary = {
       topProjects, conformityClass,
       topRisks, actionItems,
       timePct, timeColor, topGaps,
+      complianceEnabled, selectedRegulationCount, vendorComplianceSummary,
       printReport
     }
   }
@@ -31493,6 +32153,25 @@ const RiskHeatmap = {
         </div>
       </div>
 
+      <!-- Compliance Risk Indicators (Phase C2) -->
+      <div v-if="complianceEnabled && complianceRiskApps.length > 0" class="bg-white rounded-xl border border-surface-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Compliance-Risiken — Nicht-konforme Applikationen</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <a v-for="item in complianceRiskApps" :key="item.app.id"
+             :href="linkTo('/apps/' + item.app.id)"
+             class="flex items-center gap-3 p-3 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 transition-colors">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+                 :class="item.nonCompliant > 0 ? 'bg-red-200 text-red-700' : 'bg-yellow-200 text-yellow-700'">
+              {{ item.nonCompliant + item.partial }}
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-gray-900 truncate">{{ item.app.name }}</div>
+              <div class="text-xs text-gray-500">{{ item.nonCompliant }} nicht-konform · {{ item.partial }} teilweise · {{ item.regulations.join(', ') }}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
       <!-- Lifecycle Status Overview -->
       <div class="bg-white rounded-xl border border-surface-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Lifecycle-Status pro Applikation</h2>
@@ -31671,11 +32350,33 @@ const RiskHeatmap = {
       return 'bg-green-500'
     }
 
+    // Compliance risk indicators (Phase C2)
+    const complianceEnabled = computed(() => store.featureToggles.complianceEnabled)
+    const complianceRiskApps = computed(() => {
+      if (!complianceEnabled.value) return []
+      const assessments = store.data.complianceAssessments || []
+      const result = []
+      ;(store.data.applications || []).forEach(app => {
+        if (!app.regulations || app.regulations.length === 0) return
+        const appAssessments = assessments.filter(a => a.appId === app.id)
+        const nonCompliant = appAssessments.filter(a => a.status === 'nonCompliant').length
+        const partial = appAssessments.filter(a => a.status === 'partial').length
+        if (nonCompliant > 0 || partial > 0) {
+          const regulations = appAssessments
+            .filter(a => a.status === 'nonCompliant' || a.status === 'partial')
+            .map(a => a.regulation)
+          result.push({ app, nonCompliant, partial, regulations })
+        }
+      })
+      return result.sort((a, b) => b.nonCompliant - a.nonCompliant)
+    })
+
     return {
       store, linkTo,
       probLevels, impactLevels, probLevelsReversed,
       highRiskApps, shadowITApps, vendorRisks, eolApps,
       vendorDependencies, sortedApps,
+      complianceEnabled, complianceRiskApps,
       appsInCell, cellBg, critBadge, timeBadge, lifecycleBadge, riskDot
     }
   }
@@ -34160,20 +34861,33 @@ const EaHealthScore = {
       return Math.round((complete / apps.length) * 100)
     })
 
+    // 6. Compliance Score: use store's overall compliance score (Phase C2)
+    const complianceScore = computed(() => {
+      if (!store.featureToggles.complianceEnabled) return null
+      return store.overallComplianceScore
+    })
+
     // ── Overall Score ──
     const healthScore = computed(() => {
       const scores = [lifecycleScore.value, alignmentScore.value, maturityScore.value, vendorScore.value, dataQualityScore.value]
+      if (complianceScore.value !== null) scores.push(complianceScore.value)
       return Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
     })
 
     // ── Sub-scores array ──
-    const subScores = computed(() => [
-      { label: 'Lifecycle', score: lifecycleScore.value, detail: 'Anteil aktiver Applikationen' },
-      { label: 'Strategie', score: alignmentScore.value, detail: 'TIME-Quadrant Invest/Tolerate Anteil' },
-      { label: 'Reifegrad', score: maturityScore.value, detail: 'Durchschnittliche Capability-Maturity' },
-      { label: 'Vendor-Diversität', score: vendorScore.value, detail: 'Keine übermäßige Vendor-Konzentration' },
-      { label: 'Datenqualität', score: dataQualityScore.value, detail: 'Vollständigkeit der App-Daten' }
-    ])
+    const subScores = computed(() => {
+      const scores = [
+        { label: 'Lifecycle', score: lifecycleScore.value, detail: 'Anteil aktiver Applikationen' },
+        { label: 'Strategie', score: alignmentScore.value, detail: 'TIME-Quadrant Invest/Tolerate Anteil' },
+        { label: 'Reifegrad', score: maturityScore.value, detail: 'Durchschnittliche Capability-Maturity' },
+        { label: 'Vendor-Diversität', score: vendorScore.value, detail: 'Keine übermäßige Vendor-Konzentration' },
+        { label: 'Datenqualität', score: dataQualityScore.value, detail: 'Vollständigkeit der App-Daten' }
+      ]
+      if (complianceScore.value !== null) {
+        scores.push({ label: 'Compliance', score: complianceScore.value, detail: 'Regulatorische Konformität' })
+      }
+      return scores
+    })
 
     // ── Warnings & Recommendations ──
 
@@ -34289,6 +35003,36 @@ const EaHealthScore = {
           })
         }
       })
+
+      // 7. Compliance gaps (Phase C2)
+      if (store.featureToggles.complianceEnabled) {
+        const gaps = store.complianceGaps
+        if (gaps.length > 5) {
+          warnings.push({
+            severity: 'critical',
+            title: `${gaps.length} Compliance-Lücken erkannt`,
+            description: `Applikationen ohne Compliance-Bewertung: ${gaps.slice(0, 3).map(g => g.appName + ' (' + g.regulation + ')').join(', ')}…`,
+            recommendation: `Compliance-Bewertungen für alle zutreffenden Regulierungen durchführen.`
+          })
+        } else if (gaps.length > 0) {
+          warnings.push({
+            severity: 'warning',
+            title: `${gaps.length} Compliance-Lücke(n) offen`,
+            description: `Fehlende Bewertungen: ${gaps.map(g => g.appName + ' (' + g.regulation + ')').join(', ')}`,
+            recommendation: `Compliance-Bewertungen zeitnah nachholen.`
+          })
+        }
+        // Non-compliant assessments
+        const nonCompliant = (store.data.complianceAssessments || []).filter(a => a.status === 'nonCompliant')
+        if (nonCompliant.length > 0) {
+          warnings.push({
+            severity: 'critical',
+            title: `${nonCompliant.length} nicht-konforme Compliance-Bewertung(en)`,
+            description: `Nicht konform: ${nonCompliant.slice(0, 3).map(a => { const app = store.appById(a.appId); return (app ? app.name : a.appId) + ' (' + a.regulation + ')' }).join(', ')}`,
+            recommendation: `Maßnahmenplan erstellen, um Compliance-Verstöße zu beheben.`
+          })
+        }
+      }
 
       return warnings.sort((a, b) => {
         const order = { critical: 0, warning: 1 }
@@ -34957,7 +35701,7 @@ const TcoCalculator = {
 
 
 // ── ComplianceDashboard (compliance-dashboard.js) ──
-// compliance-dashboard.js — Compliance overview showing selected regulations and status
+// compliance-dashboard.js — Compliance Dashboard with Gap-Analysis, Cross-Reference & Vendor-Compliance (Phase C2)
 
 const ComplianceDashboard = {
   name: 'ComplianceDashboard',
@@ -34977,22 +35721,22 @@ const ComplianceDashboard = {
       </div>
 
       <!-- Summary Cards -->
-      <div v-if="selectedRegulations.length > 0" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div v-if="selectedRegulations.length > 0" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
           <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.activeRegulations') }}</div>
           <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ selectedRegulations.length }}</div>
         </div>
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
-          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.affectedApps') }}</div>
-          <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ store.totalApps }}</div>
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.overallScore') }}</div>
+          <div class="mt-2 text-2xl font-bold" :class="scoreColor(store.overallComplianceScore)">{{ store.overallComplianceScore }}%</div>
         </div>
         <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
-          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.overallStatus') }}</div>
-          <div class="mt-2">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-              {{ t('compliance.partiallyCompliant') }}
-            </span>
-          </div>
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.gaps') }}</div>
+          <div class="mt-2 text-2xl font-bold" :class="filteredGaps.length > 0 ? 'text-red-600' : 'text-green-600'">{{ filteredGaps.length }}</div>
+        </div>
+        <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-5">
+          <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">{{ t('compliance.totalAssessments') }}</div>
+          <div class="mt-2 text-2xl font-bold text-gray-800 dark:text-gray-100">{{ totalAssessments }}</div>
         </div>
       </div>
 
@@ -35039,6 +35783,133 @@ const ComplianceDashboard = {
           </table>
         </div>
       </section>
+
+      <!-- Gap Analysis -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.gapAnalysis') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.gapAnalysisDesc') }}</p>
+        <div v-if="filteredGaps.length === 0" class="text-sm text-gray-500 dark:text-gray-400 italic">{{ t('compliance.noGaps') }}</div>
+        <div v-else class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.application') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulation') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.reason') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="gap in filteredGaps" :key="gap.appId + '-' + gap.regulation"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3">
+                  <a :href="linkTo('/apps/' + gap.appId)" class="text-primary-600 hover:underline font-medium">{{ gap.appName }}</a>
+                </td>
+                <td class="py-2 px-3 text-gray-700 dark:text-gray-300">{{ regLabel(gap.regulation) }}</td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                    {{ gap.reason === 'missing' ? t('compliance.missing') : t('compliance.notAssessed') }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Cross-Reference: Regulation Load Score -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.crossReference') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.crossReferenceDesc') }}</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.application') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.vendor') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulationCount') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulation') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in filteredLoadScores" :key="item.appId"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3">
+                  <a :href="linkTo('/apps/' + item.appId)" class="text-primary-600 hover:underline font-medium">{{ item.appName }}</a>
+                  <div class="text-xs text-gray-400">{{ item.criticality }}</div>
+                </td>
+                <td class="py-2 px-3 text-gray-600 dark:text-gray-400">{{ item.vendor }}</td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold"
+                        :class="item.count >= 5 ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : item.count >= 3 ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'">
+                    {{ item.count }}
+                  </span>
+                </td>
+                <td class="py-2 px-3">
+                  <div class="flex flex-wrap gap-1">
+                    <span v-for="reg in item.filteredRegulations" :key="reg"
+                          class="px-1.5 py-0.5 rounded text-xs bg-surface-100 dark:bg-surface-800 text-gray-600 dark:text-gray-400">
+                      {{ reg }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Vendor Compliance -->
+      <section v-if="selectedRegulations.length > 0"
+               class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+        <h2 class="text-base font-semibold text-gray-800 dark:text-gray-200 mb-1">{{ t('compliance.vendorCompliance') }}</h2>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">{{ t('compliance.vendorComplianceDesc') }}</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-surface-200 dark:border-surface-700">
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.vendor') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.apps') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.assessments') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.complianceRate') }}</th>
+                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.status') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="vc in store.vendorComplianceStatus" :key="vc.vendor"
+                  class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="py-2 px-3 font-medium text-gray-800 dark:text-gray-200">{{ vc.vendor }}</td>
+                <td class="py-2 px-3 text-gray-600 dark:text-gray-400">{{ vc.apps }}</td>
+                <td class="py-2 px-3">
+                  <div class="flex items-center gap-2 text-xs">
+                    <span class="text-green-600">{{ vc.compliant }}</span>
+                    <span class="text-yellow-600">{{ vc.partial }}</span>
+                    <span class="text-red-600">{{ vc.nonCompliant }}</span>
+                    <span class="text-gray-400">{{ vc.notAssessed }}</span>
+                  </div>
+                </td>
+                <td class="py-2 px-3">
+                  <div class="flex items-center gap-2">
+                    <div class="flex-1 h-2 bg-surface-200 dark:bg-surface-700 rounded-full overflow-hidden">
+                      <div class="h-full rounded-full transition-all"
+                           :class="vc.complianceRate >= 80 ? 'bg-green-500' : vc.complianceRate >= 50 ? 'bg-yellow-500' : 'bg-red-500'"
+                           :style="{ width: vc.complianceRate + '%' }"></div>
+                    </div>
+                    <span class="text-xs text-gray-500 dark:text-gray-400 w-10 text-right">{{ vc.complianceRate }}%</span>
+                  </div>
+                </td>
+                <td class="py-2 px-3">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
+                        :class="vc.nonCompliant > 0 ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : vc.partial > 0 || vc.notAssessed > 0 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' : 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'">
+                    {{ vc.nonCompliant > 0 ? t('compliance.nonCompliant') : vc.partial > 0 || vc.notAssessed > 0 ? t('compliance.partiallyCompliant') : t('compliance.compliant') }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   `,
   setup () {
@@ -35046,28 +35917,59 @@ const ComplianceDashboard = {
     const t = (key) => i18n.t(key)
 
     const allRegulations = computed(() => (store.data.enums && store.data.enums.complianceRegulations) || [])
+    const selectedRegVals = computed(() => store.featureToggles.selectedRegulations || [])
 
     const selectedRegulations = computed(() => {
-      const selected = store.featureToggles.selectedRegulations || []
-      return allRegulations.value.filter(r => selected.includes(r.value))
+      return allRegulations.value.filter(r => selectedRegVals.value.includes(r.value))
     })
 
+    // Regulation details computed from real assessment data
     const regulationDetails = computed(() => {
       const apps = store.data.applications || []
-      const total = apps.length || 1
-      return selectedRegulations.value.map((reg, idx) => {
-        // Deterministic example coverage per regulation based on index
-        const coverages = [85, 62, 91, 45, 73, 58, 80]
-        const coverage = coverages[idx % coverages.length]
-        const statuses = ['compliant', 'partial', 'compliant', 'nonCompliant', 'partial', 'partial', 'compliant']
-        return {
-          ...reg,
-          coverage,
-          status: statuses[idx % statuses.length],
-          appCount: Math.max(1, Math.round(total * coverage / 100))
-        }
+      const assessments = store.data.complianceAssessments || []
+      return selectedRegulations.value.map(reg => {
+        // Apps that have this regulation in their list
+        const affectedApps = apps.filter(a => a.regulations && a.regulations.includes(reg.value))
+        const appCount = affectedApps.length
+        // Assessments for this regulation
+        const regAssessments = assessments.filter(a => a.regulation === reg.value && affectedApps.some(app => app.id === a.appId))
+        const compliant = regAssessments.filter(a => a.status === 'compliant').length
+        const partial = regAssessments.filter(a => a.status === 'partial').length
+        const total = appCount || 1
+        const coverage = Math.round(((compliant + partial * 0.5) / total) * 100)
+        // Determine overall regulation status
+        const nonCompliant = regAssessments.filter(a => a.status === 'nonCompliant').length
+        let status = 'compliant'
+        if (nonCompliant > 0 || (appCount - regAssessments.length) > appCount * 0.3) status = 'nonCompliant'
+        else if (partial > 0 || regAssessments.length < appCount) status = 'partial'
+        return { ...reg, coverage, status, appCount }
       })
     })
+
+    // Total assessments across selected regulations
+    const totalAssessments = computed(() => {
+      const assessments = store.data.complianceAssessments || []
+      return assessments.filter(a => selectedRegVals.value.includes(a.regulation)).length
+    })
+
+    // Gap analysis filtered by selected regulations
+    const filteredGaps = computed(() => {
+      return store.complianceGaps.filter(g => selectedRegVals.value.includes(g.regulation))
+    })
+
+    // Regulation load scores filtered by selected regulations
+    const filteredLoadScores = computed(() => {
+      return store.regulationLoadScores.map(item => {
+        const filteredRegs = item.regulations.filter(r => selectedRegVals.value.includes(r))
+        return { ...item, filteredRegulations: filteredRegs, count: filteredRegs.length }
+      }).filter(item => item.count > 0).sort((a, b) => b.count - a.count)
+    })
+
+    // Helper to get regulation label from value
+    function regLabel (value) {
+      const reg = allRegulations.value.find(r => r.value === value)
+      return reg ? reg.label : value
+    }
 
     function statusClass (status) {
       if (status === 'compliant') return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
@@ -35081,7 +35983,19 @@ const ComplianceDashboard = {
       return t('compliance.nonCompliant')
     }
 
-    return { store, t, selectedRegulations, regulationDetails, statusClass, statusLabel, navigateTo }
+    function scoreColor (score) {
+      if (score >= 80) return 'text-green-600'
+      if (score >= 60) return 'text-yellow-600'
+      return 'text-red-600'
+    }
+
+    return {
+      store, t, linkTo,
+      selectedRegulations, regulationDetails, totalAssessments,
+      filteredGaps, filteredLoadScores,
+      statusClass, statusLabel, scoreColor, regLabel,
+      navigateTo
+    }
   }
 }
 

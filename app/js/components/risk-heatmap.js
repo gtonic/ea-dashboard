@@ -137,6 +137,25 @@ export default {
         </div>
       </div>
 
+      <!-- Compliance Risk Indicators (Phase C2) -->
+      <div v-if="complianceEnabled && complianceRiskApps.length > 0" class="bg-white rounded-xl border border-surface-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">Compliance-Risiken — Nicht-konforme Applikationen</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <a v-for="item in complianceRiskApps" :key="item.app.id"
+             :href="linkTo('/apps/' + item.app.id)"
+             class="flex items-center gap-3 p-3 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 transition-colors">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+                 :class="item.nonCompliant > 0 ? 'bg-red-200 text-red-700' : 'bg-yellow-200 text-yellow-700'">
+              {{ item.nonCompliant + item.partial }}
+            </div>
+            <div class="min-w-0">
+              <div class="text-sm font-medium text-gray-900 truncate">{{ item.app.name }}</div>
+              <div class="text-xs text-gray-500">{{ item.nonCompliant }} nicht-konform · {{ item.partial }} teilweise · {{ item.regulations.join(', ') }}</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
       <!-- Lifecycle Status Overview -->
       <div class="bg-white rounded-xl border border-surface-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">Lifecycle-Status pro Applikation</h2>
@@ -315,11 +334,33 @@ export default {
       return 'bg-green-500'
     }
 
+    // Compliance risk indicators (Phase C2)
+    const complianceEnabled = computed(() => store.featureToggles.complianceEnabled)
+    const complianceRiskApps = computed(() => {
+      if (!complianceEnabled.value) return []
+      const assessments = store.data.complianceAssessments || []
+      const result = []
+      ;(store.data.applications || []).forEach(app => {
+        if (!app.regulations || app.regulations.length === 0) return
+        const appAssessments = assessments.filter(a => a.appId === app.id)
+        const nonCompliant = appAssessments.filter(a => a.status === 'nonCompliant').length
+        const partial = appAssessments.filter(a => a.status === 'partial').length
+        if (nonCompliant > 0 || partial > 0) {
+          const regulations = appAssessments
+            .filter(a => a.status === 'nonCompliant' || a.status === 'partial')
+            .map(a => a.regulation)
+          result.push({ app, nonCompliant, partial, regulations })
+        }
+      })
+      return result.sort((a, b) => b.nonCompliant - a.nonCompliant)
+    })
+
     return {
       store, linkTo,
       probLevels, impactLevels, probLevelsReversed,
       highRiskApps, shadowITApps, vendorRisks, eolApps,
       vendorDependencies, sortedApps,
+      complianceEnabled, complianceRiskApps,
       appsInCell, cellBg, critBadge, timeBadge, lifecycleBadge, riskDot
     }
   }

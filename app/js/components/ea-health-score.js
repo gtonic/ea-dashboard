@@ -232,20 +232,33 @@ export default {
       return Math.round((complete / apps.length) * 100)
     })
 
+    // 6. Compliance Score: use store's overall compliance score (Phase C2)
+    const complianceScore = computed(() => {
+      if (!store.featureToggles.complianceEnabled) return null
+      return store.overallComplianceScore
+    })
+
     // ── Overall Score ──
     const healthScore = computed(() => {
       const scores = [lifecycleScore.value, alignmentScore.value, maturityScore.value, vendorScore.value, dataQualityScore.value]
+      if (complianceScore.value !== null) scores.push(complianceScore.value)
       return Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
     })
 
     // ── Sub-scores array ──
-    const subScores = computed(() => [
-      { label: 'Lifecycle', score: lifecycleScore.value, detail: 'Anteil aktiver Applikationen' },
-      { label: 'Strategie', score: alignmentScore.value, detail: 'TIME-Quadrant Invest/Tolerate Anteil' },
-      { label: 'Reifegrad', score: maturityScore.value, detail: 'Durchschnittliche Capability-Maturity' },
-      { label: 'Vendor-Diversität', score: vendorScore.value, detail: 'Keine übermäßige Vendor-Konzentration' },
-      { label: 'Datenqualität', score: dataQualityScore.value, detail: 'Vollständigkeit der App-Daten' }
-    ])
+    const subScores = computed(() => {
+      const scores = [
+        { label: 'Lifecycle', score: lifecycleScore.value, detail: 'Anteil aktiver Applikationen' },
+        { label: 'Strategie', score: alignmentScore.value, detail: 'TIME-Quadrant Invest/Tolerate Anteil' },
+        { label: 'Reifegrad', score: maturityScore.value, detail: 'Durchschnittliche Capability-Maturity' },
+        { label: 'Vendor-Diversität', score: vendorScore.value, detail: 'Keine übermäßige Vendor-Konzentration' },
+        { label: 'Datenqualität', score: dataQualityScore.value, detail: 'Vollständigkeit der App-Daten' }
+      ]
+      if (complianceScore.value !== null) {
+        scores.push({ label: 'Compliance', score: complianceScore.value, detail: 'Regulatorische Konformität' })
+      }
+      return scores
+    })
 
     // ── Warnings & Recommendations ──
 
@@ -361,6 +374,36 @@ export default {
           })
         }
       })
+
+      // 7. Compliance gaps (Phase C2)
+      if (store.featureToggles.complianceEnabled) {
+        const gaps = store.complianceGaps
+        if (gaps.length > 5) {
+          warnings.push({
+            severity: 'critical',
+            title: `${gaps.length} Compliance-Lücken erkannt`,
+            description: `Applikationen ohne Compliance-Bewertung: ${gaps.slice(0, 3).map(g => g.appName + ' (' + g.regulation + ')').join(', ')}…`,
+            recommendation: `Compliance-Bewertungen für alle zutreffenden Regulierungen durchführen.`
+          })
+        } else if (gaps.length > 0) {
+          warnings.push({
+            severity: 'warning',
+            title: `${gaps.length} Compliance-Lücke(n) offen`,
+            description: `Fehlende Bewertungen: ${gaps.map(g => g.appName + ' (' + g.regulation + ')').join(', ')}`,
+            recommendation: `Compliance-Bewertungen zeitnah nachholen.`
+          })
+        }
+        // Non-compliant assessments
+        const nonCompliant = (store.data.complianceAssessments || []).filter(a => a.status === 'nonCompliant')
+        if (nonCompliant.length > 0) {
+          warnings.push({
+            severity: 'critical',
+            title: `${nonCompliant.length} nicht-konforme Compliance-Bewertung(en)`,
+            description: `Nicht konform: ${nonCompliant.slice(0, 3).map(a => { const app = store.appById(a.appId); return (app ? app.name : a.appId) + ' (' + a.regulation + ')' }).join(', ')}`,
+            recommendation: `Maßnahmenplan erstellen, um Compliance-Verstöße zu beheben.`
+          })
+        }
+      }
 
       return warnings.sort((a, b) => {
         const order = { critical: 0, warning: 1 }
