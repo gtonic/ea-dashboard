@@ -58,8 +58,8 @@ export default {
               <tr v-for="reg in regulationDetails" :key="reg.value"
                   class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
                 <td class="py-3 px-3">
-                  <div class="font-medium text-gray-800 dark:text-gray-200">{{ reg.label }}</div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ reg.description }}</div>
+                  <div class="font-medium text-gray-800 dark:text-gray-200">{{ regLabel(reg.value) }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ regDesc(reg.value) }}</div>
                 </td>
                 <td class="py-3 px-3">
                   <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
@@ -265,10 +265,21 @@ export default {
       }).filter(item => item.count > 0).sort((a, b) => b.count - a.count)
     })
 
-    // Helper to get regulation label from value
+    // Helper to get regulation label from value (i18n with fallback)
     function regLabel (value) {
+      const key = 'regulation.' + value + '.label'
+      const translated = t(key)
+      if (translated !== key) return translated
       const reg = allRegulations.value.find(r => r.value === value)
       return reg ? reg.label : value
+    }
+
+    function regDesc (value) {
+      const key = 'regulation.' + value + '.description'
+      const translated = t(key)
+      if (translated !== key) return translated
+      const reg = allRegulations.value.find(r => r.value === value)
+      return reg ? reg.description : ''
     }
 
     function statusClass (status) {
@@ -293,7 +304,7 @@ export default {
       store, t, linkTo,
       selectedRegulations, regulationDetails, totalAssessments,
       filteredGaps, filteredLoadScores,
-      statusClass, statusLabel, scoreColor, regLabel,
+      statusClass, statusLabel, scoreColor, regLabel, regDesc,
       navigateTo
     }
   }

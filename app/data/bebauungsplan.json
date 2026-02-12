@@ -348,6 +348,125 @@
         "applicableCriticalities": [
           "Mission-Critical"
         ]
+      },
+      {
+        "value": "CRA",
+        "label": "Cyber Resilience Act",
+        "description": "EU-Verordnung für Produkte mit digitalen Elementen – SBOM, Schwachstellen-Management",
+        "deadline": "2027-12-11",
+        "applicableScopes": [
+          "softwareProdukte"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "EUAIACT",
+        "label": "EU AI Act",
+        "description": "EU-Verordnung zur Regulierung künstlicher Intelligenz – Risikoklassifizierung, Dokumentationspflicht",
+        "deadline": "2026-08-02",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "EIDAS2",
+        "label": "eIDAS 2.0",
+        "description": "EU-Verordnung über elektronische Identifizierung und Vertrauensdienste",
+        "deadline": "2026-11-20",
+        "applicableScopes": [
+          "identitaetsdienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO9001",
+        "label": "ISO 9001",
+        "description": "Qualitätsmanagement – Prozesskonformität",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "ISO42001",
+        "label": "ISO 42001",
+        "description": "KI-Managementsystem – KI-Governance (Ergänzung zu EU AI Act)",
+        "deadline": "2026-06-30",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO22301",
+        "label": "ISO 22301",
+        "description": "Business Continuity Management – Ausfallsicherheit kritischer Systeme",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "kritischeInfrastruktur",
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical"
+        ]
+      },
+      {
+        "value": "SOC2BSIC5",
+        "label": "SOC 2 / BSI C5",
+        "description": "Cloud-Compliance – Vendor- und Cloud-Bewertung",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "cloudDienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "TISAX",
+        "label": "TISAX",
+        "description": "Automotive Informationssicherheit – branchenspezifischer Standard",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "automotive"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "PCIDSS",
+        "label": "PCI DSS",
+        "description": "Payment Card Industry Data Security Standard – Zahlungsdatenverarbeitung",
+        "deadline": "2025-03-31",
+        "applicableScopes": [
+          "zahlungsdaten"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
       }
     ]
   },
@@ -1899,7 +2018,12 @@
         "SOX",
         "DORA",
         "NIS2",
-        "KRITIS"
+        "KRITIS",
+        "ISO9001",
+        "ISO22301",
+        "CRA",
+        "EUAIACT",
+        "PCIDSS"
       ],
       "dataClassification": "kritischeInfrastruktur"
     },
@@ -1943,7 +2067,9 @@
       "personnelCost": 5000,
       "regulations": [
         "ISO27001",
-        "GDPR"
+        "GDPR",
+        "ISO9001",
+        "SOC2BSIC5"
       ],
       "dataClassification": "personenbezogeneDaten"
     },
@@ -1985,7 +2111,11 @@
       "regulations": [
         "ISO27001",
         "NIS2",
-        "KRITIS"
+        "KRITIS",
+        "ISO9001",
+        "ISO22301",
+        "CRA",
+        "TISAX"
       ],
       "dataClassification": "personenbezogeneDaten"
     },
@@ -2027,7 +2157,9 @@
       "integrationCost": 15000,
       "personnelCost": 10000,
       "regulations": [
-        "ISO27001"
+        "ISO27001",
+        "ISO9001",
+        "TISAX"
       ],
       "dataClassification": "intern"
     },
@@ -2076,7 +2208,12 @@
         "ISO27001",
         "GDPR",
         "NIS2",
-        "KRITIS"
+        "KRITIS",
+        "ISO9001",
+        "ISO22301",
+        "SOC2BSIC5",
+        "CRA",
+        "EIDAS2"
       ],
       "dataClassification": "finanzdaten"
     },
@@ -2122,7 +2259,8 @@
       "personnelCost": 3000,
       "regulations": [
         "ISO27001",
-        "GDPR"
+        "GDPR",
+        "SOC2BSIC5"
       ],
       "dataClassification": "personenbezogeneDaten"
     },
@@ -2166,7 +2304,10 @@
       "regulations": [
         "ISO27001",
         "SOX",
-        "DORA"
+        "DORA",
+        "SOC2BSIC5",
+        "EUAIACT",
+        "ISO42001"
       ],
       "dataClassification": "personenbezogeneDaten"
     },
@@ -2250,7 +2391,8 @@
       "personnelCost": 2000,
       "regulations": [
         "ISO27001",
-        "GDPR"
+        "GDPR",
+        "EIDAS2"
       ],
       "dataClassification": "intern"
     },
@@ -2333,7 +2475,11 @@
       "regulations": [
         "ISO27001",
         "NIS2",
-        "KRITIS"
+        "KRITIS",
+        "ISO9001",
+        "ISO22301",
+        "SOC2BSIC5",
+        "CRA"
       ],
       "dataClassification": "kritischeInfrastruktur"
     },
@@ -2624,7 +2770,8 @@
         "ISO27001",
         "SOX",
         "DORA",
-        "BAIT"
+        "BAIT",
+        "PCIDSS"
       ],
       "dataClassification": "intern"
     }
@@ -5874,6 +6021,858 @@
           "action": "assessment_created",
           "status": "compliant",
           "score": 100
+        }
+      ]
+    },
+    {
+      "id": "CA-046",
+      "appId": "APP-001",
+      "regulation": "ISO9001",
+      "status": "compliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-03-15",
+      "notes": "QMS nach ISO 9001 vollständig implementiert. Letzte Zertifizierung 2024-11.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-11-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-047",
+      "appId": "APP-003",
+      "regulation": "ISO9001",
+      "status": "partial",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-01",
+      "notes": "QM-Prozesse teilweise dokumentiert. Internes Audit ausstehend.",
+      "workflowStatus": "inReview",
+      "deadline": "2025-12-15",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Lisa Weber",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-048",
+      "appId": "APP-005",
+      "regulation": "ISO9001",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-15",
+      "notes": "Microsoft-seitige ISO 9001 Zertifizierung vorhanden. Interne Prozesse konform.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-10-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-049",
+      "appId": "APP-011",
+      "regulation": "ISO9001",
+      "status": "compliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-03-15",
+      "notes": "Azure-Plattform ISO 9001 zertifiziert. Betriebsprozesse dokumentiert.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-10-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-050",
+      "appId": "APP-002",
+      "regulation": "ISO9001",
+      "status": "compliant",
+      "assessedBy": "Michael Braun",
+      "assessedDate": "2025-03-15",
+      "notes": "Salesforce ISO 9001 Konformität bestätigt.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Michael Braun",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-051",
+      "appId": "APP-004",
+      "regulation": "ISO9001",
+      "status": "partial",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-10",
+      "notes": "Teamcenter-Prozesse teilweise nach QM-Standard. Dokumentation unvollständig.",
+      "workflowStatus": "open",
+      "deadline": "2026-03-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO9001 angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-052",
+      "appId": "APP-001",
+      "regulation": "ISO22301",
+      "status": "compliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-03-15",
+      "notes": "Business-Continuity-Plan vorhanden und getestet. RTO/RPO definiert.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO22301 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-053",
+      "appId": "APP-003",
+      "regulation": "ISO22301",
+      "status": "partial",
+      "assessedBy": "Michael Braun",
+      "assessedDate": "2025-04-01",
+      "notes": "BC-Plan in Erstellung. Failover-Tests ausstehend.",
+      "workflowStatus": "inReview",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Michael Braun",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO22301 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-054",
+      "appId": "APP-005",
+      "regulation": "ISO22301",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-15",
+      "notes": "Microsoft BC-Garantien vertraglich gesichert. Eigener BC-Plan dokumentiert.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO22301 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-055",
+      "appId": "APP-011",
+      "regulation": "ISO22301",
+      "status": "compliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-03-15",
+      "notes": "Azure Availability Zones konfiguriert. DR-Runbook dokumentiert.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO22301 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-056",
+      "appId": "APP-002",
+      "regulation": "SOC2BSIC5",
+      "status": "compliant",
+      "assessedBy": "Michael Braun",
+      "assessedDate": "2025-03-15",
+      "notes": "Salesforce SOC 2 Type II Bericht vorgelegt. BSI C5 Testat vorhanden.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Michael Braun",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung SOC2BSIC5 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-057",
+      "appId": "APP-005",
+      "regulation": "SOC2BSIC5",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-15",
+      "notes": "Microsoft SOC 2 und BSI C5 Testate verfügbar.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung SOC2BSIC5 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-058",
+      "appId": "APP-006",
+      "regulation": "SOC2BSIC5",
+      "status": "compliant",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-03-15",
+      "notes": "SharePoint Online durch Microsoft SOC 2 abgedeckt.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung SOC2BSIC5 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-059",
+      "appId": "APP-007",
+      "regulation": "SOC2BSIC5",
+      "status": "partial",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-01",
+      "notes": "Power BI SOC 2 Abdeckung über Microsoft. Eigene Kontrollen in Prüfung.",
+      "workflowStatus": "inReview",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung SOC2BSIC5 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Lisa Weber",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-060",
+      "appId": "APP-011",
+      "regulation": "SOC2BSIC5",
+      "status": "compliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-03-15",
+      "notes": "Azure SOC 2 Type II und BSI C5 zertifiziert.",
+      "workflowStatus": "assessed",
+      "deadline": "2025-12-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung SOC2BSIC5 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-061",
+      "appId": "APP-001",
+      "regulation": "CRA",
+      "status": "partial",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-04-01",
+      "notes": "SBOM-Erstellung eingeleitet. Schwachstellen-Management-Prozess in Aufbau.",
+      "workflowStatus": "inReview",
+      "deadline": "2027-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung CRA angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-062",
+      "appId": "APP-003",
+      "regulation": "CRA",
+      "status": "nonCompliant",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-10",
+      "notes": "SBOM nicht vorhanden. Schwachstellen-Prozess fehlt.",
+      "workflowStatus": "open",
+      "deadline": "2027-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung CRA angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-063",
+      "appId": "APP-005",
+      "regulation": "CRA",
+      "status": "partial",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-04-01",
+      "notes": "Microsoft liefert SBOM. Eigene Integrationskomponenten noch nicht erfasst.",
+      "workflowStatus": "inReview",
+      "deadline": "2027-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung CRA angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-064",
+      "appId": "APP-011",
+      "regulation": "CRA",
+      "status": "partial",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-04-10",
+      "notes": "Azure-seitige SBOM verfügbar. Eigenentwicklungen ausstehend.",
+      "workflowStatus": "open",
+      "deadline": "2027-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung CRA angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-065",
+      "appId": "APP-007",
+      "regulation": "EUAIACT",
+      "status": "partial",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-01",
+      "notes": "KI-Risikoklassifizierung durchgeführt. Dokumentation der Trainings­daten ausstehend.",
+      "workflowStatus": "inReview",
+      "deadline": "2026-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung EUAIACT angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Lisa Weber",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-066",
+      "appId": "APP-001",
+      "regulation": "EUAIACT",
+      "status": "nonCompliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-04-10",
+      "notes": "SAP-KI-Module identifiziert. Risikoklassifizierung und Dokumentation ausstehend.",
+      "workflowStatus": "open",
+      "deadline": "2026-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung EUAIACT angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-067",
+      "appId": "APP-007",
+      "regulation": "ISO42001",
+      "status": "nonCompliant",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-04-10",
+      "notes": "KI-Managementsystem noch nicht etabliert. Roadmap in Planung.",
+      "workflowStatus": "open",
+      "deadline": "2026-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung ISO42001 angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-068",
+      "appId": "APP-005",
+      "regulation": "EIDAS2",
+      "status": "partial",
+      "assessedBy": "Anna Schmidt",
+      "assessedDate": "2025-04-01",
+      "notes": "Azure AD/Entra ID als Vertrauensdienst evaluiert. EU Digital Identity Wallet Integration geplant.",
+      "workflowStatus": "inReview",
+      "deadline": "2026-11-20",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Anna Schmidt",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung EIDAS2 angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Anna Schmidt",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-069",
+      "appId": "APP-009",
+      "regulation": "EIDAS2",
+      "status": "nonCompliant",
+      "assessedBy": "Michael Braun",
+      "assessedDate": "2025-04-10",
+      "notes": "Personio-Identitätsdienste nicht eIDAS 2.0 konform. Anpassungsbedarf identifiziert.",
+      "workflowStatus": "open",
+      "deadline": "2026-11-20",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Michael Braun",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung EIDAS2 angelegt"
+        }
+      ]
+    },
+    {
+      "id": "CA-070",
+      "appId": "APP-003",
+      "regulation": "TISAX",
+      "status": "compliant",
+      "assessedBy": "Lisa Weber",
+      "assessedDate": "2025-03-15",
+      "notes": "TISAX-Assessment Level 2 bestanden. Label gültig bis 2026-09.",
+      "workflowStatus": "assessed",
+      "deadline": "2026-09-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Lisa Weber",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung TISAX angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Lisa Weber",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        },
+        {
+          "timestamp": "2025-04-01T09:00:00Z",
+          "user": "Lisa Weber",
+          "action": "statusChange",
+          "fromStatus": "inReview",
+          "toStatus": "assessed",
+          "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-071",
+      "appId": "APP-004",
+      "regulation": "TISAX",
+      "status": "partial",
+      "assessedBy": "Michael Braun",
+      "assessedDate": "2025-04-01",
+      "notes": "TISAX-Vorbereitung läuft. Informationsschutz-Konzept in Überarbeitung.",
+      "workflowStatus": "inReview",
+      "deadline": "2026-03-31",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Michael Braun",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung TISAX angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Michael Braun",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-072",
+      "appId": "APP-018",
+      "regulation": "PCIDSS",
+      "status": "partial",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-04-01",
+      "notes": "PCI DSS SAQ-D teilweise erfüllt. Netzwerksegmentierung ausstehend.",
+      "workflowStatus": "inReview",
+      "deadline": "2025-06-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung PCIDSS angelegt"
+        },
+        {
+          "timestamp": "2025-03-20T14:30:00Z",
+          "user": "Thomas Müller",
+          "action": "statusChange",
+          "fromStatus": "open",
+          "toStatus": "inReview",
+          "comment": "In Prüfung genommen"
+        }
+      ]
+    },
+    {
+      "id": "CA-073",
+      "appId": "APP-001",
+      "regulation": "PCIDSS",
+      "status": "nonCompliant",
+      "assessedBy": "Thomas Müller",
+      "assessedDate": "2025-04-10",
+      "notes": "SAP-Zahlungsmodule PCI-Scope nicht definiert. Assessment steht aus.",
+      "workflowStatus": "open",
+      "deadline": "2025-09-30",
+      "auditTrail": [
+        {
+          "timestamp": "2025-03-15T10:00:00Z",
+          "user": "Thomas Müller",
+          "action": "created",
+          "fromStatus": null,
+          "toStatus": "open",
+          "comment": "Erstbewertung PCIDSS angelegt"
         }
       ]
     }

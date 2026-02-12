@@ -87,8 +87,8 @@ export default {
               </svg>
             </div>
             <div class="flex-1">
-              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ reg.label }}</div>
-              <div class="text-xs text-gray-500 dark:text-gray-400">{{ reg.description }}</div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ regLabel(reg.value) }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ regDesc(reg.value) }}</div>
             </div>
           </div>
         </div>
@@ -217,6 +217,22 @@ export default {
 
     const availableRegulations = computed(() => (store.data.enums && store.data.enums.complianceRegulations) || [])
 
+    function regLabel (value) {
+      const key = 'regulation.' + value + '.label'
+      const translated = t(key)
+      if (translated !== key) return translated
+      const reg = availableRegulations.value.find(r => r.value === value)
+      return reg ? reg.label : value
+    }
+
+    function regDesc (value) {
+      const key = 'regulation.' + value + '.description'
+      const translated = t(key)
+      if (translated !== key) return translated
+      const reg = availableRegulations.value.find(r => r.value === value)
+      return reg ? reg.description : ''
+    }
+
     function isRegulationSelected (value) {
       return (store.featureToggles.selectedRegulations || []).includes(value)
     }
@@ -233,6 +249,6 @@ export default {
       }
     }
 
-    return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation }
+    return { store, stats, toast, doExport, doImport, confirmReset, t, availableRegulations, isRegulationSelected, toggleRegulation, regLabel, regDesc }
   }
 }

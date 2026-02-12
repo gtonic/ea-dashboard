@@ -46,8 +46,8 @@ export default {
               <tr v-for="rd in regulationDeadlines" :key="rd.value"
                   class="border-b border-surface-100 dark:border-surface-800 hover:bg-surface-50 dark:hover:bg-surface-800/50">
                 <td class="py-3 px-3">
-                  <div class="font-medium text-gray-800 dark:text-gray-200">{{ rd.label }}</div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ rd.description }}</div>
+                  <div class="font-medium text-gray-800 dark:text-gray-200">{{ regLabel(rd.value) }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ regDesc(rd.value) }}</div>
                 </td>
                 <td class="py-3 px-3 text-gray-700 dark:text-gray-300">{{ rd.deadline }}</td>
                 <td class="py-3 px-3">
@@ -266,10 +266,21 @@ export default {
       return entries.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
     })
 
-    // Helpers
+    // Helpers (i18n with fallback)
     function regLabel (value) {
+      const key = 'regulation.' + value + '.label'
+      const translated = t(key)
+      if (translated !== key) return translated
       const reg = allRegulations.value.find(r => r.value === value)
       return reg ? reg.label : value
+    }
+
+    function regDesc (value) {
+      const key = 'regulation.' + value + '.description'
+      const translated = t(key)
+      if (translated !== key) return translated
+      const reg = allRegulations.value.find(r => r.value === value)
+      return reg ? reg.description : ''
     }
 
     function appName (appId) {
@@ -322,7 +333,7 @@ export default {
     return {
       store, t, linkTo,
       regulationDeadlines, workflowCounts, filteredAssessments, allAuditEntries,
-      regLabel, appName, statusBadge, statusLabel,
+      regLabel, regDesc, appName, statusBadge, statusLabel,
       workflowBadge, workflowLabel, scoreColor, pct, formatDate
     }
   }
