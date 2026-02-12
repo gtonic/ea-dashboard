@@ -17,7 +17,7 @@ services:
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost,http://localhost:80}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY:?Set JWT_SECRET_KEY in .env}
       - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@example.com}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?Set ADMIN_PASSWORD in .env}
     volumes:
       - db-data:/app/data
     expose:
