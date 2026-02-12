@@ -18635,7 +18635,7 @@ const { reactive, watch } = Vue;
 const SEED_DATA = {
   "meta": {
     "version": "1.0",
-    "lastUpdated": "2026-02-11T21:20:01.286238",
+    "lastUpdated": "2026-02-12T03:31:01.754273",
     "owner": "Enterprise Architecture",
     "company": "Metallwerk Vorarlberg GmbH",
     "description": "Strategischer Bebauungsplan — Datenmodell für ein mittelständisches Industrieunternehmen"
@@ -18981,6 +18981,125 @@ const SEED_DATA = {
         ],
         "applicableCriticalities": [
           "Mission-Critical"
+        ]
+      },
+      {
+        "value": "CRA",
+        "label": "Cyber Resilience Act",
+        "description": "EU-Verordnung für Produkte mit digitalen Elementen – SBOM, Schwachstellen-Management",
+        "deadline": "2027-12-11",
+        "applicableScopes": [
+          "softwareProdukte"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "EUAIACT",
+        "label": "EU AI Act",
+        "description": "EU-Verordnung zur Regulierung künstlicher Intelligenz – Risikoklassifizierung, Dokumentationspflicht",
+        "deadline": "2026-08-02",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "EIDAS2",
+        "label": "eIDAS 2.0",
+        "description": "EU-Verordnung über elektronische Identifizierung und Vertrauensdienste",
+        "deadline": "2026-11-20",
+        "applicableScopes": [
+          "identitaetsdienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO9001",
+        "label": "ISO 9001",
+        "description": "Qualitätsmanagement – Prozesskonformität",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "ISO42001",
+        "label": "ISO 42001",
+        "description": "KI-Managementsystem – KI-Governance (Ergänzung zu EU AI Act)",
+        "deadline": "2026-06-30",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO22301",
+        "label": "ISO 22301",
+        "description": "Business Continuity Management – Ausfallsicherheit kritischer Systeme",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "kritischeInfrastruktur",
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical"
+        ]
+      },
+      {
+        "value": "SOC2BSIC5",
+        "label": "SOC 2 / BSI C5",
+        "description": "Cloud-Compliance – Vendor- und Cloud-Bewertung",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "cloudDienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "TISAX",
+        "label": "TISAX",
+        "description": "Automotive Informationssicherheit – branchenspezifischer Standard",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "automotive"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "PCIDSS",
+        "label": "PCI DSS",
+        "description": "Payment Card Industry Data Security Standard – Zahlungsdatenverarbeitung",
+        "deadline": "2025-03-31",
+        "applicableScopes": [
+          "zahlungsdaten"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
         ]
       }
     ]
@@ -21177,7 +21296,7 @@ const SEED_DATA = {
     {
       "id": "APP-017",
       "name": "Atlassian Confluence",
-      "vendor": "Atlassian",
+      "vendor": "",
       "category": "Knowledge Management",
       "type": "SaaS",
       "criticality": "Business-Operational",
@@ -21212,9 +21331,12 @@ const SEED_DATA = {
       "integrationCost": 2000,
       "personnelCost": 1000,
       "regulations": [
-        "ISO27001"
+        "ISO27001",
+        "GDPR",
+        "NIS2"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "vendors": []
     },
     {
       "id": "APP-018",
@@ -22789,7 +22911,7 @@ const SEED_DATA = {
       "title": "HR Chatbot für Mitarbeiteranfragen",
       "description": "GenAI-basierter Chatbot zur Beantwortung von HR-Standardfragen (Urlaub, Gehaltsabrechnung, Benefits). Entlastung des HR-Teams.",
       "category": "Bereichsvorhaben (< 50k)",
-      "status": "Eingereicht",
+      "status": "In Bewertung",
       "priority": "Mittel",
       "requestedBy": "HR-Leitung",
       "requestDate": "2026-02-05",
@@ -22828,7 +22950,11 @@ const SEED_DATA = {
         "technologyApproved": false,
         "scalabilityCheck": false,
         "notes": ""
-      }
+      },
+      "applicableRegulations": [
+        "EUAIACT",
+        "GDPR"
+      ]
     }
   ],
   "integrations": [
@@ -24017,12 +24143,22 @@ const SEED_DATA = {
       "id": "CA-032",
       "appId": "APP-017",
       "regulation": "ISO27001",
-      "status": "notAssessed",
-      "assessedBy": "Anna Schmidt",
-      "assessedDate": "2025-03-30",
-      "notes": "Bewertung ausstehend. Atlassian Cloud Security Review geplant.",
-      "workflowStatus": "open",
-      "deadline": "2025-02-05",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "iso-01": "compliant",
+        "iso-02": "compliant",
+        "iso-03": "compliant",
+        "iso-04": "compliant",
+        "iso-05": "compliant",
+        "iso-06": "compliant",
+        "iso-07": "compliant",
+        "iso-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
       "auditTrail": [
         {
           "timestamp": "2025-03-30T09:00:00Z",
@@ -24031,6 +24167,13 @@ const SEED_DATA = {
           "fromStatus": null,
           "toStatus": "open",
           "comment": "Erstbewertung angelegt"
+        },
+        {
+          "timestamp": "2026-02-12T02:23:22.055Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_updated",
+          "status": "compliant",
+          "score": 100
         }
       ]
     },
@@ -24424,6 +24567,66 @@ const SEED_DATA = {
           "fromStatus": "inReview",
           "toStatus": "assessed",
           "comment": "Bewertung abgeschlossen"
+        }
+      ]
+    },
+    {
+      "id": "CA-1770862969222",
+      "appId": "APP-017",
+      "regulation": "GDPR",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "gdpr-01": "compliant",
+        "gdpr-02": "compliant",
+        "gdpr-03": "compliant",
+        "gdpr-04": "compliant",
+        "gdpr-05": "compliant",
+        "gdpr-06": "compliant",
+        "gdpr-07": "compliant",
+        "gdpr-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
+      "auditTrail": [
+        {
+          "timestamp": "2026-02-12T02:22:49.222Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_created",
+          "status": "compliant",
+          "score": 100
+        }
+      ]
+    },
+    {
+      "id": "CA-1770862984439",
+      "appId": "APP-017",
+      "regulation": "NIS2",
+      "status": "compliant",
+      "score": 100,
+      "answers": {
+        "nis2-01": "compliant",
+        "nis2-02": "compliant",
+        "nis2-03": "compliant",
+        "nis2-04": "compliant",
+        "nis2-05": "compliant",
+        "nis2-06": "compliant",
+        "nis2-07": "compliant",
+        "nis2-08": "compliant"
+      },
+      "assessedBy": "Thomas Geiger",
+      "assessedDate": "2026-02-12",
+      "nextReviewDate": "2027-02-12",
+      "notes": "",
+      "auditTrail": [
+        {
+          "timestamp": "2026-02-12T02:23:04.439Z",
+          "user": "Thomas Geiger",
+          "action": "assessment_created",
+          "status": "compliant",
+          "score": 100
         }
       ]
     }
@@ -25933,6 +26136,26 @@ const AppForm = {
               <label class="block text-xs font-medium text-gray-600 mb-1">Technical Health (1-10)</label>
               <input v-model.number="form.technicalHealth" type="number" min="1" max="10" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none" />
             </div>
+            <div class="sm:col-span-2" v-if="store.featureToggles.complianceEnabled && availableRegulations.length > 0">
+              <label class="block text-xs font-medium text-gray-600 mb-1">Zutreffende Regulierungen</label>
+              <div class="flex flex-wrap gap-2">
+                <div v-for="reg in availableRegulations" :key="reg.value"
+                     @click="toggleRegulation(reg.value)"
+                     class="flex items-center gap-1.5 px-2.5 py-1.5 border rounded-lg text-xs cursor-pointer transition-colors"
+                     :class="isRegSelected(reg.value)
+                       ? 'bg-primary-50 border-primary-400 text-primary-700'
+                       : 'border-surface-200 text-gray-600 hover:bg-surface-50'">
+                  <span class="flex items-center justify-center w-3.5 h-3.5 rounded border transition-colors"
+                        :class="isRegSelected(reg.value) ? 'bg-primary-600 border-primary-600' : 'border-gray-300'">
+                    <svg v-if="isRegSelected(reg.value)" class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <span>{{ reg.label }}</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-gray-400 mt-1">Welche Regulierungen / Standards gelten für diese Applikation?</div>
+            </div>
             <div class="sm:col-span-2">
               <label class="block text-xs font-medium text-gray-600 mb-1">Description</label>
               <textarea v-model="form.description" rows="3" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical"></textarea>
@@ -25950,12 +26173,27 @@ const AppForm = {
     const { ref, onMounted } = Vue
 
     const defaultForm = () => ({
-      name: '', vendors: [{ vendorId: '', vendorName: '', role: 'Hersteller' }], entities: [], category: '', type: 'On-Prem',
+      name: '', vendors: [{ vendorId: '', vendorName: '', role: 'Hersteller' }], entities: [], regulations: [], category: '', type: 'On-Prem',
       criticality: 'Business-Operational', timeQuadrant: 'Tolerate',
       riskProbability: 'Niedrig', riskImpact: 'Mittel', lifecycleStatus: 'Active',
       costPerYear: 0, userCount: 0, businessOwner: '', itOwner: '',
       goLiveDate: '', businessValue: 5, technicalHealth: 5, description: ''
     })
+
+    const availableRegulations = Vue.computed(() => {
+      return (store.data.enums && store.data.enums.complianceRegulations) || []
+    })
+
+    function isRegSelected (value) {
+      return (form.value.regulations || []).includes(value)
+    }
+
+    function toggleRegulation (value) {
+      if (!form.value.regulations) form.value.regulations = []
+      const idx = form.value.regulations.indexOf(value)
+      if (idx >= 0) form.value.regulations.splice(idx, 1)
+      else form.value.regulations.push(value)
+    }
 
     const form = ref(defaultForm())
 
@@ -25978,6 +26216,8 @@ const AppForm = {
         }
         // Ensure entities array exists
         if (!base.entities || !Array.isArray(base.entities)) base.entities = []
+        // Ensure regulations array exists
+        if (!base.regulations || !Array.isArray(base.regulations)) base.regulations = []
         // Ensure vendors array exists
         if (!base.vendors || !Array.isArray(base.vendors) || base.vendors.length === 0) {
           base.vendors = [{ vendorId: '', vendorName: props.editApp.vendor || '', role: 'Hersteller' }]
@@ -26015,7 +26255,7 @@ const AppForm = {
       emit('saved')
     }
 
-    return { store, form, save, availableVendors, allEntities, addVendor, removeVendor, onVendorSelect, entityFlag }
+    return { store, form, save, availableVendors, allEntities, availableRegulations, isRegSelected, toggleRegulation, addVendor, removeVendor, onVendorSelect, entityFlag }
   }
 }
 
@@ -27947,7 +28187,7 @@ const AppList = {
 
 
 // ── AppDetail (app-detail.js) ──
-// app-detail.js — Application detail view with capabilities, projects, edit/delete
+// app-detail.js — Application detail view with capabilities, projects, compliance, edit/delete
 
 const AppDetail = {
   name: 'AppDetail',
@@ -28110,6 +28350,46 @@ const AppDetail = {
         </div>
       </div>
 
+      <!-- Compliance & Regulations -->
+      <div v-if="store.featureToggles.complianceEnabled && appRegulations.length > 0" class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-800 flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300">Compliance & Regulierungen ({{ appRegulations.length }})</h3>
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium"
+                :class="complianceSummary.color">{{ complianceSummary.label }}</span>
+        </div>
+        <div class="divide-y divide-surface-100 dark:divide-surface-800">
+          <div v-for="reg in appRegulations" :key="reg.value"
+               @click="assessingReg = reg.value"
+               class="flex items-center justify-between px-5 py-3 cursor-pointer hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors group">
+            <div class="flex items-center gap-3 min-w-0">
+              <svg class="w-4 h-4 shrink-0" :class="assessmentIcon(reg.assessment?.status).color" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="assessmentIcon(reg.assessment?.status).path"/>
+              </svg>
+              <div class="min-w-0">
+                <div class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ reg.label }}</div>
+                <div class="text-xs text-gray-400">{{ reg.description }}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <div v-if="reg.assessment && reg.assessment.score != null" class="flex items-center gap-1.5">
+                <div class="w-16 bg-gray-200 rounded-full h-1.5"><div class="h-1.5 rounded-full transition-all" :class="reg.assessment.score >= 80 ? 'bg-green-500' : reg.assessment.score >= 50 ? 'bg-yellow-500' : 'bg-red-500'" :style="'width:' + reg.assessment.score + '%'"></div></div>
+                <span class="text-xs font-bold w-8 text-right" :class="reg.assessment.score >= 80 ? 'text-green-600' : reg.assessment.score >= 50 ? 'text-yellow-600' : 'text-red-600'">{{ reg.assessment.score }}%</span>
+              </div>
+              <span v-if="reg.assessment" class="text-xs px-2 py-0.5 rounded-full font-medium"
+                    :class="statusBadge(reg.assessment.status)">{{ statusText(reg.assessment.status) }}</span>
+              <span v-else class="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 group-hover:bg-blue-100">Assessment starten →</span>
+              <div v-if="reg.assessment" class="text-right">
+                <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedBy }}</div>
+                <div class="text-[10px] text-gray-400">{{ reg.assessment.assessedDate }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compliance Assessment Modal -->
+      <compliance-assessment v-if="assessingReg" :app-id="app.id" :regulation="assessingReg" @close="assessingReg = null" @saved="onAssessmentSaved"></compliance-assessment>
+
       <!-- Edit Modal -->
       <app-form v-if="showEdit" :edit-app="app" @close="showEdit = false" @saved="showEdit = false"></app-form>
     </div>
@@ -28118,6 +28398,11 @@ const AppDetail = {
   setup () {
     const { ref, computed } = Vue
     const showEdit = ref(false)
+    const assessingReg = ref(null)
+
+    function onAssessmentSaved () {
+      assessingReg.value = null
+    }
 
     const app = computed(() => store.appById(router.params.id))
 
@@ -28140,6 +28425,51 @@ const AppDetail = {
       if (!app.value) return []
       return store.processesForApp(app.value.id)
     })
+
+    const t = (key) => i18n.t(key)
+
+    // Compliance: regulations assigned to this app + their latest assessment
+    const appRegulations = computed(() => {
+      if (!app.value || !app.value.regulations) return []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const assessments = store.data.complianceAssessments || []
+      return app.value.regulations.map(regValue => {
+        const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
+        // Find the latest assessment for this app + regulation
+        const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
+        const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
+        return { ...regMeta, assessment: latest }
+      })
+    })
+
+    const complianceSummary = computed(() => {
+      if (appRegulations.value.length === 0) return { label: '—', color: 'bg-gray-100 text-gray-500' }
+      const statuses = appRegulations.value.map(r => r.assessment?.status)
+      if (statuses.some(s => s === 'nonCompliant')) return { label: t('compliance.nonCompliant'), color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' }
+      if (statuses.some(s => s === 'partial' || !s || s === 'notAssessed')) return { label: t('compliance.partiallyCompliant'), color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400' }
+      return { label: t('compliance.compliant'), color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' }
+    })
+
+    function assessmentIcon (status) {
+      if (status === 'compliant') return { path: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-green-500' }
+      if (status === 'partial') return { path: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-yellow-500' }
+      if (status === 'nonCompliant') return { path: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-red-500' }
+      return { path: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', color: 'text-gray-400' }
+    }
+
+    function statusBadge (status) {
+      if (status === 'compliant') return 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+      if (status === 'partial') return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+      if (status === 'nonCompliant') return 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+      return 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'
+    }
+
+    function statusText (status) {
+      if (status === 'compliant') return t('compliance.compliant')
+      if (status === 'partial') return t('compliance.partiallyCompliant')
+      if (status === 'nonCompliant') return t('compliance.nonCompliant')
+      return t('compliance.notAssessed')
+    }
 
     const appVendors = computed(() => {
       if (!app.value) return []
@@ -28203,7 +28533,7 @@ const AppDetail = {
       }
     }
 
-    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, primaryVendorName, showEdit, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
+    return { store, router, linkTo, navigateTo, app, mappedCaps, relatedProjects, relatedProcesses, appVendors, appEntities, appRegulations, complianceSummary, assessmentIcon, statusBadge, statusText, primaryVendorName, showEdit, assessingReg, onAssessmentSaved, timeClass, critClass, statusDot, procStatusClass, domainColor, confirmDelete, vendorRoleClass, vendorTypeLabel, entityFlag, entityRegionClass }
   }
 }
 
@@ -30374,8 +30704,8 @@ const DemandDetail = {
         </div>
       </div>
 
-      <!-- AI Use Case / EU AI Act -->
-      <div v-if="demand.isAIUseCase" class="bg-white rounded-xl border border-surface-200 p-5">
+      <!-- AI Use Case / EU AI Act (legacy, shown when compliance is off but AI data exists) -->
+      <div v-if="!store.featureToggles.complianceEnabled && demand.isAIUseCase" class="bg-white rounded-xl border border-surface-200 p-5">
         <h3 class="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
           <span class="text-lg">🤖</span> AI Use Case – EU AI Act Klassifikation
         </h3>
@@ -30394,6 +30724,58 @@ const DemandDetail = {
         </div>
         <div v-if="demand.aiRiskCategory === 'Unannehmbares Risiko'" class="mt-3 bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-800">
           🚫 <strong>Verboten gemäß EU AI Act:</strong> Dieses System fällt unter die verbotenen KI-Praktiken und darf nicht eingesetzt werden.
+        </div>
+      </div>
+
+      <!-- Compliance / Regulierungen (if compliance enabled and regulations assigned) -->
+      <div v-if="store.featureToggles.complianceEnabled && demandRegulations.length > 0" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-surface-200 bg-surface-50 flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+            <span class="text-base">⚖️</span> Compliance-Anforderungen ({{ demandRegulations.length }})
+          </h3>
+          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">Assessment erforderlich</span>
+        </div>
+        <div class="divide-y divide-surface-100">
+          <div v-for="reg in demandRegulations" :key="reg.value" class="px-5 py-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-mono bg-gray-100 text-gray-500 px-2 py-0.5 rounded">{{ reg.value }}</span>
+                <div>
+                  <div class="text-sm font-medium text-gray-800">{{ reg.label }}</div>
+                  <div class="text-xs text-gray-400">{{ reg.description }}</div>
+                </div>
+              </div>
+              <span v-if="reg.deadline" class="text-[10px] text-gray-400">Deadline: {{ reg.deadline }}</span>
+            </div>
+            <!-- AI details inline for EUAIACT -->
+            <div v-if="reg.value === 'EUAIACT' && demand.aiRiskCategory && demand.aiRiskCategory !== 'Kein AI-Usecase'" class="mt-3 ml-8 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <div class="text-[10px] text-gray-500 uppercase">Risikokategorie</div>
+                  <span class="inline-block mt-0.5 text-xs px-2 py-0.5 rounded-full font-medium" :class="aiRiskClass(demand.aiRiskCategory)">{{ demand.aiRiskCategory }}</span>
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-[10px] text-gray-500 uppercase">KI-Beschreibung</div>
+                  <div class="text-xs text-gray-700 mt-0.5">{{ demand.aiDescription || '—' }}</div>
+                </div>
+              </div>
+              <div v-if="demand.aiRiskCategory === 'Hohes Risiko'" class="mt-2 bg-orange-50 border border-orange-200 rounded p-2 text-xs text-orange-800">
+                ⚠️ Konformitätsbewertung, CE-Kennzeichnung, Risikomanagement-System, Daten-Governance, technische Dokumentation und menschliche Aufsicht erforderlich.
+              </div>
+              <div v-if="demand.aiRiskCategory === 'Unannehmbares Risiko'" class="mt-2 bg-red-50 border border-red-200 rounded p-2 text-xs text-red-800">
+                🚫 Dieses System fällt unter die verbotenen KI-Praktiken und darf nicht eingesetzt werden.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
+          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
+        </div>
+      </div>
+          </div>
+        </div>
+        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
+          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
         </div>
       </div>
 
@@ -30563,6 +30945,15 @@ const DemandDetail = {
       return demand.value.relatedVendors.map(id => store.vendorById(id)).filter(Boolean)
     })
 
+    const demandRegulations = computed(() => {
+      if (!demand.value || !demand.value.applicableRegulations) return []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      return demand.value.applicableRegulations.map(val => {
+        const meta = allRegs.find(r => r.value === val)
+        return meta || { value: val, label: val, description: '' }
+      })
+    })
+
     function checklistItems (checklist) {
       if (!checklist) return { total: 0, done: 0 }
       const items = Object.entries(checklist).filter(([k]) => k !== 'notes')
@@ -30650,7 +31041,7 @@ const DemandDetail = {
       }
     }
 
-    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
+    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, demandRegulations, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
   }
 }
 
@@ -30741,18 +31132,43 @@ const DemandForm = {
             </div>
           </div>
 
-          <!-- Step 3: AI & EU AI Act -->
-          <div v-show="step === 2" class="space-y-4">
+          <!-- Step 3: Compliance & AI (if compliance enabled) -->
+          <div v-show="step === (store.featureToggles.complianceEnabled ? 2 : -1)" class="space-y-4">
             <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800 mb-4">
-              <strong>🤖 EU AI Act Klassifikation:</strong> Prüfen Sie, ob dieses Vorhaben einen KI-Anwendungsfall beinhaltet und ordnen Sie die Risikokategorie gemäß EU AI Act zu.
+              <strong>⚖️ Compliance- & KI-Prüfung:</strong> Welche Regulierungen und Standards sind für dieses Vorhaben relevant? Beinhaltet das Vorhaben einen KI-Anwendungsfall, wählen Sie „EU AI Act“.
             </div>
             <div>
-              <label class="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" v-model="form.isAIUseCase" class="rounded border-gray-300 h-5 w-5" />
-                <span class="text-sm font-medium text-gray-700">Dieses Vorhaben beinhaltet einen AI/KI-Anwendungsfall</span>
-              </label>
+              <label class="block text-xs font-medium text-gray-600 mb-2">Zutreffende Regulierungen</label>
+              <div class="flex flex-wrap gap-2">
+                <div v-for="reg in (store.data.enums.complianceRegulations || [])" :key="reg.value"
+                     @click="toggleRegulation(reg.value)"
+                     class="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-xs cursor-pointer transition-colors"
+                     :class="form.applicableRegulations.includes(reg.value)
+                       ? 'bg-primary-50 border-primary-400 text-primary-700'
+                       : 'border-surface-200 text-gray-600 hover:bg-surface-50'">
+                  <span class="flex items-center justify-center w-4 h-4 rounded border transition-colors"
+                        :class="form.applicableRegulations.includes(reg.value) ? 'bg-primary-600 border-primary-600' : 'border-gray-300'">
+                    <svg v-if="form.applicableRegulations.includes(reg.value)" class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="font-medium">{{ reg.label }}</div>
+                    <div class="text-[10px] text-gray-400">{{ reg.description }}</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div v-if="form.isAIUseCase" class="space-y-4 mt-2">
+            <div v-if="form.applicableRegulations.length > 0" class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800">
+              ℹ️ <strong>{{ form.applicableRegulations.length }} Regulierung(en)</strong> ausgewählt.
+              Nach Genehmigung wird ein Compliance-Assessment für jede Regulierung erforderlich.
+            </div>
+
+            <!-- EU AI Act details (shown when EUAIACT is selected) -->
+            <div v-if="form.applicableRegulations.includes('EUAIACT')" class="mt-2 p-4 bg-indigo-50 border border-indigo-200 rounded-xl space-y-4">
+              <h4 class="text-sm font-semibold text-indigo-800 flex items-center gap-2">
+                <span class="text-base">🤖</span> EU AI Act – KI-Details
+              </h4>
               <div>
                 <label class="block text-xs font-medium text-gray-600 mb-1">EU AI Act Risikokategorie *</label>
                 <select v-model="form.aiRiskCategory" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
@@ -30769,14 +31185,14 @@ const DemandForm = {
                 ℹ️ <strong>Begrenztes Risiko:</strong> Transparenzpflichten beachten – Nutzer müssen informiert werden, dass sie mit einem KI-System interagieren (Art. 52 EU AI Act).
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">AI-Beschreibung & Begründung</label>
-                <textarea v-model="form.aiDescription" rows="4" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical" placeholder="Beschreiben Sie den KI-Anwendungsfall, die verwendete Technologie und die Begründung für die Risikokategorie…"></textarea>
+                <label class="block text-xs font-medium text-gray-600 mb-1">KI-Beschreibung & Begründung</label>
+                <textarea v-model="form.aiDescription" rows="3" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm focus:ring-2 focus:ring-primary-300 outline-none resize-vertical" placeholder="Beschreiben Sie den KI-Anwendungsfall und die Begründung für die Risikokategorie…"></textarea>
               </div>
             </div>
           </div>
 
-          <!-- Step 4: Linking -->
-          <div v-show="step === 3" class="space-y-4">
+          <!-- Step 4 (or 3): Linking -->
+          <div v-show="step === (store.featureToggles.complianceEnabled ? 3 : 2)" class="space-y-4">
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-1">Primäre Domäne</label>
               <select v-model.number="form.primaryDomain" class="w-full px-3 py-2 border border-surface-200 rounded-lg text-sm bg-white focus:ring-2 focus:ring-primary-300 outline-none">
@@ -30833,7 +31249,9 @@ const DemandForm = {
   setup (props, { emit }) {
     const { ref, onMounted } = Vue
 
-    const steps = ['Business Beschreibung', 'Klassifikation', 'AI & EU AI Act', 'Verknüpfungen']
+    const steps = store.featureToggles.complianceEnabled
+      ? ['Business Beschreibung', 'Klassifikation', 'Compliance & AI', 'Verknüpfungen']
+      : ['Business Beschreibung', 'Klassifikation', 'Verknüpfungen']
     const step = ref(0)
 
     const emptyChecklist = () => ({
@@ -30855,6 +31273,7 @@ const DemandForm = {
       requestedBy: '', requestDate: new Date().toISOString().slice(0, 10),
       estimatedBudget: 0, primaryDomain: null,
       relatedDomains: [], relatedApps: [], relatedVendors: [],
+      applicableRegulations: [],
       isAIUseCase: false, aiRiskCategory: 'Kein AI-Usecase', aiDescription: '',
       checklistSecurity: emptyChecklist(),
       checklistLegal: emptyLegalChecklist(),
@@ -30869,11 +31288,18 @@ const DemandForm = {
           ...defaultForm(),
           ...JSON.parse(JSON.stringify(props.editDemand))
         }
+        // Backward compat: if old demand has isAIUseCase but no EUAIACT in applicableRegulations, add it
+        if (!form.value.applicableRegulations) form.value.applicableRegulations = []
+        if (form.value.isAIUseCase && !form.value.applicableRegulations.includes('EUAIACT')) {
+          form.value.applicableRegulations.push('EUAIACT')
+        }
       }
     })
 
     function save () {
       const data = { ...form.value }
+      // Derive isAIUseCase from regulation selection for backward compat
+      data.isAIUseCase = data.applicableRegulations.includes('EUAIACT')
       if (!data.isAIUseCase) {
         data.aiRiskCategory = 'Kein AI-Usecase'
         data.aiDescription = ''
@@ -30886,7 +31312,13 @@ const DemandForm = {
       emit('saved')
     }
 
-    return { store, steps, step, form, save }
+    function toggleRegulation (value) {
+      const idx = form.value.applicableRegulations.indexOf(value)
+      if (idx >= 0) form.value.applicableRegulations.splice(idx, 1)
+      else form.value.applicableRegulations.push(value)
+    }
+
+    return { store, steps, step, form, save, toggleRegulation }
   }
 }
 

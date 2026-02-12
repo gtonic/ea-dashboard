@@ -348,6 +348,125 @@
         "applicableCriticalities": [
           "Mission-Critical"
         ]
+      },
+      {
+        "value": "CRA",
+        "label": "Cyber Resilience Act",
+        "description": "EU-Verordnung für Produkte mit digitalen Elementen – SBOM, Schwachstellen-Management",
+        "deadline": "2027-12-11",
+        "applicableScopes": [
+          "softwareProdukte"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "EUAIACT",
+        "label": "EU AI Act",
+        "description": "EU-Verordnung zur Regulierung künstlicher Intelligenz – Risikoklassifizierung, Dokumentationspflicht",
+        "deadline": "2026-08-02",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "EIDAS2",
+        "label": "eIDAS 2.0",
+        "description": "EU-Verordnung über elektronische Identifizierung und Vertrauensdienste",
+        "deadline": "2026-11-20",
+        "applicableScopes": [
+          "identitaetsdienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO9001",
+        "label": "ISO 9001",
+        "description": "Qualitätsmanagement – Prozesskonformität",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical",
+          "Administrative"
+        ]
+      },
+      {
+        "value": "ISO42001",
+        "label": "ISO 42001",
+        "description": "KI-Managementsystem – KI-Governance (Ergänzung zu EU AI Act)",
+        "deadline": "2026-06-30",
+        "applicableScopes": [
+          "kuenstlicheIntelligenz"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "ISO22301",
+        "label": "ISO 22301",
+        "description": "Business Continuity Management – Ausfallsicherheit kritischer Systeme",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "kritischeInfrastruktur",
+          "alle"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical"
+        ]
+      },
+      {
+        "value": "SOC2BSIC5",
+        "label": "SOC 2 / BSI C5",
+        "description": "Cloud-Compliance – Vendor- und Cloud-Bewertung",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "cloudDienste"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "TISAX",
+        "label": "TISAX",
+        "description": "Automotive Informationssicherheit – branchenspezifischer Standard",
+        "deadline": "2025-12-31",
+        "applicableScopes": [
+          "automotive"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
+      },
+      {
+        "value": "PCIDSS",
+        "label": "PCI DSS",
+        "description": "Payment Card Industry Data Security Standard – Zahlungsdatenverarbeitung",
+        "deadline": "2025-03-31",
+        "applicableScopes": [
+          "zahlungsdaten"
+        ],
+        "applicableCriticalities": [
+          "Mission-Critical",
+          "Business-Critical"
+        ]
       }
     ]
   },
