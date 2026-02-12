@@ -38,7 +38,6 @@ export default {
               <tr class="border-b border-surface-200 dark:border-surface-700">
                 <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.regulation') }}</th>
                 <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.c3.deadline') }}</th>
-                <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.c3.daysRemaining') }}</th>
                 <th class="text-left py-2 px-3 text-gray-500 dark:text-gray-400 font-medium">{{ t('compliance.status') }}</th>
               </tr>
             </thead>
@@ -52,14 +51,8 @@ export default {
                 <td class="py-3 px-3 text-gray-700 dark:text-gray-300">{{ rd.deadline }}</td>
                 <td class="py-3 px-3">
                   <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
-                        :class="rd.expired ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : rd.daysRemaining <= 30 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'">
-                    {{ rd.expired ? t('compliance.c3.expired') : rd.daysRemaining + ' ' + t('compliance.c3.days') }}
-                  </span>
-                </td>
-                <td class="py-3 px-3">
-                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium"
-                        :class="rd.expired ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'">
-                    {{ rd.expired ? t('compliance.c3.expired') : t('compliance.c3.upcoming') }}
+                        :class="rd.expired ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'">
+                    {{ rd.expired ? t('compliance.c3.active') : rd.daysRemaining + ' ' + t('compliance.c3.days') }}
                   </span>
                 </td>
               </tr>
