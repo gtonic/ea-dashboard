@@ -2,10 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY backend/app ./app
+COPY app/data/bebauungsplan.json ./seed-data/bebauungsplan.json
 
 RUN mkdir -p /app/data
 

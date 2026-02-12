@@ -20,6 +20,8 @@ def _find_json_file() -> Path:
     candidates = [
         Path(__file__).resolve().parent.parent.parent.parent / "app" / "data" / "bebauungsplan.json",
         Path(os.getcwd()) / "app" / "data" / "bebauungsplan.json",
+        Path(os.getcwd()) / "seed-data" / "bebauungsplan.json",
+        Path(__file__).resolve().parent.parent.parent / "seed-data" / "bebauungsplan.json",
         Path(__file__).resolve().parent.parent.parent / "app" / "data" / "bebauungsplan.json",
     ]
     for p in candidates:

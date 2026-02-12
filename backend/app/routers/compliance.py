@@ -41,15 +41,15 @@ def get_assessment(assessment_id: str, db: Session = Depends(get_db)):
 def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db)):
     assessment_dict = data.model_dump()
     if not assessment_dict.get("id"):
-        existing = db.query(ComplianceAssessment).all()
-        max_num = 0
-        for a in existing:
-            if a.id and a.id.startswith("CA-"):
+        existing = db.query(ComplianceAssessment.id).all()
+        nums = []
+        for (aid,) in existing:
+            if aid and aid.startswith("CA-"):
                 try:
-                    max_num = max(max_num, int(a.id.split("-")[1]))
+                    nums.append(int(aid.split("-")[1]))
                 except ValueError:
                     pass
-        assessment_dict["id"] = f"CA-{max_num + 1:03d}"
+        assessment_dict["id"] = f"CA-{max(nums, default=0) + 1:03d}"
     assessment = ComplianceAssessment(**assessment_dict)
     db.add(assessment)
     db.commit()
