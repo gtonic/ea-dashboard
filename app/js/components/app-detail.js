@@ -247,13 +247,16 @@ export default {
       if (!app.value || !app.value.regulations) return []
       const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
       const assessments = store.data.complianceAssessments || []
-      return app.value.regulations.map(regValue => {
-        const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
-        // Find the latest assessment for this app + regulation
-        const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
-        const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
-        return { ...regMeta, assessment: latest }
-      })
+      const selected = store.featureToggles.selectedRegulations || []
+      return app.value.regulations
+        .filter(regValue => selected.includes(regValue))
+        .map(regValue => {
+          const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
+          // Find the latest assessment for this app + regulation
+          const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
+          const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
+          return { ...regMeta, assessment: latest }
+        })
     })
 
     const complianceSummary = computed(() => {

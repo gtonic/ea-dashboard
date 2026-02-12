@@ -26869,8 +26869,9 @@ const store = reactive({
   get regulationDeadlineWarnings () {
     const now = new Date()
     const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    const selected = this.featureToggles.selectedRegulations || []
     return regs
-      .filter(r => r.deadline)
+      .filter(r => r.deadline && selected.includes(r.value))
       .map(r => {
         const dl = new Date(r.deadline)
         const diffDays = Math.ceil((dl - now) / (1000 * 60 * 60 * 24))
@@ -26883,8 +26884,10 @@ const store = reactive({
   /** Auto-assign regulations to an app based on criticality and data classification */
   autoAssignRegulations (app) {
     const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    const selected = this.featureToggles.selectedRegulations || []
     const assigned = []
     regs.forEach(reg => {
+      if (!selected.includes(reg.value)) return
       const critMatch = !reg.applicableCriticalities || reg.applicableCriticalities.length === 0 ||
         reg.applicableCriticalities.includes(app.criticality)
       const scopeMatch = !reg.applicableScopes || reg.applicableScopes.length === 0 ||
@@ -27803,7 +27806,9 @@ const AppForm = {
     })
 
     const availableRegulations = Vue.computed(() => {
-      return (store.data.enums && store.data.enums.complianceRegulations) || []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const selected = store.featureToggles.selectedRegulations || []
+      return allRegs.filter(r => selected.includes(r.value))
     })
 
     function isRegSelected (value) {
@@ -30115,13 +30120,16 @@ const AppDetail = {
       if (!app.value || !app.value.regulations) return []
       const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
       const assessments = store.data.complianceAssessments || []
-      return app.value.regulations.map(regValue => {
-        const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
-        // Find the latest assessment for this app + regulation
-        const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
-        const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
-        return { ...regMeta, assessment: latest }
-      })
+      const selected = store.featureToggles.selectedRegulations || []
+      return app.value.regulations
+        .filter(regValue => selected.includes(regValue))
+        .map(regValue => {
+          const regMeta = allRegs.find(r => r.value === regValue) || { value: regValue, label: regValue, description: '' }
+          // Find the latest assessment for this app + regulation
+          const appAssessments = assessments.filter(a => a.appId === app.value.id && a.regulation === regValue)
+          const latest = appAssessments.sort((a, b) => (b.assessedDate || '').localeCompare(a.assessedDate || ''))[0] || null
+          return { ...regMeta, assessment: latest }
+        })
     })
 
     const complianceSummary = computed(() => {
@@ -32630,10 +32638,13 @@ const DemandDetail = {
     const demandRegulations = computed(() => {
       if (!demand.value || !demand.value.applicableRegulations) return []
       const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
-      return demand.value.applicableRegulations.map(val => {
-        const meta = allRegs.find(r => r.value === val)
-        return meta || { value: val, label: val, description: '' }
-      })
+      const selected = store.featureToggles.selectedRegulations || []
+      return demand.value.applicableRegulations
+        .filter(val => selected.includes(val))
+        .map(val => {
+          const meta = allRegs.find(r => r.value === val)
+          return meta || { value: val, label: val, description: '' }
+        })
     })
 
     function checklistItems (checklist) {
@@ -32822,7 +32833,7 @@ const DemandForm = {
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-2">Zutreffende Regulierungen</label>
               <div class="flex flex-wrap gap-2">
-                <div v-for="reg in (store.data.enums.complianceRegulations || [])" :key="reg.value"
+                <div v-for="reg in globallySelectedRegulations" :key="reg.value"
                      @click="toggleRegulation(reg.value)"
                      class="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-xs cursor-pointer transition-colors"
                      :class="form.applicableRegulations.includes(reg.value)
@@ -32994,13 +33005,19 @@ const DemandForm = {
       emit('saved')
     }
 
+    const globallySelectedRegulations = Vue.computed(() => {
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const selected = store.featureToggles.selectedRegulations || []
+      return allRegs.filter(r => selected.includes(r.value))
+    })
+
     function toggleRegulation (value) {
       const idx = form.value.applicableRegulations.indexOf(value)
       if (idx >= 0) form.value.applicableRegulations.splice(idx, 1)
       else form.value.applicableRegulations.push(value)
     }
 
-    return { store, steps, step, form, save, toggleRegulation }
+    return { store, steps, step, form, save, toggleRegulation, globallySelectedRegulations }
   }
 }
 
@@ -39541,23 +39558,29 @@ const ComplianceAudit = {
     // Filtered assessments (show non-assessed first, then by workflow status priority)
     const filteredAssessments = computed(() => {
       const assessments = store.data.complianceAssessments || []
+      const selected = selectedRegVals.value
       const order = { reviewRequired: 0, open: 1, inReview: 2, assessed: 3 }
-      return [...assessments].sort((a, b) => {
-        const oa = order[a.workflowStatus || 'open'] ?? 1
-        const ob = order[b.workflowStatus || 'open'] ?? 1
-        return oa - ob
-      })
+      return [...assessments]
+        .filter(a => selected.includes(a.regulation))
+        .sort((a, b) => {
+          const oa = order[a.workflowStatus || 'open'] ?? 1
+          const ob = order[b.workflowStatus || 'open'] ?? 1
+          return oa - ob
+        })
     })
 
     // Collect all audit trail entries across all assessments
     const allAuditEntries = computed(() => {
       const entries = []
-      ;(store.data.complianceAssessments || []).forEach(a => {
-        const app = store.appById(a.appId)
-        ;(a.auditTrail || []).forEach(entry => {
-          entries.push({ ...entry, appId: a.appId, appName: app ? app.name : a.appId, regulation: a.regulation })
+      const selected = selectedRegVals.value
+      ;(store.data.complianceAssessments || [])
+        .filter(a => selected.includes(a.regulation))
+        .forEach(a => {
+          const app = store.appById(a.appId)
+          ;(a.auditTrail || []).forEach(entry => {
+            entries.push({ ...entry, appId: a.appId, appName: app ? app.name : a.appId, regulation: a.regulation })
+          })
         })
-      })
       return entries.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
     })
 

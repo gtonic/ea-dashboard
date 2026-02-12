@@ -296,10 +296,13 @@ export default {
     const demandRegulations = computed(() => {
       if (!demand.value || !demand.value.applicableRegulations) return []
       const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
-      return demand.value.applicableRegulations.map(val => {
-        const meta = allRegs.find(r => r.value === val)
-        return meta || { value: val, label: val, description: '' }
-      })
+      const selected = store.featureToggles.selectedRegulations || []
+      return demand.value.applicableRegulations
+        .filter(val => selected.includes(val))
+        .map(val => {
+          const meta = allRegs.find(r => r.value === val)
+          return meta || { value: val, label: val, description: '' }
+        })
     })
 
     function checklistItems (checklist) {
