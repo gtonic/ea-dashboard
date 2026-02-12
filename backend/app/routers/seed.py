@@ -13,6 +13,7 @@ router = APIRouter(tags=["seed"])
 @router.post("/seed", status_code=200)
 def seed_data(db: Session = Depends(get_db), user: User = Depends(require_role("admin"))):
     count = seed_database(db)
+    # seed_database commits internally; commit audit entry separately
     write_audit(db, user, "CREATE", "seed", detail="Database seeded")
     db.commit()
     return {"message": "Database seeded successfully", "counts": count}

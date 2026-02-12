@@ -59,7 +59,6 @@ def create_application(data: ApplicationCreate, db: Session = Depends(get_db), u
     app_dict = data.model_dump()
     if app_dict.get("id") is None:
         app_dict["id"] = _generate_app_id(db)
-    app_dict.setdefault("version", 1)
     application = Application(**app_dict)
     db.add(application)
     write_audit(db, user, "CREATE", "application", application.id)
@@ -87,8 +86,7 @@ def update_application(
         if app.version != expected:
             raise HTTPException(status_code=409, detail="Conflict: entity was modified by another user")
     for key, value in data.model_dump(exclude_unset=True).items():
-        if key != "version":
-            setattr(app, key, value)
+        setattr(app, key, value)
     app.version = (app.version or 1) + 1
     write_audit(db, user, "UPDATE", "application", app_id)
     db.commit()
