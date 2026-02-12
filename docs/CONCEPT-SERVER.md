@@ -98,9 +98,9 @@
 
 | Komponente | Technologie | Begründung |
 |-----------|-------------|------------|
-| **Sprache** | Python 3.12+ | Bestehende Python-Kenntnisse (build_single.py, server.py); grosses Ökosystem |
+| **Sprache** | Python 3.12+ | Bestehende Python-Kenntnisse (build_single.py, server.py); großes Ökosystem |
 | **Framework** | [FastAPI](https://fastapi.tiangolo.com/) | Async-Support, automatische OpenAPI-Docs, Pydantic-Validation, hohe Performance |
-| **ORM** | [SQLAlchemy 2.0](https://www.sqlalchemy.org/) | Standard-ORM, unterstützt SQLite + PostgreSQL gleichermassen |
+| **ORM** | [SQLAlchemy 2.0](https://www.sqlalchemy.org/) | Standard-ORM, unterstützt SQLite + PostgreSQL gleichermaßen |
 | **Migration** | [Alembic](https://alembic.sqlalchemy.org/) | Datenbank-Migrationen, versioniert, reproduzierbar |
 | **Auth** | [python-jose](https://github.com/mpdavis/python-jose) + [passlib](https://passlib.readthedocs.io/) | JWT-Token-Erzeugung und Passwort-Hashing (bcrypt) |
 | **Validation** | [Pydantic v2](https://docs.pydantic.dev/) | Request/Response-Schemas, automatische Serialisierung |
@@ -653,7 +653,7 @@ CORS_ORIGINS=http://localhost:3000,http://localhost:8080
 | **Access Token** | 60 Minuten | `user_id`, `email`, `role`, `exp` | Memory (JS-Variable) |
 | **Refresh Token** | 7 Tage | `user_id`, `token_family`, `exp` | HttpOnly Cookie |
 
-### Sicherheitsmassnahmen
+### Sicherheitsmaßnahmen
 
 - **Passwort-Hashing**: bcrypt mit Kosten-Faktor 12
 - **Rate Limiting**: Max. 5 Login-Versuche pro Minute pro IP
