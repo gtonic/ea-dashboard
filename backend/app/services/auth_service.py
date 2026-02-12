@@ -32,6 +32,14 @@ def create_refresh_token(data: dict) -> str:
 
 def decode_token(token: str) -> dict | None:
     try:
-        return jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
-    except JWTError:
+        payload = jwt.decode(
+            token, settings.JWT_SECRET_KEY,
+            algorithms=[settings.JWT_ALGORITHM],
+            options={"verify_sub": False},
+        )
+        # Ensure sub is an int for user lookups
+        if "sub" in payload:
+            payload["sub"] = int(payload["sub"])
+        return payload
+    except (JWTError, ValueError):
         return None

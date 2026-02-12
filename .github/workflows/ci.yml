@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Frontend (vitest) ──────────────────────────────────────
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+  # ── Backend (pytest) ───────────────────────────────────────
+  backend-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - run: pip install -r requirements.txt
+      - run: python -m pytest tests/ -v
+
+  # ── Standalone HTML build ──────────────────────────────────
+  standalone-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build standalone HTML
+        run: python3 build_single.py
+
+      - name: Verify output
+        run: |
+          test -f bebauungsplan.html
+          echo "Standalone HTML: $(wc -l < bebauungsplan.html) lines, $(du -h bebauungsplan.html | cut -f1)"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: standalone-html
+          path: bebauungsplan.html
+          retention-days: 30
+
+  # ── Docker build check ─────────────────────────────────────
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -f backend/Dockerfile -t ea-backend .
+
+      - name: Build frontend image
+        run: docker build -f frontend/Dockerfile -t ea-frontend .

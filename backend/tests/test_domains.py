@@ -1,5 +1,5 @@
-def test_create_domain(client):
-    resp = client.post("/api/domains", json={"name": "Test Domain", "color": "#ff0000"})
+def test_create_domain(client, admin_headers):
+    resp = client.post("/api/domains", json={"name": "Test Domain", "color": "#ff0000"}, headers=admin_headers)
     assert resp.status_code == 201
     data = resp.json()
     assert data["name"] == "Test Domain"
@@ -7,45 +7,45 @@ def test_create_domain(client):
     assert "id" in data
 
 
-def test_list_domains(client):
-    client.post("/api/domains", json={"name": "Domain A"})
-    client.post("/api/domains", json={"name": "Domain B"})
-    resp = client.get("/api/domains")
+def test_list_domains(client, admin_headers):
+    client.post("/api/domains", json={"name": "Domain A"}, headers=admin_headers)
+    client.post("/api/domains", json={"name": "Domain B"}, headers=admin_headers)
+    resp = client.get("/api/domains", headers=admin_headers)
     assert resp.status_code == 200
     assert len(resp.json()) == 2
 
 
-def test_get_domain(client):
-    create_resp = client.post("/api/domains", json={"name": "My Domain"})
+def test_get_domain(client, admin_headers):
+    create_resp = client.post("/api/domains", json={"name": "My Domain"}, headers=admin_headers)
     domain_id = create_resp.json()["id"]
-    resp = client.get(f"/api/domains/{domain_id}")
+    resp = client.get(f"/api/domains/{domain_id}", headers=admin_headers)
     assert resp.status_code == 200
     assert resp.json()["name"] == "My Domain"
 
 
-def test_get_domain_not_found(client):
-    resp = client.get("/api/domains/9999")
+def test_get_domain_not_found(client, admin_headers):
+    resp = client.get("/api/domains/9999", headers=admin_headers)
     assert resp.status_code == 404
 
 
-def test_update_domain(client):
-    create_resp = client.post("/api/domains", json={"name": "Old Name"})
+def test_update_domain(client, admin_headers):
+    create_resp = client.post("/api/domains", json={"name": "Old Name"}, headers=admin_headers)
     domain_id = create_resp.json()["id"]
-    resp = client.put(f"/api/domains/{domain_id}", json={"name": "New Name"})
+    resp = client.put(f"/api/domains/{domain_id}", json={"name": "New Name"}, headers=admin_headers)
     assert resp.status_code == 200
     assert resp.json()["name"] == "New Name"
 
 
-def test_delete_domain(client):
-    create_resp = client.post("/api/domains", json={"name": "To Delete"})
+def test_delete_domain(client, admin_headers):
+    create_resp = client.post("/api/domains", json={"name": "To Delete"}, headers=admin_headers)
     domain_id = create_resp.json()["id"]
-    resp = client.delete(f"/api/domains/{domain_id}")
+    resp = client.delete(f"/api/domains/{domain_id}", headers=admin_headers)
     assert resp.status_code == 204
-    resp = client.get(f"/api/domains/{domain_id}")
+    resp = client.get(f"/api/domains/{domain_id}", headers=admin_headers)
     assert resp.status_code == 404
 
 
-def test_create_domain_with_capabilities(client):
+def test_create_domain_with_capabilities(client, admin_headers):
     resp = client.post("/api/domains", json={
         "name": "Production",
         "capabilities": [
@@ -56,7 +56,7 @@ def test_create_domain_with_capabilities(client):
                 "sub_capabilities": [{"id": "1.1.1", "name": "Sub Planning"}],
             }
         ],
-    })
+    }, headers=admin_headers)
     assert resp.status_code == 201
     data = resp.json()
     assert len(data["capabilities"]) == 1
@@ -64,7 +64,7 @@ def test_create_domain_with_capabilities(client):
     assert len(data["capabilities"][0]["sub_capabilities"]) == 1
 
 
-def test_create_domain_with_explicit_id(client):
-    resp = client.post("/api/domains", json={"id": 42, "name": "Explicit ID"})
+def test_create_domain_with_explicit_id(client, admin_headers):
+    resp = client.post("/api/domains", json={"id": 42, "name": "Explicit ID"}, headers=admin_headers)
     assert resp.status_code == 201
     assert resp.json()["id"] == 42

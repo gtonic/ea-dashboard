@@ -44,7 +44,7 @@ def login(request: Request, data: LoginRequest, db: Session = Depends(get_db)):
     user.last_login = datetime.now(timezone.utc)
     db.commit()
 
-    token_data = {"sub": user.id, "email": user.email, "role": user.role}
+    token_data = {"sub": str(user.id), "email": user.email, "role": user.role}
     return TokenResponse(
         access_token=create_access_token(token_data),
         refresh_token=create_refresh_token(token_data),
@@ -65,7 +65,7 @@ def refresh_token(data: RefreshRequest, db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found or inactive",
         )
-    token_data = {"sub": user.id, "email": user.email, "role": user.role}
+    token_data = {"sub": str(user.id), "email": user.email, "role": user.role}
     return AccessTokenResponse(access_token=create_access_token(token_data))
 
 
