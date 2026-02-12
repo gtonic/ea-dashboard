@@ -28,7 +28,7 @@ def list_assessments(
 
 
 @router.get("/{assessment_id}", response_model=ComplianceAssessmentRead)
-def get_assessment(assessment_id: int, db: Session = Depends(get_db)):
+def get_assessment(assessment_id: str, db: Session = Depends(get_db)):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
     ).first()
@@ -40,8 +40,16 @@ def get_assessment(assessment_id: int, db: Session = Depends(get_db)):
 @router.post("", response_model=ComplianceAssessmentRead, status_code=201)
 def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(get_db)):
     assessment_dict = data.model_dump()
-    if assessment_dict.get("id") is None:
-        assessment_dict.pop("id", None)
+    if not assessment_dict.get("id"):
+        existing = db.query(ComplianceAssessment).all()
+        max_num = 0
+        for a in existing:
+            if a.id and a.id.startswith("CA-"):
+                try:
+                    max_num = max(max_num, int(a.id.split("-")[1]))
+                except ValueError:
+                    pass
+        assessment_dict["id"] = f"CA-{max_num + 1:03d}"
     assessment = ComplianceAssessment(**assessment_dict)
     db.add(assessment)
     db.commit()
@@ -51,7 +59,7 @@ def create_assessment(data: ComplianceAssessmentCreate, db: Session = Depends(ge
 
 @router.put("/{assessment_id}", response_model=ComplianceAssessmentRead)
 def update_assessment(
-    assessment_id: int,
+    assessment_id: str,
     data: ComplianceAssessmentUpdate,
     db: Session = Depends(get_db),
 ):
@@ -68,7 +76,7 @@ def update_assessment(
 
 
 @router.delete("/{assessment_id}", status_code=204)
-def delete_assessment(assessment_id: int, db: Session = Depends(get_db)):
+def delete_assessment(assessment_id: str, db: Session = Depends(get_db)):
     assessment = db.query(ComplianceAssessment).filter(
         ComplianceAssessment.id == assessment_id
     ).first()

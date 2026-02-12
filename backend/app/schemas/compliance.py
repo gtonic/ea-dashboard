@@ -14,11 +14,11 @@ class ComplianceAssessmentBase(BaseModel):
 
 
 class ComplianceAssessmentCreate(ComplianceAssessmentBase):
-    id: int | None = None
+    id: str | None = None
 
 
 class ComplianceAssessmentRead(ComplianceAssessmentBase):
-    id: int
+    id: str
 
     model_config = {"from_attributes": True}
 

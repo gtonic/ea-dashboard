@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, JSON
+from sqlalchemy import Column, String, Text, JSON
 
 from app.database import Base
 
@@ -6,7 +6,7 @@ from app.database import Base
 class ComplianceAssessment(Base):
     __tablename__ = "compliance_assessments"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(String(50), primary_key=True)
     app_id = Column(String(50))
     regulation = Column(String(100))
     status = Column(String(100))

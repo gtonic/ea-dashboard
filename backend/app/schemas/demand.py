@@ -18,9 +18,9 @@ class DemandBase(BaseModel):
     is_ai_use_case: bool | None = False
     ai_risk_category: str | None = None
     ai_description: str | None = None
-    checklist_security: bool | None = False
-    checklist_legal: bool | None = False
-    checklist_architecture: bool | None = False
+    checklist_security: dict | None = None
+    checklist_legal: dict | None = None
+    checklist_architecture: dict | None = None
 
 
 class DemandCreate(DemandBase):
@@ -50,6 +50,6 @@ class DemandUpdate(BaseModel):
     is_ai_use_case: bool | None = None
     ai_risk_category: str | None = None
     ai_description: str | None = None
-    checklist_security: bool | None = None
-    checklist_legal: bool | None = None
-    checklist_architecture: bool | None = None
+    checklist_security: dict | None = None
+    checklist_legal: dict | None = None
+    checklist_architecture: dict | None = None
