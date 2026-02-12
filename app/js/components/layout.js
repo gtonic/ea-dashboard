@@ -128,6 +128,7 @@ function buildNavGroups () {
       icon: icons.compliance,
       items: [
         { path: '/compliance-dashboard', labelKey: 'nav.complianceDashboard', icon: icons.compliance, pageKey: 'page.complianceDashboard' },
+        { path: '/compliance-audit', labelKey: 'nav.complianceAudit', icon: icons.compliance, pageKey: 'page.complianceAudit' },
       ]
     },
     {

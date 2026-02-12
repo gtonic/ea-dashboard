@@ -561,6 +561,137 @@ export const store = reactive({
     return total ? Math.round((compliant / total) * 100) : 0
   },
 
+  // ── Compliance Helpers (Phase C3) ──
+
+  /** Transition an assessment through the workflow and log to audit trail */
+  assessmentWorkflowTransition (assessmentId, newStatus, user, comment) {
+    const assessment = (this.data.complianceAssessments || []).find(a => a.id === assessmentId)
+    if (!assessment) return false
+    const validTransitions = {
+      open: ['inReview'],
+      inReview: ['assessed', 'reviewRequired'],
+      assessed: ['reviewRequired'],
+      reviewRequired: ['inReview']
+    }
+    const current = assessment.workflowStatus || 'open'
+    if (!validTransitions[current] || !validTransitions[current].includes(newStatus)) return false
+    const oldStatus = current
+    assessment.workflowStatus = newStatus
+    if (!assessment.auditTrail) assessment.auditTrail = []
+    assessment.auditTrail.push({
+      timestamp: new Date().toISOString(),
+      user: user || 'System',
+      action: 'statusChange',
+      fromStatus: oldStatus,
+      toStatus: newStatus,
+      comment: comment || ''
+    })
+    return true
+  },
+
+  /** Audit trail for a specific assessment */
+  auditTrailForAssessment (assessmentId) {
+    const assessment = (this.data.complianceAssessments || []).find(a => a.id === assessmentId)
+    return (assessment && assessment.auditTrail) || []
+  },
+
+  /** Assessments with approaching or expired deadlines */
+  get deadlineWarnings () {
+    const now = new Date()
+    const warnings = []
+    ;(this.data.complianceAssessments || []).forEach(a => {
+      if (!a.deadline) return
+      const dl = new Date(a.deadline)
+      const diffDays = Math.ceil((dl - now) / (1000 * 60 * 60 * 24))
+      if (diffDays <= 90) {
+        const app = this.appById(a.appId)
+        warnings.push({
+          assessmentId: a.id,
+          appId: a.appId,
+          appName: app ? app.name : a.appId,
+          regulation: a.regulation,
+          deadline: a.deadline,
+          daysRemaining: diffDays,
+          status: a.status,
+          workflowStatus: a.workflowStatus || 'open',
+          expired: diffDays < 0
+        })
+      }
+    })
+    return warnings.sort((a, b) => a.daysRemaining - b.daysRemaining)
+  },
+
+  /** Regulation-level deadline warnings (transition deadlines from regulation enum) */
+  get regulationDeadlineWarnings () {
+    const now = new Date()
+    const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    return regs
+      .filter(r => r.deadline)
+      .map(r => {
+        const dl = new Date(r.deadline)
+        const diffDays = Math.ceil((dl - now) / (1000 * 60 * 60 * 24))
+        return { ...r, daysRemaining: diffDays, expired: diffDays < 0 }
+      })
+      .filter(r => r.daysRemaining <= 180)
+      .sort((a, b) => a.daysRemaining - b.daysRemaining)
+  },
+
+  /** Auto-assign regulations to an app based on criticality and data classification */
+  autoAssignRegulations (app) {
+    const regs = (this.data.enums && this.data.enums.complianceRegulations) || []
+    const assigned = []
+    regs.forEach(reg => {
+      const critMatch = !reg.applicableCriticalities || reg.applicableCriticalities.length === 0 ||
+        reg.applicableCriticalities.includes(app.criticality)
+      const scopeMatch = !reg.applicableScopes || reg.applicableScopes.length === 0 ||
+        reg.applicableScopes.includes('alle') ||
+        reg.applicableScopes.includes(app.dataClassification)
+      if (critMatch && scopeMatch) assigned.push(reg.value)
+    })
+    return assigned
+  },
+
+  /** Compliance scorecard per domain: aggregated conformity grade */
+  get complianceScorecardByDomain () {
+    const domains = this.data.domains || []
+    const mappings = this.data.capabilityMappings || []
+    const assessments = this.data.complianceAssessments || []
+    const apps = this.data.applications || []
+
+    return domains.map(d => {
+      const capIds = d.capabilities.map(c => c.id)
+      const domainAppIds = [...new Set(
+        mappings.filter(m => capIds.includes(m.capabilityId)).map(m => m.applicationId)
+      )]
+      const domainApps = domainAppIds.map(id => apps.find(a => a.id === id)).filter(Boolean)
+
+      let total = 0; let compliant = 0; let partial = 0; let nonCompliant = 0; let notAssessed = 0
+      domainApps.forEach(app => {
+        ;(app.regulations || []).forEach(reg => {
+          total++
+          const a = assessments.find(x => x.appId === app.id && x.regulation === reg)
+          if (!a || a.status === 'notAssessed') notAssessed++
+          else if (a.status === 'compliant') compliant++
+          else if (a.status === 'partial') partial++
+          else nonCompliant++
+        })
+      })
+      const score = total > 0 ? Math.round(((compliant + partial * 0.5) / total) * 100) : 0
+      return {
+        domainId: d.id,
+        domainName: d.name,
+        domainColor: d.color,
+        appCount: domainApps.length,
+        total,
+        compliant,
+        partial,
+        nonCompliant,
+        notAssessed,
+        score
+      }
+    }).filter(d => d.total > 0).sort((a, b) => b.score - a.score)
+  },
+
   // ── Demand CRUD ──
 
   get totalDemands () { return (this.data.demands || []).length },

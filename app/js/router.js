@@ -47,6 +47,7 @@ const routes = [
   { pattern: /^\/app-lifecycle-timeline$/, component: 'app-lifecycle-timeline' },
   { pattern: /^\/tco-calculator$/,         component: 'tco-calculator' },
   { pattern: /^\/compliance-dashboard$/,   component: 'compliance-dashboard' },
+  { pattern: /^\/compliance-audit$/,       component: 'compliance-audit' },
   { pattern: /^\/search$/,                  component: 'global-search' },
   { pattern: /^\/settings$/,               component: 'settings-view' }
 ]
