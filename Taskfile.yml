@@ -1,0 +1,207 @@
+# ──────────────────────────────────────────────────────────
+# EA Dashboard — Taskfile
+# https://taskfile.dev
+# ──────────────────────────────────────────────────────────
+version: "3"
+
+vars:
+  APP_NAME: ea-dashboard
+  STANDALONE_PORT: 8080
+  DOCKER_COMPOSE: docker compose
+  DOCKER_COMPOSE_PROD: docker compose -f docker-compose.prod.yml
+
+dotenv: [".env"]
+
+tasks:
+  # ════════════════════════════════════════════════════════
+  #  Default — show help
+  # ════════════════════════════════════════════════════════
+  default:
+    desc: Zeigt alle verfügbaren Tasks
+    cmds:
+      - task --list
+
+  # ════════════════════════════════════════════════════════
+  #  A) Standalone (Python dev server)
+  # ════════════════════════════════════════════════════════
+  standalone:
+    desc: "Startet die Standalone-Version (Python dev server auf Port {{.STANDALONE_PORT}})"
+    cmds:
+      - task: standalone:start
+
+  standalone:start:
+    desc: "Startet den Standalone Dev-Server"
+    cmds:
+      - |
+        echo "══════════════════════════════════════════"
+        echo "  EA Dashboard — Standalone"
+        echo "  http://localhost:{{.STANDALONE_PORT}}"
+        echo "══════════════════════════════════════════"
+      - python3 server.py --port {{.STANDALONE_PORT}}
+    interactive: true
+
+  standalone:stop:
+    desc: "Stoppt den Standalone Dev-Server"
+    cmds:
+      - lsof -ti :{{.STANDALONE_PORT}} | xargs kill -9 2>/dev/null || true
+      - echo "Standalone-Server gestoppt."
+
+  standalone:test:
+    desc: "Führt die Frontend-Tests aus (vitest)"
+    cmds:
+      - npm test
+
+  standalone:test:watch:
+    desc: "Führt die Frontend-Tests im Watch-Mode aus"
+    cmds:
+      - npm run test:watch
+    interactive: true
+
+  # ════════════════════════════════════════════════════════
+  #  B) Containerisiert (Docker Compose)
+  # ════════════════════════════════════════════════════════
+
+  # ── Development ──────────────────────────────────────────
+  docker:
+    desc: "Baut & startet die containerisierte Version (dev)"
+    cmds:
+      - task: docker:up
+
+  docker:build:
+    desc: "Baut alle Docker-Images (dev)"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} build"
+
+  docker:up:
+    desc: "Startet alle Container (dev, mit Build)"
+    deps: [docker:env-check]
+    cmds:
+      - "{{.DOCKER_COMPOSE}} up --build -d"
+      - |
+        echo ""
+        echo "══════════════════════════════════════════"
+        echo "  EA Dashboard — Docker (Dev)"
+        echo "  Frontend:  http://localhost:${FRONTEND_PORT:-80}"
+        echo "  Backend:   http://localhost:${FRONTEND_PORT:-80}/api"
+        echo "══════════════════════════════════════════"
+      - "{{.DOCKER_COMPOSE}} ps"
+
+  docker:up:attached:
+    desc: "Startet alle Container im Vordergrund (dev)"
+    deps: [docker:env-check]
+    cmds:
+      - "{{.DOCKER_COMPOSE}} up --build"
+    interactive: true
+
+  docker:down:
+    desc: "Stoppt und entfernt alle Container (dev)"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} down"
+      - echo "Container gestoppt."
+
+  docker:logs:
+    desc: "Zeigt Container-Logs (dev)"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} logs -f --tail=100"
+    interactive: true
+
+  docker:ps:
+    desc: "Zeigt Container-Status (dev)"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} ps"
+
+  docker:restart:
+    desc: "Startet alle Container neu (dev)"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} restart"
+      - "{{.DOCKER_COMPOSE}} ps"
+
+  docker:clean:
+    desc: "Stoppt Container und entfernt Volumes (dev)"
+    prompt: "⚠️  Das löscht auch die Datenbank-Daten. Fortfahren?"
+    cmds:
+      - "{{.DOCKER_COMPOSE}} down -v --remove-orphans"
+      - echo "Container und Volumes entfernt."
+
+  docker:env-check:
+    desc: "Prüft ob .env existiert"
+    internal: true
+    preconditions:
+      - sh: test -f .env
+        msg: |
+          ❌ .env Datei fehlt!
+          Erstelle sie mit:  cp .env.prod.example .env
+          und passe die Werte an (JWT_SECRET_KEY, Passwörter, etc.)
+
+  # ── Production ───────────────────────────────────────────
+  prod:
+    desc: "Baut & startet die Produktion (PostgreSQL + nginx SSL)"
+    cmds:
+      - task: prod:up
+
+  prod:build:
+    desc: "Baut alle Docker-Images (prod)"
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} build"
+
+  prod:up:
+    desc: "Startet alle Container (prod, mit Build)"
+    deps: [docker:env-check]
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} up --build -d"
+      - |
+        echo ""
+        echo "══════════════════════════════════════════"
+        echo "  EA Dashboard — Production"
+        echo "  https://localhost:${FRONTEND_PORT:-443}"
+        echo "══════════════════════════════════════════"
+      - "{{.DOCKER_COMPOSE_PROD}} ps"
+
+  prod:down:
+    desc: "Stoppt und entfernt alle Container (prod)"
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} down"
+
+  prod:logs:
+    desc: "Zeigt Container-Logs (prod)"
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} logs -f --tail=100"
+    interactive: true
+
+  prod:ps:
+    desc: "Zeigt Container-Status (prod)"
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} ps"
+
+  prod:clean:
+    desc: "Stoppt Container und entfernt Volumes (prod)"
+    prompt: "⚠️  Das löscht alle Produktionsdaten inkl. PostgreSQL! Fortfahren?"
+    cmds:
+      - "{{.DOCKER_COMPOSE_PROD}} down -v --remove-orphans"
+      - echo "Produktions-Container und Volumes entfernt."
+
+  # ════════════════════════════════════════════════════════
+  #  Utilities
+  # ════════════════════════════════════════════════════════
+  env:init:
+    desc: "Erstellt .env aus Vorlage"
+    cmds:
+      - cp -n .env.prod.example .env
+      - echo "✅ .env erstellt. Bitte Werte anpassen!"
+    status:
+      - test -f .env
+
+  backend:test:
+    desc: "Führt Backend-Tests aus (pytest)"
+    dir: backend
+    cmds:
+      - pip install -r requirements.txt -q
+      - python -m pytest tests/ -v
+
+  health:
+    desc: "Prüft ob alle Services laufen"
+    cmds:
+      - |
+        echo "Prüfe Services..."
+        curl -sf http://localhost:${FRONTEND_PORT:-80}/ > /dev/null && echo "✅ Frontend OK" || echo "❌ Frontend nicht erreichbar"
+        curl -sf http://localhost:${FRONTEND_PORT:-80}/api/health > /dev/null && echo "✅ Backend OK" || echo "❌ Backend nicht erreichbar"
