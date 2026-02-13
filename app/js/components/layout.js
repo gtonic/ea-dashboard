@@ -515,6 +515,10 @@ export default {
           // Only show admin nav when running in server mode and user is admin
           if (typeof auth === 'undefined' || !auth.isLoggedIn || !auth.isAdmin) return false
         }
+        // Filter out skill-impact items when toggle is off
+        if (!store.featureToggles.skillImpactEnabled) {
+          g.items = g.items.filter(i => i.path !== '/skill-impact')
+        }
         return true
       })
     })

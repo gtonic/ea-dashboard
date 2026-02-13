@@ -1228,6 +1228,17 @@ describe('Feature Toggles', () => {
     expect(store.featureToggles.analysisEnabled).toBe(false)
     expect(store.featureToggles.governanceEnabled).toBe(true)
   })
+
+  it('skillImpactEnabled defaults to true', () => {
+    store.featureToggles = JSON.parse('{"analysisEnabled":true,"governanceEnabled":true,"complianceEnabled":false,"skillImpactEnabled":true,"selectedRegulations":[]}')
+    expect(store.featureToggles.skillImpactEnabled).toBe(true)
+  })
+
+  it('skillImpactEnabled can be toggled off independently', () => {
+    store.featureToggles.skillImpactEnabled = false
+    expect(store.featureToggles.skillImpactEnabled).toBe(false)
+    expect(store.featureToggles.analysisEnabled).toBe(true)
+  })
 })
 
 // ─── Compliance Helpers (Phase C2) ───────────────────────────

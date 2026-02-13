@@ -64,6 +64,18 @@ export default {
                     :class="store.featureToggles.complianceEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
             </button>
           </div>
+          <div class="flex items-center justify-between border-t border-surface-100 dark:border-surface-700 pt-4">
+            <div>
+              <div class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ t('nav.skillImpact') }}</div>
+              <div class="text-xs text-gray-500 dark:text-gray-400">{{ t('settings.skillImpactDesc') }}</div>
+            </div>
+            <button @click="store.featureToggles.skillImpactEnabled = !store.featureToggles.skillImpactEnabled"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    :class="store.featureToggles.skillImpactEnabled ? 'bg-primary-600' : 'bg-gray-300 dark:bg-surface-700'">
+              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                    :class="store.featureToggles.skillImpactEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
+            </button>
+          </div>
         </div>
       </section>
 

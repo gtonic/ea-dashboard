@@ -24,7 +24,7 @@ export default {
               <option value="">— Bitte wählen —</option>
               <option value="cancelProject">Projekt streichen</option>
               <option value="retireApp">Applikation ablösen</option>
-              <option value="skillLoss">Fachkräfte-Verlust</option>
+              <option v-if="store.featureToggles.skillImpactEnabled" value="skillLoss">Fachkräfte-Verlust</option>
             </select>
           </div>
 
