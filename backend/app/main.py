@@ -16,7 +16,7 @@ from app.services.auth_service import hash_password
 from app.routers import (
     domains, applications, projects, vendors, demands,
     integrations, processes, entities, compliance, kpis,
-    seed, export, dashboard, audit,
+    data_objects, seed, export, dashboard, audit,
 )
 from app.routers import auth as auth_router
 from app.routers import admin as admin_router
@@ -98,6 +98,7 @@ app.include_router(demands.router, prefix="/api")
 app.include_router(integrations.router, prefix="/api")
 app.include_router(processes.router, prefix="/api")
 app.include_router(entities.router, prefix="/api")
+app.include_router(data_objects.router, prefix="/api")
 app.include_router(compliance.router, prefix="/api")
 app.include_router(kpis.router, prefix="/api")
 app.include_router(seed.router, prefix="/api")

@@ -16,6 +16,7 @@ const icons = {
   processes: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>',
   entities: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>',
   integrations: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>',
+  dataObject: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3" stroke-width="2"/><path stroke-width="2" d="M21 12c0 1.66-4.03 3-9 3s-9-1.34-9-3"/><path stroke-width="2" d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>',
   demands: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
   pipeline: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18v4H3V4zm2 6h14v4H5v-4zm4 6h6v4H9v-4z"/></svg>',
   projects: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>',
@@ -72,6 +73,7 @@ function buildNavGroups () {
         { path: '/processes',        labelKey: 'nav.processes',     icon: icons.processes,    pageKey: 'page.processes' },
         { path: '/entities',         labelKey: 'nav.entities',      icon: icons.entities,     pageKey: 'page.entities' },
         { path: '/integration-map',  labelKey: 'nav.integrations',  icon: icons.integrations, pageKey: 'page.integrationMap' },
+        { path: '/data-objects',     labelKey: 'nav.dataObjects',   icon: icons.dataObject,   pageKey: 'page.dataObjects',   badgeKey: 'totalDataObjects' },
       ]
     },
     {
@@ -537,6 +539,8 @@ export default {
       'vendor-scorecard': 'page.vendorScorecard',
       'entity-list': 'page.entities',
       'entity-detail': 'page.entityDetail',
+      'data-object-list': 'page.dataObjects',
+      'data-object-detail': 'page.dataObjectDetail',
       'demand-list': 'page.demands',
       'demand-detail': 'page.demandDetail',
       'demand-pipeline': 'page.demandPipeline',

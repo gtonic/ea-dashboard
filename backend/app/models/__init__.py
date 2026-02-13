@@ -8,6 +8,7 @@ from app.models.process import E2EProcess
 from app.models.entity import LegalEntity
 from app.models.compliance import ComplianceAssessment
 from app.models.kpi import ManagementKPI
+from app.models.data_object import DataObject
 from app.models.user import User
 from app.models.audit_log import AuditLog
 
@@ -18,5 +19,6 @@ __all__ = [
     "Vendor", "Demand", "Integration",
     "E2EProcess", "LegalEntity",
     "ComplianceAssessment", "ManagementKPI",
+    "DataObject",
     "User", "AuditLog",
 ]
