@@ -71,6 +71,7 @@ const translations = {
     'nav.maturityGap': 'Reifegradanalyse',
     'nav.dependencies': 'Abhängigkeitsgraph',
     'nav.resourceOverlap': 'Ressourcen-Überlappung',
+    'nav.skillImpact': 'Fachkräfte-Impact',
     'nav.techRadar': 'Technologie-Radar',
 
     // ── Nav Items – Governance ──
@@ -130,6 +131,7 @@ const translations = {
     'page.riskHeatmap': 'Risiko & Compliance',
     'page.dataQuality': 'Datenqualitäts-Dashboard',
     'page.resourceOverlap': 'Ressourcen-Überlappungsanalyse',
+    'page.skillImpact': 'Fachkräfte-Impact-Analyse',
     'page.scenarioPlanner': 'Szenario-Planung / What-If',
     'page.maturityGap': 'Reifegradanalyse',
     'page.roadmap': 'Strategische Roadmap',
@@ -406,6 +408,7 @@ const translations = {
     'nav.maturityGap': 'Maturity Gap Analysis',
     'nav.dependencies': 'Dependency Graph',
     'nav.resourceOverlap': 'Resource Overlap',
+    'nav.skillImpact': 'Skill Impact',
     'nav.techRadar': 'Technology Radar',
 
     // ── Nav Items – Governance ──
@@ -465,6 +468,7 @@ const translations = {
     'page.riskHeatmap': 'Risk & Compliance',
     'page.dataQuality': 'Data Quality Dashboard',
     'page.resourceOverlap': 'Resource Overlap Analysis',
+    'page.skillImpact': 'Skill Impact Analysis',
     'page.scenarioPlanner': 'Scenario Planner / What-If',
     'page.maturityGap': 'Maturity Gap Analysis',
     'page.roadmap': 'Strategy Roadmap',

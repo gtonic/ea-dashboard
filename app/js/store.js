@@ -834,6 +834,74 @@ export const store = reactive({
     return { source, consuming }
   },
 
+  // ── Skill / Fachkräfte Analysis ──
+
+  get skillSummary () {
+    const skillMap = {}
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.skillProfiles || []).forEach(sp => {
+        if (!skillMap[sp.skill]) {
+          skillMap[sp.skill] = { skill: sp.skill, totalHeadcount: 0, appIds: [], keyPersons: new Set(), outsourceable: sp.outsourceable }
+        }
+        skillMap[sp.skill].totalHeadcount += sp.headcount || 0
+        skillMap[sp.skill].appIds.push(app.id)
+        ;(sp.keyPersons || []).forEach(p => skillMap[sp.skill].keyPersons.add(p))
+        if (!sp.outsourceable) skillMap[sp.skill].outsourceable = false
+      })
+    })
+    return Object.values(skillMap).map(s => ({
+      ...s,
+      keyPersons: [...s.keyPersons],
+      appCount: s.appIds.length
+    }))
+  },
+
+  appsBySkill (skill) {
+    return (this.data.applications || []).filter(app =>
+      (app.skillProfiles || []).some(sp => sp.skill === skill)
+    )
+  },
+
+  get busFactor () {
+    const personMap = {}
+    ;(this.data.applications || []).forEach(app => {
+      ;(app.skillProfiles || []).forEach(sp => {
+        ;(sp.keyPersons || []).forEach(person => {
+          if (!personMap[person]) personMap[person] = { person, skills: new Set(), appIds: new Set() }
+          personMap[person].skills.add(sp.skill)
+          personMap[person].appIds.add(app.id)
+        })
+      })
+    })
+    return Object.values(personMap).map(p => ({
+      person: p.person,
+      skills: [...p.skills],
+      appIds: [...p.appIds],
+      appCount: p.appIds.size,
+      risk: p.appIds.size >= 4 ? 'high' : p.appIds.size >= 2 ? 'medium' : 'low'
+    })).sort((a, b) => b.appCount - a.appCount)
+  },
+
+  skillLossImpact (skill, count) {
+    const affected = this.appsBySkill(skill)
+    return affected.map(app => {
+      const sp = (app.skillProfiles || []).find(s => s.skill === skill)
+      if (!sp) return null
+      const remaining = Math.max(0, (sp.headcount || 0) - (count || 0))
+      return {
+        appId: app.id,
+        appName: app.name,
+        criticality: app.criticality,
+        currentHeadcount: sp.headcount || 0,
+        lostHeadcount: Math.min(count || 0, sp.headcount || 0),
+        remainingHeadcount: remaining,
+        keyPersons: sp.keyPersons || [],
+        outsourceable: sp.outsourceable,
+        severity: remaining === 0 ? 'critical' : remaining === 1 ? 'high' : 'medium'
+      }
+    }).filter(Boolean)
+  },
+
   // ── Global Full-Text Search ──
 
   globalSearch (query) {
@@ -983,7 +1051,7 @@ export function startWatching () {
 // ────────────────────────────────────────────
 // Load — from localStorage or seed JSON
 // ────────────────────────────────────────────
-const CACHE_VERSION = 'v9-2026-02-13-data-objects-51'
+const CACHE_VERSION = 'v10-2026-02-13-skill-profiles'
 
 export async function loadData () {
   // 0. Force reload from seed when cache version changes

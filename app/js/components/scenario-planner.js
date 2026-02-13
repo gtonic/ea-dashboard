@@ -15,7 +15,7 @@ export default {
 
       <!-- Scenario Selector -->
       <div class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Scenario Type -->
           <div>
             <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">Szenario-Typ</label>
@@ -24,6 +24,7 @@ export default {
               <option value="">— Bitte wählen —</option>
               <option value="cancelProject">Projekt streichen</option>
               <option value="retireApp">Applikation ablösen</option>
+              <option value="skillLoss">Fachkräfte-Verlust</option>
             </select>
           </div>
 
@@ -40,7 +41,17 @@ export default {
               <template v-if="scenarioType === 'retireApp'">
                 <option v-for="a in activeApps" :key="a.id" :value="a.id">{{ a.id }} – {{ a.name }}</option>
               </template>
+              <template v-if="scenarioType === 'skillLoss'">
+                <option v-for="s in availableSkills" :key="s" :value="s">{{ s }}</option>
+              </template>
             </select>
+          </div>
+
+          <!-- Skill Loss Count -->
+          <div v-if="scenarioType === 'skillLoss'">
+            <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">Anzahl Abgänge</label>
+            <input v-model.number="skillLossCount" type="number" min="1" max="10"
+                   class="w-full rounded-lg border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-sm px-3 py-2 text-gray-900 dark:text-gray-100" />
           </div>
 
           <!-- Analyze Button -->
@@ -206,6 +217,37 @@ export default {
           </div>
         </div>
 
+        <!-- Impact: Skill Loss (for Skill Loss scenario) -->
+        <div v-if="analysisResult.skillImpacts && analysisResult.skillImpacts.length > 0"
+             class="bg-white dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-700 p-6">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Betroffene Applikationen</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Applikationen die durch den Fachkräfte-Verlust betroffen wären</p>
+          <div class="space-y-2">
+            <a v-for="si in analysisResult.skillImpacts" :key="si.appId"
+               :href="linkTo('/apps/' + si.appId)"
+               class="flex items-center justify-between p-3 rounded-lg border hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors"
+               :class="si.severity === 'critical' ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : si.severity === 'high' ? 'border-orange-300 bg-orange-50 dark:bg-orange-900/20' : 'border-yellow-300 bg-yellow-50 dark:bg-yellow-900/20'">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+                     :class="si.severity === 'critical' ? 'bg-red-200 text-red-700' : si.severity === 'high' ? 'bg-orange-200 text-orange-700' : 'bg-yellow-200 text-yellow-700'">
+                  {{ si.remainingHeadcount }}/{{ si.currentHeadcount }}
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ si.appName }}</div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">{{ si.criticality }} · Schlüsselpersonen: {{ si.keyPersons.join(', ') }}</div>
+                </div>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="text-xs font-semibold px-2 py-1 rounded-full"
+                      :class="si.severity === 'critical' ? 'bg-red-100 text-red-700' : si.severity === 'high' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700'">
+                  {{ si.severity === 'critical' ? 'Kritisch – kein Personal' : si.severity === 'high' ? 'Hoch – 1 Person verbleibend' : 'Mittel' }}
+                </span>
+                <div class="text-xs text-gray-400 mt-1">{{ si.outsourceable ? '✓ Outsourcing möglich' : '✗ Nicht outsourcebar' }}</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
       </template>
 
       <!-- Saved Scenarios -->
@@ -231,7 +273,7 @@ export default {
               </div>
               <div class="min-w-0">
                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">{{ sc.title }}</div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">{{ sc.type === 'cancelProject' ? 'Projekt streichen' : 'App ablösen' }} · {{ sc.savedAt }}</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">{{ sc.type === 'cancelProject' ? 'Projekt streichen' : sc.type === 'skillLoss' ? 'Fachkräfte-Verlust' : 'App ablösen' }} · {{ sc.savedAt }}</div>
               </div>
             </div>
             <button @click="deleteScenario(idx)"
@@ -257,6 +299,8 @@ export default {
 
     const activeProjects = computed(() => (store.data.projects || []).filter(p => p.status !== 'completed'))
     const activeApps = computed(() => (store.data.applications || []).filter(a => a.lifecycleStatus !== 'End-of-Life'))
+    const skillLossCount = ref(2)
+    const availableSkills = computed(() => store.skillSummary.map(s => s.skill).sort())
 
     const depTypes = {
       T: 'Technische Abhängigkeit',
@@ -272,6 +316,8 @@ export default {
         analysisResult.value = analyzeCancelProject(targetId.value)
       } else if (scenarioType.value === 'retireApp') {
         analysisResult.value = analyzeRetireApp(targetId.value)
+      } else if (scenarioType.value === 'skillLoss') {
+        analysisResult.value = analyzeSkillLoss(targetId.value, skillLossCount.value)
       }
     }
 
@@ -393,6 +439,31 @@ export default {
       }
     }
 
+    function analyzeSkillLoss (skill, count) {
+      const skillImpacts = store.skillLossImpact(skill, count)
+      if (!skillImpacts.length) return null
+
+      const criticalCount = skillImpacts.filter(i => i.severity === 'critical').length
+      const highCount = skillImpacts.filter(i => i.severity === 'high').length
+      const outsourceableCount = skillImpacts.filter(i => i.outsourceable).length
+      const severity = criticalCount >= 2 ? 'high' : criticalCount >= 1 || highCount >= 2 ? 'medium' : 'low'
+
+      return {
+        type: 'skillLoss',
+        targetId: skill,
+        title: `Szenario: ${count} "${skill}"-Fachkräfte verlieren`,
+        summary: `Verlust von ${count} ${skill}-Spezialist(en) würde ${skillImpacts.length} Applikation(en) betreffen. ${criticalCount} ohne verbleibendes Personal, ${outsourceableCount} outsourcebar.`,
+        severity,
+        kpis: [
+          { label: 'Betroffene Apps', value: skillImpacts.length, color: skillImpacts.length > 0 ? 'text-orange-600' : 'text-green-600' },
+          { label: 'Kritisch (0 verbl.)', value: criticalCount, color: criticalCount > 0 ? 'text-red-600' : 'text-green-600' },
+          { label: 'Outsourcebar', value: outsourceableCount, color: 'text-blue-600' },
+          { label: 'Nicht outsourcebar', value: skillImpacts.length - outsourceableCount, color: outsourceableCount < skillImpacts.length ? 'text-red-600' : 'text-green-600' }
+        ],
+        skillImpacts
+      }
+    }
+
     function formatBudget (val) {
       if (!val && val !== 0) return '—'
       return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(val)
@@ -428,7 +499,7 @@ export default {
     return {
       store, linkTo,
       scenarioType, targetId, analysisResult, savedScenarios,
-      activeProjects, activeApps,
+      activeProjects, activeApps, availableSkills, skillLossCount,
       runAnalysis, formatBudget,
       saveScenario, loadScenario, deleteScenario
     }

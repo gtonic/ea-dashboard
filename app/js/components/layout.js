@@ -109,6 +109,7 @@ function buildNavGroups () {
         { path: '/maturity-gap',           labelKey: 'nav.maturityGap',          icon: icons.maturity,   pageKey: 'page.maturityGap' },
         { path: '/dependencies',           labelKey: 'nav.dependencies',         icon: icons.dependency, pageKey: 'page.dependencies' },
         { path: '/resource-overlaps',      labelKey: 'nav.resourceOverlap',      icon: icons.overlap,    pageKey: 'page.resourceOverlap' },
+        { path: '/skill-impact',            labelKey: 'nav.skillImpact',          icon: icons.overlap,    pageKey: 'page.skillImpact' },
         { path: '/app-lifecycle-timeline',  labelKey: 'nav.appLifecycleTimeline', icon: icons.roadmap,    pageKey: 'page.appLifecycleTimeline' },
       ]
     },
