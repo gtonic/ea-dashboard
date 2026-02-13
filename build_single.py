@@ -14,6 +14,19 @@ def read(path):
     with open(path, encoding='utf-8') as f:
         return f.read()
 
+def escape_for_inline(code):
+    r"""Escape sequences that confuse the HTML parser when JS is inlined in <script>.
+
+    The HTML5 parser tracks <!--, <script>, and </script> even inside JS strings
+    and comments.  <!-- enters 'escaped' mode; a subsequent <script> enters
+    'double-escaped' mode where </script> does NOT close the element.
+    Replacing <!-- with <\!-- prevents the parser from ever entering escaped
+    mode, making all other sequences harmless.  In JS strings \! === ! so the
+    runtime semantics are identical.
+    """
+    code = code.replace('<!--', '<\\!--')
+    return code
+
 def strip_imports(code):
     lines = code.split('\n')
     return '\n'.join(l for l in lines if not (l.strip().startswith('import ') and ' from ' in l))
@@ -25,6 +38,11 @@ def strip_exports(code):
     code = re.sub(r'export\s+async\s+function\s+', 'async function ', code)
     code = re.sub(r'export\s+function\s+', 'function ', code)
     code = re.sub(r'export\s+const\s+', 'const ', code)
+    code = re.sub(r'export\s+class\s+', 'class ', code)
+    code = re.sub(r'export\s+let\s+', 'let ', code)
+    code = re.sub(r'export\s+var\s+', 'var ', code)
+    # Remove bare re-exports like: export { foo }  or  export { foo, bar }
+    code = re.sub(r'^[ \t]*export\s*\{[^}]*\}\s*;?\s*$', '', code, flags=re.MULTILINE)
     return code
 
 COMPONENTS = [
@@ -138,6 +156,12 @@ router_code = strip_imports(router_raw)
 router_code = strip_exports(router_code)
 print(f'  Router: {len(router_code)} chars')
 
+# 3b. Read and convert i18n.js
+i18n_raw = read(os.path.join(JS, 'i18n.js'))
+i18n_code = strip_imports(i18n_raw)
+i18n_code = strip_exports(i18n_code)
+print(f'  i18n: {len(i18n_code)} chars')
+
 # 4. Read and convert components
 component_blocks = []
 for filename, varname in COMPONENTS:
@@ -161,6 +185,8 @@ sc.append('\n// ══════ STORE ══════')
 sc.append(store_code)
 sc.append('\n// ══════ ROUTER ══════')
 sc.append(router_code)
+sc.append('\n// ══════ I18N ══════')
+sc.append(i18n_code)
 sc.append('\n// ══════ API-CLIENT STUB (standalone mode) ══════')
 sc.append('''const auth = reactive({ accessToken: null, refreshToken: null, user: null, isLoggedIn: false, isAdmin: false, isEditor: false });
 const toasts = reactive([]);
@@ -262,7 +288,7 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write('  <title>EA Dashboard</title>\n\n')
 
     # Inline vendored libraries (no CDN needed)
-    tailwind_js = read(os.path.join(VENDOR, 'tailwindcss.js'))
+    tailwind_js = escape_for_inline(read(os.path.join(VENDOR, 'tailwindcss.js')))
     f.write('  <script>\n')
     f.write(tailwind_js)
     f.write('\n  ' + SC + '\n')
@@ -275,17 +301,17 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write("      }}}\n    }\n")
     f.write('  ' + SC + '\n\n')
 
-    chartjs_code = read(os.path.join(VENDOR, 'chart.js'))
+    chartjs_code = escape_for_inline(read(os.path.join(VENDOR, 'chart.js')))
     f.write('  <script>\n')
     f.write(chartjs_code)
     f.write('\n  ' + SC + '\n')
 
-    d3_code = read(os.path.join(VENDOR, 'd3.js'))
+    d3_code = escape_for_inline(read(os.path.join(VENDOR, 'd3.js')))
     f.write('  <script>\n')
     f.write(d3_code)
     f.write('\n  ' + SC + '\n')
 
-    vue_code = read(os.path.join(VENDOR, 'vue.global.js'))
+    vue_code = escape_for_inline(read(os.path.join(VENDOR, 'vue.global.js')))
     f.write('  <script>\n')
     f.write(vue_code)
     f.write('\n  ' + SC + '\n\n')
@@ -324,8 +350,16 @@ with open(OUT, 'w', encoding='utf-8') as f:
     f.write('    <app-layout></app-layout>\n')
     f.write('  </div>\n\n')
     f.write('  <script>\n')
-    f.write(main_script)
+    f.write(escape_for_inline(main_script))
     f.write('  ' + SC + '\n')
+    
+    # Debug Helper
+    f.write('  <script>\n')
+    f.write("    window.addEventListener('error', function(e) { console.error('[Global Error]', e.message, e.filename, e.lineno); alert('JS Error: ' + e.message); });\n")
+    f.write("    window.addEventListener('unhandledrejection', function(e) { console.error('[Unhandled Rejection]', e.reason); alert('Promise Rejection: ' + e.reason); });\n")
+    f.write("    console.log('[EA Dashboard] Standalone mode loaded');\n")
+    f.write('  ' + SC + '\n')
+    
     f.write('</body>\n</html>\n')
 
 # Stats
