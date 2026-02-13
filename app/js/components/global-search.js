@@ -30,7 +30,7 @@ export default {
         <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
-        <p class="text-lg">Search across Applications, Domains, Projects, Vendors, Processes and Demands</p>
+        <p class="text-lg">Search across Applications, Domains, Projects, Vendors, Processes, Demands, Entities and Integrations</p>
         <p class="text-sm mt-1">e.g. "SAP", "Cloud", "Migration"</p>
       </div>
 
@@ -103,7 +103,10 @@ export default {
         Project: 'bg-green-100 text-green-700',
         Vendor: 'bg-orange-100 text-orange-700',
         Process: 'bg-yellow-100 text-yellow-700',
-        Demand: 'bg-pink-100 text-pink-700'
+        Demand: 'bg-pink-100 text-pink-700',
+        DataObject: 'bg-cyan-100 text-cyan-700',
+        Entity: 'bg-teal-100 text-teal-700',
+        Integration: 'bg-amber-100 text-amber-700'
       }
       return map[type] || 'bg-gray-100 text-gray-700'
     }
@@ -116,7 +119,10 @@ export default {
         Project: 'P',
         Vendor: 'V',
         Process: 'E',
-        Demand: 'R'
+        Demand: 'R',
+        DataObject: 'O',
+        Entity: 'L',
+        Integration: 'I'
       }
       return map[type] || '?'
     }
