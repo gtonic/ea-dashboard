@@ -120,8 +120,8 @@ export default {
         Vendor: 'V',
         Process: 'E',
         Demand: 'R',
-        DataObject: 'O',
-        Entity: 'L',
+        DataObject: 'DO',
+        Entity: 'LE',
         Integration: 'I'
       }
       return map[type] || '?'
