@@ -92,7 +92,7 @@ export default {
             <div>
               <label class="block text-xs font-medium text-gray-600 mb-2">Zutreffende Regulierungen</label>
               <div class="flex flex-wrap gap-2">
-                <div v-for="reg in (store.data.enums.complianceRegulations || [])" :key="reg.value"
+                <div v-for="reg in globallySelectedRegulations" :key="reg.value"
                      @click="toggleRegulation(reg.value)"
                      class="flex items-center gap-1.5 px-3 py-2 border rounded-lg text-xs cursor-pointer transition-colors"
                      :class="form.applicableRegulations.includes(reg.value)
@@ -226,6 +226,7 @@ export default {
       estimatedBudget: 0, primaryDomain: null,
       relatedDomains: [], relatedApps: [], relatedVendors: [],
       applicableRegulations: [],
+      complianceChecks: {},
       isAIUseCase: false, aiRiskCategory: 'Kein AI-Usecase', aiDescription: '',
       checklistSecurity: emptyChecklist(),
       checklistLegal: emptyLegalChecklist(),
@@ -264,12 +265,18 @@ export default {
       emit('saved')
     }
 
+    const globallySelectedRegulations = Vue.computed(() => {
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const selected = store.featureToggles.selectedRegulations || []
+      return allRegs.filter(r => selected.includes(r.value))
+    })
+
     function toggleRegulation (value) {
       const idx = form.value.applicableRegulations.indexOf(value)
       if (idx >= 0) form.value.applicableRegulations.splice(idx, 1)
       else form.value.applicableRegulations.push(value)
     }
 
-    return { store, steps, step, form, save, toggleRegulation }
+    return { store, steps, step, form, save, toggleRegulation, globallySelectedRegulations }
   }
 }

@@ -157,7 +157,9 @@ export default {
     })
 
     const availableRegulations = Vue.computed(() => {
-      return (store.data.enums && store.data.enums.complianceRegulations) || []
+      const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
+      const selected = store.featureToggles.selectedRegulations || []
+      return allRegs.filter(r => selected.includes(r.value))
     })
 
     function isRegSelected (value) {

@@ -1458,6 +1458,7 @@ describe('Compliance Phase C3 — Regulation Deadline Warnings', () => {
         { value: 'FUTURE', label: 'Future Reg', description: 'Future', deadline: '2099-01-01' }
       ]
     }
+    store.featureToggles.selectedRegulations = ['GDPR', 'DORA', 'FUTURE']
   })
 
   it('regulationDeadlineWarnings includes expired and close deadlines', () => {
@@ -1482,6 +1483,7 @@ describe('Compliance Phase C3 — Auto-Assign Regulations', () => {
         { value: 'BAIT', label: 'BAIT', description: 'BAIT', applicableScopes: ['finanzdaten'], applicableCriticalities: ['Mission-Critical'] }
       ]
     }
+    store.featureToggles.selectedRegulations = ['GDPR', 'ISO27001', 'DORA', 'BAIT']
   })
 
   it('assigns GDPR and ISO27001 to Mission-Critical app with personenbezogeneDaten', () => {
@@ -1505,6 +1507,53 @@ describe('Compliance Phase C3 — Auto-Assign Regulations', () => {
     const regs = store.autoAssignRegulations({ criticality: 'Administrative', dataClassification: 'personenbezogeneDaten' })
     expect(regs).toContain('GDPR')
     expect(regs).not.toContain('ISO27001')
+  })
+
+  it('does not assign regulations that are not globally selected', () => {
+    store.featureToggles.selectedRegulations = ['GDPR']
+    const regs = store.autoAssignRegulations({ criticality: 'Mission-Critical', dataClassification: 'personenbezogeneDaten' })
+    expect(regs).toContain('GDPR')
+    expect(regs).not.toContain('ISO27001')
+  })
+
+  it('returns empty when no regulations are globally selected', () => {
+    store.featureToggles.selectedRegulations = []
+    const regs = store.autoAssignRegulations({ criticality: 'Mission-Critical', dataClassification: 'personenbezogeneDaten' })
+    expect(regs).toEqual([])
+  })
+})
+
+describe('Global Compliance Settings Filtering', () => {
+  beforeEach(() => {
+    store.data.enums = {
+      complianceRegulations: [
+        { value: 'GDPR', label: 'GDPR', description: 'GDPR', deadline: '2018-05-25', applicableScopes: ['personenbezogeneDaten'], applicableCriticalities: ['Mission-Critical'] },
+        { value: 'DORA', label: 'DORA', description: 'DORA', deadline: '2025-01-17', applicableScopes: ['finanzdaten'], applicableCriticalities: ['Mission-Critical'] },
+        { value: 'SOX', label: 'SOX', description: 'SOX', deadline: '2025-06-01', applicableScopes: ['finanzdaten'], applicableCriticalities: ['Mission-Critical'] }
+      ]
+    }
+  })
+
+  it('regulationDeadlineWarnings only includes globally selected regulations', () => {
+    store.featureToggles.selectedRegulations = ['GDPR']
+    const warnings = store.regulationDeadlineWarnings
+    expect(warnings.find(w => w.value === 'GDPR')).toBeDefined()
+    expect(warnings.find(w => w.value === 'DORA')).toBeUndefined()
+    expect(warnings.find(w => w.value === 'SOX')).toBeUndefined()
+  })
+
+  it('regulationDeadlineWarnings returns empty when no regulations selected', () => {
+    store.featureToggles.selectedRegulations = []
+    const warnings = store.regulationDeadlineWarnings
+    expect(warnings).toHaveLength(0)
+  })
+
+  it('autoAssignRegulations only assigns from globally selected regulations', () => {
+    store.featureToggles.selectedRegulations = ['DORA']
+    const regs = store.autoAssignRegulations({ criticality: 'Mission-Critical', dataClassification: 'finanzdaten' })
+    expect(regs).toContain('DORA')
+    expect(regs).not.toContain('SOX')
+    expect(regs).not.toContain('GDPR')
   })
 })
 

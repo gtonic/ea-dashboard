@@ -1,6 +1,7 @@
-// demand-detail.js — Demand detail view with checklists for Security, Legal, Architecture
+// demand-detail.js — Demand detail view with dynamic compliance checklists per regulation
 import { store } from '../store.js'
 import { router, linkTo, navigateTo } from '../router.js'
+import { controlQuestions } from './compliance-assessment.js'
 
 export default {
   name: 'DemandDetail',
@@ -116,14 +117,8 @@ export default {
             </div>
           </div>
         </div>
-        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
-          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
-        </div>
-      </div>
-          </div>
-        </div>
-        <div class="px-5 py-3 bg-yellow-50 border-t border-yellow-100 text-xs text-yellow-700">
-          ℹ️ Nach Genehmigung dieses Demands wird ein Compliance-Assessment für jede zugewiesene Regulierung auf der zugehörigen Applikation durchgeführt.
+        <div class="px-5 py-3 bg-blue-50 border-t border-blue-100 text-xs text-blue-700">
+          ℹ️ Beantworten Sie die Compliance-Fragen unten für jede zugeordnete Regulierung.
         </div>
       </div>
 
@@ -140,94 +135,36 @@ export default {
         </div>
       </div>
 
-      <!-- Checklists -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- IT Security -->
-        <div class="bg-white rounded-xl border border-surface-200 overflow-hidden">
-          <div class="px-5 py-3 border-b border-surface-200 flex items-center justify-between" :class="checklistHeaderClass(demand.checklistSecurity)">
-            <h3 class="text-sm font-semibold text-gray-700">🔒 IT Security</h3>
-            <span class="text-xs font-mono" :class="checklistProgressColor(demand.checklistSecurity)">{{ checklistProgress(demand.checklistSecurity) }}</span>
-          </div>
-          <div class="px-5 py-3 space-y-2">
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistSecurity', 'dataClassification')">
-              <input type="checkbox" :checked="demand.checklistSecurity.dataClassification" class="rounded border-gray-300" />
-              <span>Datenklassifikation</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistSecurity', 'accessControl')">
-              <input type="checkbox" :checked="demand.checklistSecurity.accessControl" class="rounded border-gray-300" />
-              <span>Zugriffssteuerung</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistSecurity', 'encryptionReview')">
-              <input type="checkbox" :checked="demand.checklistSecurity.encryptionReview" class="rounded border-gray-300" />
-              <span>Verschlüsselungs-Review</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistSecurity', 'vulnerabilityScan')">
-              <input type="checkbox" :checked="demand.checklistSecurity.vulnerabilityScan" class="rounded border-gray-300" />
-              <span>Schwachstellen-Scan</span>
-            </label>
-            <div class="pt-2 border-t border-surface-100">
-              <label class="block text-xs font-medium text-gray-500 mb-1">Notizen</label>
-              <textarea v-model="demand.checklistSecurity.notes" rows="2" class="w-full px-2 py-1 border border-surface-200 rounded text-xs focus:ring-1 focus:ring-primary-300 outline-none resize-vertical"></textarea>
+      <!-- Dynamic Compliance Checklists (per regulation from settings) -->
+      <div v-if="store.featureToggles.complianceEnabled && demandRegulations.length > 0" class="space-y-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div v-for="reg in demandRegulations" :key="'cl-' + reg.value" class="bg-white rounded-xl border border-surface-200 overflow-hidden">
+            <div class="px-5 py-3 border-b border-surface-200 flex items-center justify-between" :class="regCheckHeaderClass(reg.value)">
+              <h3 class="text-sm font-semibold text-gray-700 flex items-center gap-2">
+                <span class="text-base">{{ regIcon(reg.value) }}</span> {{ reg.label }}
+              </h3>
+              <span class="text-xs font-mono" :class="regCheckProgressColor(reg.value)">{{ regCheckProgress(reg.value) }}</span>
             </div>
-          </div>
-        </div>
-
-        <!-- Legal / Compliance -->
-        <div class="bg-white rounded-xl border border-surface-200 overflow-hidden">
-          <div class="px-5 py-3 border-b border-surface-200 flex items-center justify-between" :class="checklistHeaderClass(demand.checklistLegal)">
-            <h3 class="text-sm font-semibold text-gray-700">⚖️ Legal & Compliance</h3>
-            <span class="text-xs font-mono" :class="checklistProgressColor(demand.checklistLegal)">{{ checklistProgress(demand.checklistLegal) }}</span>
-          </div>
-          <div class="px-5 py-3 space-y-2">
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistLegal', 'dataPrivacy')">
-              <input type="checkbox" :checked="demand.checklistLegal.dataPrivacy" class="rounded border-gray-300" />
-              <span>Datenschutz-Prüfung</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistLegal', 'gdprCompliance')">
-              <input type="checkbox" :checked="demand.checklistLegal.gdprCompliance" class="rounded border-gray-300" />
-              <span>DSGVO-Konformität</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistLegal', 'contractReview')">
-              <input type="checkbox" :checked="demand.checklistLegal.contractReview" class="rounded border-gray-300" />
-              <span>Vertragsprüfung</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistLegal', 'licenseCheck')">
-              <input type="checkbox" :checked="demand.checklistLegal.licenseCheck" class="rounded border-gray-300" />
-              <span>Lizenz-Prüfung</span>
-            </label>
-            <div class="pt-2 border-t border-surface-100">
-              <label class="block text-xs font-medium text-gray-500 mb-1">Notizen</label>
-              <textarea v-model="demand.checklistLegal.notes" rows="2" class="w-full px-2 py-1 border border-surface-200 rounded text-xs focus:ring-1 focus:ring-primary-300 outline-none resize-vertical"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <!-- Architecture -->
-        <div class="bg-white rounded-xl border border-surface-200 overflow-hidden">
-          <div class="px-5 py-3 border-b border-surface-200 flex items-center justify-between" :class="checklistHeaderClass(demand.checklistArchitecture)">
-            <h3 class="text-sm font-semibold text-gray-700">🏛️ Architektur</h3>
-            <span class="text-xs font-mono" :class="checklistProgressColor(demand.checklistArchitecture)">{{ checklistProgress(demand.checklistArchitecture) }}</span>
-          </div>
-          <div class="px-5 py-3 space-y-2">
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistArchitecture', 'fitsEAStrategy')">
-              <input type="checkbox" :checked="demand.checklistArchitecture.fitsEAStrategy" class="rounded border-gray-300" />
-              <span>Passt zur EA-Strategie</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistArchitecture', 'integrationReview')">
-              <input type="checkbox" :checked="demand.checklistArchitecture.integrationReview" class="rounded border-gray-300" />
-              <span>Integrations-Review</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistArchitecture', 'technologyApproved')">
-              <input type="checkbox" :checked="demand.checklistArchitecture.technologyApproved" class="rounded border-gray-300" />
-              <span>Technologie freigegeben</span>
-            </label>
-            <label class="flex items-center gap-2 text-sm cursor-pointer" @click.prevent="toggleCheck('checklistArchitecture', 'scalabilityCheck')">
-              <input type="checkbox" :checked="demand.checklistArchitecture.scalabilityCheck" class="rounded border-gray-300" />
-              <span>Skalierbarkeits-Check</span>
-            </label>
-            <div class="pt-2 border-t border-surface-100">
-              <label class="block text-xs font-medium text-gray-500 mb-1">Notizen</label>
-              <textarea v-model="demand.checklistArchitecture.notes" rows="2" class="w-full px-2 py-1 border border-surface-200 rounded text-xs focus:ring-1 focus:ring-primary-300 outline-none resize-vertical"></textarea>
+            <div class="px-5 py-3 space-y-2 max-h-80 overflow-y-auto">
+              <label v-for="q in getRegulationQuestions(reg.value)" :key="q.id"
+                     class="flex items-start gap-2 text-sm cursor-pointer group hover:bg-surface-50 -mx-2 px-2 py-1 rounded transition-colors"
+                     @click.prevent="toggleComplianceCheck(reg.value, q.id)">
+                <input type="checkbox" :checked="isComplianceChecked(reg.value, q.id)" class="rounded border-gray-300 mt-0.5" />
+                <div class="flex-1">
+                  <span :class="isComplianceChecked(reg.value, q.id) ? 'text-gray-400 line-through' : ''">{{ q.de }}</span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-[10px] text-gray-400">{{ q.article }}</span>
+                    <span class="text-[10px] px-1.5 py-0.5 rounded-full" :class="{'bg-blue-50 text-blue-600': q.type === 'documentation', 'bg-green-50 text-green-600': q.type === 'technical', 'bg-purple-50 text-purple-600': q.type === 'organizational'}">{{ q.type === 'documentation' ? 'Doku' : q.type === 'technical' ? 'Technik' : 'Org.' }}</span>
+                  </div>
+                </div>
+              </label>
+              <div v-if="!getRegulationQuestions(reg.value).length" class="text-xs text-gray-400 py-2 italic">
+                Keine Kontrollfragen für diese Regulierung hinterlegt.
+              </div>
+              <div class="pt-2 border-t border-surface-100">
+                <label class="block text-xs font-medium text-gray-500 mb-1">Notizen</label>
+                <textarea :value="getComplianceNotes(reg.value)" @input="setComplianceNotes(reg.value, $event.target.value)" rows="2" class="w-full px-2 py-1 border border-surface-200 rounded text-xs focus:ring-1 focus:ring-primary-300 outline-none resize-vertical" :placeholder="'Anmerkungen zu ' + reg.label + '…'"></textarea>
+              </div>
             </div>
           </div>
         </div>
@@ -296,10 +233,13 @@ export default {
     const demandRegulations = computed(() => {
       if (!demand.value || !demand.value.applicableRegulations) return []
       const allRegs = (store.data.enums && store.data.enums.complianceRegulations) || []
-      return demand.value.applicableRegulations.map(val => {
-        const meta = allRegs.find(r => r.value === val)
-        return meta || { value: val, label: val, description: '' }
-      })
+      const selected = store.featureToggles.selectedRegulations || []
+      return demand.value.applicableRegulations
+        .filter(val => selected.includes(val))
+        .map(val => {
+          const meta = allRegs.find(r => r.value === val)
+          return meta || { value: val, label: val, description: '' }
+        })
     })
 
     function checklistItems (checklist) {
@@ -328,8 +268,87 @@ export default {
       return 'bg-surface-50'
     }
 
+    // ── Dynamic compliance check helpers ──
+    function ensureComplianceChecks (regValue) {
+      if (!demand.value) return
+      if (!demand.value.complianceChecks) demand.value.complianceChecks = {}
+      if (!demand.value.complianceChecks[regValue]) demand.value.complianceChecks[regValue] = { notes: '' }
+    }
+
+    function getRegulationQuestions (regValue) {
+      return controlQuestions[regValue] || []
+    }
+
+    function isComplianceChecked (regValue, questionId) {
+      if (!demand.value || !demand.value.complianceChecks) return false
+      const regChecks = demand.value.complianceChecks[regValue]
+      return regChecks ? !!regChecks[questionId] : false
+    }
+
+    function toggleComplianceCheck (regValue, questionId) {
+      if (!demand.value) return
+      ensureComplianceChecks(regValue)
+      demand.value.complianceChecks[regValue][questionId] = !demand.value.complianceChecks[regValue][questionId]
+    }
+
+    function getComplianceNotes (regValue) {
+      if (!demand.value || !demand.value.complianceChecks) return ''
+      const regChecks = demand.value.complianceChecks[regValue]
+      return regChecks ? (regChecks.notes || '') : ''
+    }
+
+    function setComplianceNotes (regValue, value) {
+      if (!demand.value) return
+      ensureComplianceChecks(regValue)
+      demand.value.complianceChecks[regValue].notes = value
+    }
+
+    function regCheckProgress (regValue) {
+      const questions = getRegulationQuestions(regValue)
+      if (!questions.length) return '0/0'
+      const done = questions.filter(q => isComplianceChecked(regValue, q.id)).length
+      return done + '/' + questions.length
+    }
+
+    function regCheckProgressColor (regValue) {
+      const questions = getRegulationQuestions(regValue)
+      if (!questions.length) return 'text-gray-400'
+      const done = questions.filter(q => isComplianceChecked(regValue, q.id)).length
+      if (done === questions.length) return 'text-green-600'
+      if (done > 0) return 'text-yellow-600'
+      return 'text-gray-400'
+    }
+
+    function regCheckHeaderClass (regValue) {
+      const questions = getRegulationQuestions(regValue)
+      if (!questions.length) return 'bg-surface-50'
+      const done = questions.filter(q => isComplianceChecked(regValue, q.id)).length
+      if (done === questions.length) return 'bg-green-50'
+      if (done > 0) return 'bg-yellow-50'
+      return 'bg-surface-50'
+    }
+
+    function regIcon (regValue) {
+      const icons = { GDPR: '🛡️', NIS2: '🌐', ISO27001: '📋', DORA: '🏦', SOX: '📊', BAIT: '🏛️', KRITIS: '⚡', EUAIACT: '🤖', CRA: '🔒', EIDAS2: '🆔', ISO9001: '✅', ISO42001: '🧠', ISO22301: '🔄' }
+      return icons[regValue] || '⚖️'
+    }
+
     const overallApprovalText = computed(() => {
       if (!demand.value) return '—'
+      // When compliance is enabled and regulations are assigned, use dynamic checks
+      if (store.featureToggles.complianceEnabled && demandRegulations.value.length > 0) {
+        let totalQ = 0, doneQ = 0
+        for (const reg of demandRegulations.value) {
+          const questions = getRegulationQuestions(reg.value)
+          totalQ += questions.length
+          doneQ += questions.filter(q => isComplianceChecked(reg.value, q.id)).length
+        }
+        if (totalQ === 0) return 'Offen'
+        if (doneQ === totalQ) return 'Vollständig'
+        if (doneQ > 0) return 'In Arbeit'
+        return 'Offen'
+      }
+      // Fallback: static checklists
       const checklists = [demand.value.checklistSecurity, demand.value.checklistLegal, demand.value.checklistArchitecture]
       const allDone = checklists.every(cl => {
         const { total, done } = checklistItems(cl)
@@ -389,6 +408,6 @@ export default {
       }
     }
 
-    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, demandRegulations, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete }
+    return { store, router, linkTo, navigateTo, demand, primaryDomain, relatedApps, relatedVendors, demandRegulations, showEdit, checklistProgress, checklistProgressColor, checklistHeaderClass, overallApprovalText, overallApprovalColor, toggleCheck, changeStatus, catClass, statusClass, prioClass, aiRiskClass, confirmDelete, getRegulationQuestions, isComplianceChecked, toggleComplianceCheck, getComplianceNotes, setComplianceNotes, regCheckProgress, regCheckProgressColor, regCheckHeaderClass, regIcon }
   }
 }

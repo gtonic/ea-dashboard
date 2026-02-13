@@ -239,23 +239,29 @@ export default {
     // Filtered assessments (show non-assessed first, then by workflow status priority)
     const filteredAssessments = computed(() => {
       const assessments = store.data.complianceAssessments || []
+      const selected = selectedRegVals.value
       const order = { reviewRequired: 0, open: 1, inReview: 2, assessed: 3 }
-      return [...assessments].sort((a, b) => {
-        const oa = order[a.workflowStatus || 'open'] ?? 1
-        const ob = order[b.workflowStatus || 'open'] ?? 1
-        return oa - ob
-      })
+      return [...assessments]
+        .filter(a => selected.includes(a.regulation))
+        .sort((a, b) => {
+          const oa = order[a.workflowStatus || 'open'] ?? 1
+          const ob = order[b.workflowStatus || 'open'] ?? 1
+          return oa - ob
+        })
     })
 
     // Collect all audit trail entries across all assessments
     const allAuditEntries = computed(() => {
       const entries = []
-      ;(store.data.complianceAssessments || []).forEach(a => {
-        const app = store.appById(a.appId)
-        ;(a.auditTrail || []).forEach(entry => {
-          entries.push({ ...entry, appId: a.appId, appName: app ? app.name : a.appId, regulation: a.regulation })
+      const selected = selectedRegVals.value
+      ;(store.data.complianceAssessments || [])
+        .filter(a => selected.includes(a.regulation))
+        .forEach(a => {
+          const app = store.appById(a.appId)
+          ;(a.auditTrail || []).forEach(entry => {
+            entries.push({ ...entry, appId: a.appId, appName: app ? app.name : a.appId, regulation: a.regulation })
+          })
         })
-      })
       return entries.sort((a, b) => b.timestamp.localeCompare(a.timestamp))
     })
 
