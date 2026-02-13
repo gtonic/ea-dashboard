@@ -34,6 +34,7 @@ The EA Dashboard is an Application Portfolio Management (APM) tool designed for 
 ## User Documentation
 
 For a comprehensive guide to all features — grouped by stakeholder role (CIO, Enterprise Architect, PMO, Business Stakeholders) — see the **[User Documentation (USERDOC.md)](USERDOC.md)**.
+For strategic differentiation ideas (Brainstorming) see **[docs/BRAINSTORMING-DIFFERENZIERUNG.md](docs/BRAINSTORMING-DIFFERENZIERUNG.md)**.
 
 ## Architecture
 
