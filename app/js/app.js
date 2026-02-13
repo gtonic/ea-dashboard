@@ -55,6 +55,10 @@ import TcoCalculator from './components/tco-calculator.js'
 import ComplianceDashboard from './components/compliance-dashboard.js'
 import ComplianceAudit from './components/compliance-audit.js'
 import ComplianceAssessment from './components/compliance-assessment.js'
+import LoginView from './components/login.js'
+import AdminUsers from './components/admin-users.js'
+import AdminAuditLog from './components/admin-audit-log.js'
+import ToastContainer from './components/toast-container.js'
 
 // Create app
 const app = createApp(Layout)
@@ -111,6 +115,10 @@ app.component('tco-calculator', TcoCalculator)
 app.component('compliance-dashboard', ComplianceDashboard)
 app.component('compliance-audit', ComplianceAudit)
 app.component('compliance-assessment', ComplianceAssessment)
+app.component('login-view', LoginView)
+app.component('admin-users', AdminUsers)
+app.component('admin-audit-log', AdminAuditLog)
+app.component('toast-container', ToastContainer)
 
 // Make Vue available globally for components that use `const { ref, computed, ... } = Vue`
 window.Vue = await import('vue')

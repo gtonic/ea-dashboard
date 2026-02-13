@@ -16,6 +16,7 @@
 - [Testing](#testing)
 - [Project Structure](#project-structure)
 - [Feature Roadmap](#feature-roadmap)
+- [Server-Architektur Konzept](#server-architektur-konzept)
 
 ---
 
@@ -541,3 +542,18 @@ Integration regulatorischer Anforderungen (DSGVO, NIS2, Cyber Resilience Act, EU
 | **C2** | Dashboard, Gap-Analyse, Cross-Referenz, View-Integration | 4–5 Wochen | C1 |
 | **C3** | Reporting, Audit-Trail, Workflows, Automatisierung | 3–5 Wochen | C2 |
 | **Gesamt** | **Vollständiges Compliance-Modul** | **10–14 Wochen** | — |
+
+---
+
+## Server-Architektur Konzept
+
+Für die Migration der statischen Single-File-Applikation zu einer containerisierten Client-Server-Architektur mit Multi-User-Support wurde ein umfassendes Konzept erstellt. Dieses deckt ab:
+
+- **Backend**: Python / FastAPI mit SQLAlchemy ORM
+- **Datenbank**: SQLite (Dev) / PostgreSQL (Prod)
+- **Authentifizierung**: JWT-basiert mit Rollenmodell (Admin, Editor, Viewer)
+- **REST API**: Vollständige CRUD-Endpunkte für alle Entitäten
+- **Containerisierung**: Docker + Docker Compose
+- **Multi-User**: Optimistic Locking für gleichzeitige Bearbeitung
+
+📄 **Vollständiges Konzept: [docs/CONCEPT-SERVER.md](docs/CONCEPT-SERVER.md)**
