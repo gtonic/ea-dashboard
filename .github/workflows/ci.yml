@@ -21,15 +21,16 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
-      - run: npm test
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+
+      - run: task frontend:install
+      - run: task standalone:test
 
   # ── Backend (pytest — SQLite) ───────────────────────────────
   backend-tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
     steps:
       - uses: actions/checkout@v4
 
@@ -39,8 +40,11 @@ jobs:
           cache: pip
           cache-dependency-path: backend/requirements.txt
 
-      - run: pip install -r requirements.txt
-      - run: python -m pytest tests/ -v
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+
+      - run: task backend:test
 
   # ── Backend (pytest — PostgreSQL) ───────────────────────────
   backend-tests-postgres:
@@ -59,9 +63,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    defaults:
-      run:
-        working-directory: backend
     env:
       DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
     steps:
@@ -73,8 +74,11 @@ jobs:
           cache: pip
           cache-dependency-path: backend/requirements.txt
 
-      - run: pip install -r requirements.txt psycopg2-binary==2.9.10
-      - run: python -m pytest tests/ -v
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+
+      - run: task backend:test:postgres
 
   # ── Standalone HTML build ──────────────────────────────────
   standalone-build:
@@ -86,13 +90,11 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Build standalone HTML
-        run: python3 build_single.py
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
-      - name: Verify output
-        run: |
-          test -f bebauungsplan.html
-          echo "Standalone HTML: $(wc -l < bebauungsplan.html) lines, $(du -h bebauungsplan.html | cut -f1)"
+      - run: task standalone:build
 
       - uses: actions/upload-artifact@v4
         with:
@@ -106,14 +108,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build backend image
-        run: docker build -f backend/Dockerfile -t ea-backend .
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
 
-      - name: Build frontend image
-        run: docker build -f frontend/Dockerfile -t ea-frontend .
-
-      - name: Build production backend image
-        run: docker build -f backend/Dockerfile.prod -t ea-backend-prod .
-
-      - name: Build production frontend image
-        run: docker build -f frontend/Dockerfile.prod -t ea-frontend-prod .
+      - run: task docker:build:images
