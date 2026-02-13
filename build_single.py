@@ -87,6 +87,7 @@ COMPONENTS = [
     ('global-search.js',    'GlobalSearch'),
     ('resource-overlap.js', 'ResourceOverlap'),
     ('scenario-planner.js', 'ScenarioPlanner'),
+    ('skill-impact.js',     'SkillImpact'),
     ('capability-investment.js', 'CapabilityInvestment'),
     ('conformity-scorecard.js', 'ConformityScorecard'),
     ('tech-radar.js',          'TechRadar'),
@@ -264,6 +265,7 @@ app.component('data-quality', DataQuality);
 app.component('global-search', GlobalSearch);
 app.component('resource-overlap', ResourceOverlap);
 app.component('scenario-planner', ScenarioPlanner);
+app.component('skill-impact', SkillImpact);
 app.component('capability-investment', CapabilityInvestment);
 app.component('conformity-scorecard', ConformityScorecard);
 app.component('tech-radar', TechRadar);

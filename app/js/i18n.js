@@ -71,6 +71,7 @@ const translations = {
     'nav.maturityGap': 'Reifegradanalyse',
     'nav.dependencies': 'Abhängigkeitsgraph',
     'nav.resourceOverlap': 'Ressourcen-Überlappung',
+    'nav.skillImpact': 'Fachkräfte-Impact',
     'nav.techRadar': 'Technologie-Radar',
 
     // ── Nav Items – Governance ──
@@ -130,6 +131,7 @@ const translations = {
     'page.riskHeatmap': 'Risiko & Compliance',
     'page.dataQuality': 'Datenqualitäts-Dashboard',
     'page.resourceOverlap': 'Ressourcen-Überlappungsanalyse',
+    'page.skillImpact': 'Fachkräfte-Impact-Analyse',
     'page.scenarioPlanner': 'Szenario-Planung / What-If',
     'page.maturityGap': 'Reifegradanalyse',
     'page.roadmap': 'Strategische Roadmap',
@@ -217,6 +219,7 @@ const translations = {
     'settings.analysisDesc': 'Erweiterte Analysefunktionen ein-/ausblenden',
     'settings.governanceDesc': 'Governance-Funktionen ein-/ausblenden',
     'settings.complianceDesc': 'Compliance-Funktionen ein-/ausblenden',
+    'settings.skillImpactDesc': 'Fachkräfte-Impact-Analyse, Bus-Factor und Outsourcing-Readiness ein-/ausblenden',
     'settings.complianceRegulations': 'Regulatorien',
     'settings.complianceRegulationsDesc': 'Zutreffende Regulierungen auswählen',
     'settings.domainTemplates': 'Domänen-/Capability-Vorlagen',
@@ -406,6 +409,7 @@ const translations = {
     'nav.maturityGap': 'Maturity Gap Analysis',
     'nav.dependencies': 'Dependency Graph',
     'nav.resourceOverlap': 'Resource Overlap',
+    'nav.skillImpact': 'Skill Impact',
     'nav.techRadar': 'Technology Radar',
 
     // ── Nav Items – Governance ──
@@ -465,6 +469,7 @@ const translations = {
     'page.riskHeatmap': 'Risk & Compliance',
     'page.dataQuality': 'Data Quality Dashboard',
     'page.resourceOverlap': 'Resource Overlap Analysis',
+    'page.skillImpact': 'Skill Impact Analysis',
     'page.scenarioPlanner': 'Scenario Planner / What-If',
     'page.maturityGap': 'Maturity Gap Analysis',
     'page.roadmap': 'Strategy Roadmap',
@@ -552,6 +557,7 @@ const translations = {
     'settings.analysisDesc': 'Show/hide extended analysis features',
     'settings.governanceDesc': 'Show/hide governance features',
     'settings.complianceDesc': 'Show/hide compliance features',
+    'settings.skillImpactDesc': 'Show/hide skill impact analysis, bus factor and outsourcing readiness',
     'settings.complianceRegulations': 'Regulations',
     'settings.complianceRegulationsDesc': 'Select applicable regulations',
     'settings.domainTemplates': 'Domain / Capability Templates',

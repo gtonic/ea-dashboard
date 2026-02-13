@@ -247,6 +247,13 @@ describe('initRouter and route resolution', () => {
     expect(router.component).toBe('scenario-planner')
   })
 
+  it('resolves /skill-impact path', () => {
+    window.location.hash = '#/skill-impact'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/skill-impact')
+    expect(router.component).toBe('skill-impact')
+  })
+
   it('resolves /vendor-scorecard path', () => {
     window.location.hash = '#/vendor-scorecard'
     window.dispatchEvent(new Event('hashchange'))

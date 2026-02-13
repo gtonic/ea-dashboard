@@ -2025,7 +2025,34 @@
         "EUAIACT",
         "PCIDSS"
       ],
-      "dataClassification": "kritischeInfrastruktur"
+      "dataClassification": "kritischeInfrastruktur",
+      "skillProfiles": [
+        {
+          "skill": "SAP ABAP",
+          "headcount": 3,
+          "keyPersons": [
+            "M. Hofer",
+            "S. Berger"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "SAP HANA",
+          "headcount": 2,
+          "keyPersons": [
+            "M. Hofer"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "SAP Fiori",
+          "headcount": 1,
+          "keyPersons": [
+            "S. Berger"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-002",
@@ -2071,7 +2098,25 @@
         "ISO9001",
         "SOC2BSIC5"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "Salesforce Platform",
+          "headcount": 2,
+          "keyPersons": [
+            "L. Müller"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Apex",
+          "headcount": 1,
+          "keyPersons": [
+            "L. Müller"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-003",
@@ -2117,7 +2162,26 @@
         "CRA",
         "TISAX"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "Java",
+          "headcount": 2,
+          "keyPersons": [
+            "T. Gruber",
+            "A. Steiner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Oracle DB",
+          "headcount": 1,
+          "keyPersons": [
+            "T. Gruber"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-004",
@@ -2161,7 +2225,25 @@
         "ISO9001",
         "TISAX"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "C++",
+          "headcount": 1,
+          "keyPersons": [
+            "K. Fink"
+          ],
+          "outsourceable": false
+        },
+        {
+          "skill": "Teamcenter SOA",
+          "headcount": 1,
+          "keyPersons": [
+            "K. Fink"
+          ],
+          "outsourceable": false
+        }
+      ]
     },
     {
       "id": "APP-005",
@@ -2215,7 +2297,17 @@
         "CRA",
         "EIDAS2"
       ],
-      "dataClassification": "finanzdaten"
+      "dataClassification": "finanzdaten",
+      "skillProfiles": [
+        {
+          "skill": "Microsoft 365",
+          "headcount": 2,
+          "keyPersons": [
+            "P. Lang"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-006",
@@ -2262,7 +2354,26 @@
         "GDPR",
         "SOC2BSIC5"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "SharePoint",
+          "headcount": 2,
+          "keyPersons": [
+            "P. Lang",
+            "J. Wagner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Microsoft Graph API",
+          "headcount": 1,
+          "keyPersons": [
+            "J. Wagner"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-007",
@@ -2309,7 +2420,25 @@
         "EUAIACT",
         "ISO42001"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "Power BI",
+          "headcount": 2,
+          "keyPersons": [
+            "R. Mayer"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "DAX",
+          "headcount": 1,
+          "keyPersons": [
+            "R. Mayer"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-008",
@@ -2350,7 +2479,26 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "ServiceNow Platform",
+          "headcount": 2,
+          "keyPersons": [
+            "H. Kessler",
+            "N. Fischer"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "JavaScript",
+          "headcount": 2,
+          "keyPersons": [
+            "H. Kessler"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-009",
@@ -2394,7 +2542,17 @@
         "GDPR",
         "EIDAS2"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "Ruby on Rails",
+          "headcount": 1,
+          "keyPersons": [
+            "E. Moser"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-010",
@@ -2434,7 +2592,25 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "C++",
+          "headcount": 1,
+          "keyPersons": [
+            "K. Fink"
+          ],
+          "outsourceable": false
+        },
+        {
+          "skill": "SolidWorks Admin",
+          "headcount": 1,
+          "keyPersons": [
+            "D. Bauer"
+          ],
+          "outsourceable": false
+        }
+      ]
     },
     {
       "id": "APP-011",
@@ -2481,7 +2657,34 @@
         "SOC2BSIC5",
         "CRA"
       ],
-      "dataClassification": "kritischeInfrastruktur"
+      "dataClassification": "kritischeInfrastruktur",
+      "skillProfiles": [
+        {
+          "skill": "Azure",
+          "headcount": 2,
+          "keyPersons": [
+            "P. Lang",
+            "J. Wagner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Kubernetes",
+          "headcount": 1,
+          "keyPersons": [
+            "J. Wagner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Terraform",
+          "headcount": 1,
+          "keyPersons": [
+            "J. Wagner"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-012",
@@ -2522,7 +2725,26 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "PHP",
+          "headcount": 1,
+          "keyPersons": [
+            "C. Ebner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Linux Admin",
+          "headcount": 2,
+          "keyPersons": [
+            "C. Ebner",
+            "P. Lang"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-013",
@@ -2562,7 +2784,25 @@
         "ISO27001",
         "SOX"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "COBOL",
+          "headcount": 1,
+          "keyPersons": [
+            "W. Huber"
+          ],
+          "outsourceable": false
+        },
+        {
+          "skill": "IBM DB2",
+          "headcount": 1,
+          "keyPersons": [
+            "W. Huber"
+          ],
+          "outsourceable": false
+        }
+      ]
     },
     {
       "id": "APP-014",
@@ -2602,7 +2842,17 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "VBA",
+          "headcount": 1,
+          "keyPersons": [
+            "F. Ritter"
+          ],
+          "outsourceable": false
+        }
+      ]
     },
     {
       "id": "APP-015",
@@ -2642,7 +2892,26 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "personenbezogeneDaten"
+      "dataClassification": "personenbezogeneDaten",
+      "skillProfiles": [
+        {
+          "skill": "C#",
+          "headcount": 1,
+          "keyPersons": [
+            "C. Ebner"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Windows Server",
+          "headcount": 2,
+          "keyPersons": [
+            "C. Ebner",
+            "P. Lang"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-016",
@@ -2684,7 +2953,26 @@
       "regulations": [
         "ISO27001"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "Power Apps",
+          "headcount": 2,
+          "keyPersons": [
+            "P. Lang"
+          ],
+          "outsourceable": true
+        },
+        {
+          "skill": "Power Automate",
+          "headcount": 2,
+          "keyPersons": [
+            "P. Lang",
+            "R. Mayer"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-017",
@@ -2729,7 +3017,17 @@
         "NIS2"
       ],
       "dataClassification": "intern",
-      "vendors": []
+      "vendors": [],
+      "skillProfiles": [
+        {
+          "skill": "Atlassian Admin",
+          "headcount": 1,
+          "keyPersons": [
+            "H. Kessler"
+          ],
+          "outsourceable": true
+        }
+      ]
     },
     {
       "id": "APP-018",
@@ -2773,7 +3071,25 @@
         "BAIT",
         "PCIDSS"
       ],
-      "dataClassification": "intern"
+      "dataClassification": "intern",
+      "skillProfiles": [
+        {
+          "skill": "SWIFT",
+          "headcount": 1,
+          "keyPersons": [
+            "M. Hofer"
+          ],
+          "outsourceable": false
+        },
+        {
+          "skill": "EBICS",
+          "headcount": 1,
+          "keyPersons": [
+            "M. Hofer"
+          ],
+          "outsourceable": false
+        }
+      ]
     }
   ],
   "capabilityMappings": [
@@ -6885,8 +7201,13 @@
       "classification": "vertraulich",
       "owner": "Thomas Berger",
       "steward": "Maria Fischer",
-      "sourceAppIds": ["APP-001"],
-      "consumingAppIds": ["APP-002", "APP-004"],
+      "sourceAppIds": [
+        "APP-001"
+      ],
+      "consumingAppIds": [
+        "APP-002",
+        "APP-004"
+      ],
       "qualityScore": 4,
       "retentionPeriod": "10 Jahre",
       "personalData": true,
@@ -6900,8 +7221,12 @@
       "classification": "strengVertraulich",
       "owner": "Stefan Huber",
       "steward": "Anna Steiner",
-      "sourceAppIds": ["APP-003"],
-      "consumingAppIds": ["APP-001"],
+      "sourceAppIds": [
+        "APP-003"
+      ],
+      "consumingAppIds": [
+        "APP-001"
+      ],
       "qualityScore": 5,
       "retentionPeriod": "10 Jahre",
       "personalData": false,
@@ -6915,8 +7240,13 @@
       "classification": "strengVertraulich",
       "owner": "Claudia Winkler",
       "steward": "Claudia Winkler",
-      "sourceAppIds": ["APP-011"],
-      "consumingAppIds": ["APP-006", "APP-003"],
+      "sourceAppIds": [
+        "APP-011"
+      ],
+      "consumingAppIds": [
+        "APP-006",
+        "APP-003"
+      ],
       "qualityScore": 4,
       "retentionPeriod": "30 Jahre",
       "personalData": true,
@@ -6930,8 +7260,13 @@
       "classification": "intern",
       "owner": "Thomas Berger",
       "steward": "Michael Gruber",
-      "sourceAppIds": ["APP-001"],
-      "consumingAppIds": ["APP-005", "APP-010"],
+      "sourceAppIds": [
+        "APP-001"
+      ],
+      "consumingAppIds": [
+        "APP-005",
+        "APP-010"
+      ],
       "qualityScore": 3,
       "retentionPeriod": "7 Jahre",
       "personalData": false,
@@ -6945,8 +7280,13 @@
       "classification": "vertraulich",
       "owner": "Michael Gruber",
       "steward": "Michael Gruber",
-      "sourceAppIds": ["APP-005"],
-      "consumingAppIds": ["APP-001", "APP-010"],
+      "sourceAppIds": [
+        "APP-005"
+      ],
+      "consumingAppIds": [
+        "APP-001",
+        "APP-010"
+      ],
       "qualityScore": 3,
       "retentionPeriod": "15 Jahre",
       "personalData": false,
@@ -6960,7 +7300,10 @@
       "classification": "intern",
       "owner": "Julia Maier",
       "steward": "Julia Maier",
-      "sourceAppIds": ["APP-008", "APP-009"],
+      "sourceAppIds": [
+        "APP-008",
+        "APP-009"
+      ],
       "consumingAppIds": [],
       "qualityScore": 4,
       "retentionPeriod": "3 Jahre",
@@ -6975,8 +7318,12 @@
       "classification": "intern",
       "owner": "Michael Gruber",
       "steward": "Thomas Berger",
-      "sourceAppIds": ["APP-010"],
-      "consumingAppIds": ["APP-001"],
+      "sourceAppIds": [
+        "APP-010"
+      ],
+      "consumingAppIds": [
+        "APP-001"
+      ],
       "qualityScore": 4,
       "retentionPeriod": "10 Jahre",
       "personalData": false,
@@ -6990,8 +7337,12 @@
       "classification": "strengVertraulich",
       "owner": "Stefan Huber",
       "steward": "Anna Steiner",
-      "sourceAppIds": ["APP-007"],
-      "consumingAppIds": ["APP-003"],
+      "sourceAppIds": [
+        "APP-007"
+      ],
+      "consumingAppIds": [
+        "APP-003"
+      ],
       "qualityScore": 5,
       "retentionPeriod": "10 Jahre",
       "personalData": true,

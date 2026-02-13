@@ -42,6 +42,7 @@ const routes = [
   { pattern: /^\/executive-summary$/,      component: 'executive-summary' },
   { pattern: /^\/resource-overlaps$/,       component: 'resource-overlap' },
   { pattern: /^\/scenario-planner$/,       component: 'scenario-planner' },
+  { pattern: /^\/skill-impact$/,           component: 'skill-impact' },
   { pattern: /^\/capability-investment$/,  component: 'capability-investment' },
   { pattern: /^\/conformity-scorecard$/,   component: 'conformity-scorecard' },
   { pattern: /^\/tech-radar$/,             component: 'tech-radar' },

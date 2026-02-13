@@ -109,6 +109,7 @@ function buildNavGroups () {
         { path: '/maturity-gap',           labelKey: 'nav.maturityGap',          icon: icons.maturity,   pageKey: 'page.maturityGap' },
         { path: '/dependencies',           labelKey: 'nav.dependencies',         icon: icons.dependency, pageKey: 'page.dependencies' },
         { path: '/resource-overlaps',      labelKey: 'nav.resourceOverlap',      icon: icons.overlap,    pageKey: 'page.resourceOverlap' },
+        { path: '/skill-impact',            labelKey: 'nav.skillImpact',          icon: icons.overlap,    pageKey: 'page.skillImpact' },
         { path: '/app-lifecycle-timeline',  labelKey: 'nav.appLifecycleTimeline', icon: icons.roadmap,    pageKey: 'page.appLifecycleTimeline' },
       ]
     },
@@ -513,6 +514,10 @@ export default {
         if (g.id === 'admin') {
           // Only show admin nav when running in server mode and user is admin
           if (typeof auth === 'undefined' || !auth.isLoggedIn || !auth.isAdmin) return false
+        }
+        // Filter out skill-impact items when toggle is off
+        if (!store.featureToggles.skillImpactEnabled) {
+          g.items = g.items.filter(i => i.path !== '/skill-impact')
         }
         return true
       })

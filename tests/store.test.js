@@ -1228,6 +1228,17 @@ describe('Feature Toggles', () => {
     expect(store.featureToggles.analysisEnabled).toBe(false)
     expect(store.featureToggles.governanceEnabled).toBe(true)
   })
+
+  it('skillImpactEnabled defaults to true', () => {
+    store.featureToggles = JSON.parse('{"analysisEnabled":true,"governanceEnabled":true,"complianceEnabled":false,"skillImpactEnabled":true,"selectedRegulations":[]}')
+    expect(store.featureToggles.skillImpactEnabled).toBe(true)
+  })
+
+  it('skillImpactEnabled can be toggled off independently', () => {
+    store.featureToggles.skillImpactEnabled = false
+    expect(store.featureToggles.skillImpactEnabled).toBe(false)
+    expect(store.featureToggles.analysisEnabled).toBe(true)
+  })
 })
 
 // ─── Compliance Helpers (Phase C2) ───────────────────────────
@@ -1914,5 +1925,152 @@ describe('Global Search – Integrations', () => {
     store.data.legalEntities = undefined
     store.data.integrations = undefined
     expect(store.globalSearch('test')).toEqual([])
+  })
+})
+
+// ─── Skill / Fachkräfte Analysis ───
+
+describe('skillSummary', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'App A', skillProfiles: [
+        { skill: 'Java', headcount: 3, keyPersons: ['Alice', 'Bob'], outsourceable: true },
+        { skill: 'Oracle DB', headcount: 1, keyPersons: ['Alice'], outsourceable: true }
+      ]},
+      { id: 'APP-002', name: 'App B', skillProfiles: [
+        { skill: 'Java', headcount: 2, keyPersons: ['Charlie'], outsourceable: true },
+        { skill: 'COBOL', headcount: 1, keyPersons: ['Dave'], outsourceable: false }
+      ]},
+      { id: 'APP-003', name: 'App C', skillProfiles: [] }
+    ]
+  })
+
+  it('aggregates skills across all applications', () => {
+    const summary = store.skillSummary
+    expect(summary).toHaveLength(3) // Java, Oracle DB, COBOL
+    const java = summary.find(s => s.skill === 'Java')
+    expect(java.totalHeadcount).toBe(5)
+    expect(java.appCount).toBe(2)
+    expect(java.keyPersons).toContain('Alice')
+    expect(java.keyPersons).toContain('Bob')
+    expect(java.keyPersons).toContain('Charlie')
+    expect(java.outsourceable).toBe(true)
+  })
+
+  it('marks non-outsourceable if any app profile says false', () => {
+    const summary = store.skillSummary
+    const cobol = summary.find(s => s.skill === 'COBOL')
+    expect(cobol.outsourceable).toBe(false)
+  })
+
+  it('returns empty array for no applications', () => {
+    store.data.applications = []
+    expect(store.skillSummary).toEqual([])
+  })
+
+  it('handles apps without skillProfiles', () => {
+    store.data.applications = [{ id: 'APP-X', name: 'No Skills' }]
+    expect(store.skillSummary).toEqual([])
+  })
+})
+
+describe('appsBySkill', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'App A', skillProfiles: [{ skill: 'Java', headcount: 2, keyPersons: [], outsourceable: true }] },
+      { id: 'APP-002', name: 'App B', skillProfiles: [{ skill: 'Python', headcount: 1, keyPersons: [], outsourceable: true }] },
+      { id: 'APP-003', name: 'App C', skillProfiles: [{ skill: 'Java', headcount: 1, keyPersons: [], outsourceable: true }] }
+    ]
+  })
+
+  it('finds all apps using a specific skill', () => {
+    const apps = store.appsBySkill('Java')
+    expect(apps).toHaveLength(2)
+    expect(apps.map(a => a.id)).toEqual(['APP-001', 'APP-003'])
+  })
+
+  it('returns empty for unknown skill', () => {
+    expect(store.appsBySkill('Haskell')).toEqual([])
+  })
+})
+
+describe('busFactor', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'A', skillProfiles: [
+        { skill: 'Java', headcount: 2, keyPersons: ['Alice'], outsourceable: true },
+        { skill: 'DB', headcount: 1, keyPersons: ['Alice'], outsourceable: true }
+      ]},
+      { id: 'APP-002', name: 'B', skillProfiles: [
+        { skill: 'Java', headcount: 1, keyPersons: ['Alice'], outsourceable: true }
+      ]},
+      { id: 'APP-003', name: 'C', skillProfiles: [
+        { skill: 'Python', headcount: 1, keyPersons: ['Alice'], outsourceable: true }
+      ]},
+      { id: 'APP-004', name: 'D', skillProfiles: [
+        { skill: 'Python', headcount: 1, keyPersons: ['Alice'], outsourceable: true },
+        { skill: 'C++', headcount: 1, keyPersons: ['Bob'], outsourceable: false }
+      ]}
+    ]
+  })
+
+  it('computes bus factor with person-app mapping', () => {
+    const bf = store.busFactor
+    expect(bf.length).toBeGreaterThanOrEqual(1)
+    const alice = bf.find(b => b.person === 'Alice')
+    expect(alice).toBeDefined()
+    expect(alice.appCount).toBe(4)
+    expect(alice.risk).toBe('high')
+  })
+
+  it('assigns correct risk levels', () => {
+    const bf = store.busFactor
+    const bob = bf.find(b => b.person === 'Bob')
+    expect(bob).toBeDefined()
+    expect(bob.appCount).toBe(1)
+    expect(bob.risk).toBe('low')
+  })
+
+  it('sorts by app count descending', () => {
+    const bf = store.busFactor
+    expect(bf[0].person).toBe('Alice')
+  })
+})
+
+describe('skillLossImpact', () => {
+  beforeEach(() => {
+    store.data.applications = [
+      { id: 'APP-001', name: 'SAP', criticality: 'Mission-Critical', skillProfiles: [
+        { skill: 'SAP ABAP', headcount: 3, keyPersons: ['X', 'Y'], outsourceable: true }
+      ]},
+      { id: 'APP-002', name: 'Legacy', criticality: 'Business-Critical', skillProfiles: [
+        { skill: 'SAP ABAP', headcount: 1, keyPersons: ['X'], outsourceable: false }
+      ]},
+      { id: 'APP-003', name: 'Other', criticality: 'Administrative', skillProfiles: [
+        { skill: 'Python', headcount: 2, keyPersons: ['Z'], outsourceable: true }
+      ]}
+    ]
+  })
+
+  it('calculates impact when losing 2 SAP ABAP specialists', () => {
+    const impacts = store.skillLossImpact('SAP ABAP', 2)
+    expect(impacts).toHaveLength(2)
+    const sap = impacts.find(i => i.appId === 'APP-001')
+    expect(sap.remainingHeadcount).toBe(1)
+    expect(sap.severity).toBe('high')
+    const legacy = impacts.find(i => i.appId === 'APP-002')
+    expect(legacy.remainingHeadcount).toBe(0)
+    expect(legacy.severity).toBe('critical')
+  })
+
+  it('returns empty for skill with no matches', () => {
+    expect(store.skillLossImpact('Haskell', 1)).toEqual([])
+  })
+
+  it('caps lost headcount at actual headcount', () => {
+    const impacts = store.skillLossImpact('SAP ABAP', 10)
+    const legacy = impacts.find(i => i.appId === 'APP-002')
+    expect(legacy.lostHeadcount).toBe(1)
+    expect(legacy.remainingHeadcount).toBe(0)
   })
 })
