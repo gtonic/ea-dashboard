@@ -11,7 +11,7 @@ class DataObjectBase(BaseModel):
     consuming_app_ids: list[str] | None = None
     quality_score: int | None = None
     retention_period: str | None = None
-    personal_data: bool | None = False
+    personal_data: bool = False
     format: str | None = None
     domain: int | None = None
 
