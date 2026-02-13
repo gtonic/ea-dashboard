@@ -95,6 +95,9 @@ COMPONENTS = [
     ('tco-calculator.js',      'TcoCalculator'),
     ('compliance-dashboard.js', 'ComplianceDashboard'),
     ('compliance-audit.js',     'ComplianceAudit'),
+    ('data-object-list.js',     'DataObjectList'),
+    ('data-object-detail.js',   'DataObjectDetail'),
+    ('data-object-form.js',     'DataObjectForm'),
     ('login.js',                'LoginView'),
     ('admin-users.js',          'AdminUsers'),
     ('admin-audit-log.js',      'AdminAuditLog'),
@@ -124,6 +127,13 @@ store_code = strip_exports(store_code)
 store_code = re.sub(
     r'async\s+function\s+loadData\s*\(\s*\)\s*\{.*?\n\}',
     '''function loadData () {
+  // Cache version check — force reload from seed when version changes
+  const currentCacheVersion = localStorage.getItem(STORAGE_KEY + '-version')
+  if (currentCacheVersion !== CACHE_VERSION) {
+    console.info('[store] cache version mismatch — clearing localStorage to load fresh seed data')
+    localStorage.removeItem(STORAGE_KEY)
+    localStorage.setItem(STORAGE_KEY + '-version', CACHE_VERSION)
+  }
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved) {
     try {
@@ -262,6 +272,9 @@ app.component('app-lifecycle-timeline', AppLifecycleTimeline);
 app.component('tco-calculator', TcoCalculator);
 app.component('compliance-dashboard', ComplianceDashboard);
 app.component('compliance-audit', ComplianceAudit);
+app.component('data-object-list', DataObjectList);
+app.component('data-object-detail', DataObjectDetail);
+app.component('data-object-form', DataObjectForm);
 app.component('login-view', LoginView);
 app.component('admin-users', AdminUsers);
 app.component('admin-audit-log', AdminAuditLog);
