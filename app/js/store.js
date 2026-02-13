@@ -748,6 +748,8 @@ export const store = reactive({
 
   // ── Integration CRUD ──
 
+  get totalIntegrations () { return (this.data.integrations || []).length },
+
   integrationById (id) {
     return (this.data.integrations || []).find(i => i.id === id)
   },
@@ -899,6 +901,22 @@ export const store = reactive({
       const fields = [d.id, d.name, d.description, d.classification, d.owner, d.steward].filter(Boolean).join(' ')
       if (fields.toLowerCase().includes(q)) {
         results.push({ type: 'DataObject', id: d.id, name: d.name, detail: [d.classification, d.owner].filter(Boolean).join(' · '), route: '/data-objects/' + d.id })
+      }
+    })
+
+    // Legal Entities
+    ;(this.data.legalEntities || []).forEach(e => {
+      const fields = [e.id, e.name, e.shortName, e.description, e.country, e.city, e.region].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Entity', id: e.id, name: e.name, detail: [e.city, e.country].filter(Boolean).join(', '), route: '/entities/' + e.id })
+      }
+    })
+
+    // Integrations
+    ;(this.data.integrations || []).forEach(i => {
+      const fields = [i.id, i.description, i.interfaceType, i.protocol, i.dataObjects, i.status].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'Integration', id: i.id, name: i.description || i.id, detail: [i.interfaceType, i.protocol].filter(Boolean).join(' · '), route: '/integration-map' })
       }
     })
 

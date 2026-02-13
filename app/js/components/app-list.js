@@ -22,6 +22,11 @@ export default {
           <option value="">Alle Entitäten</option>
           <option v-for="ent in allEntities" :key="ent.id" :value="ent.id">{{ ent.shortName }}</option>
         </select>
+        <button @click="exportCsv"
+                class="px-4 py-2 bg-surface-100 text-gray-700 rounded-lg text-sm hover:bg-surface-200 transition-colors whitespace-nowrap border border-surface-200"
+                title="Export filtered list as CSV">
+          ↓ CSV
+        </button>
         <button @click="showForm = true"
                 class="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-700 transition-colors whitespace-nowrap">
           + Add Application
@@ -137,6 +142,37 @@ export default {
       return app.vendor || '—'
     }
 
-    return { store, linkTo, navigateTo, search, filterTime, filterCrit, filterEntity, allEntities, sortBy, sortDir, filtered, totalCost, toggleSort, sortIcon, critClass, timeClass, showForm, onSaved, vendorNames }
+    function escapeCsvField (val) {
+      const str = String(val == null ? '' : val)
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return '"' + str.replace(/"/g, '""') + '"'
+      }
+      return str
+    }
+
+    function exportCsv () {
+      const headers = ['ID', 'Name', 'Category', 'Criticality', 'TIME', 'Type', 'Cost/Year', 'Users', 'Vendor']
+      const rows = filtered.value.map(app => [
+        app.id,
+        app.name,
+        app.category,
+        app.criticality,
+        app.timeQuadrant,
+        app.type,
+        app.costPerYear || 0,
+        app.userCount || 0,
+        vendorNames(app)
+      ])
+      const csv = [headers, ...rows].map(row => row.map(escapeCsvField).join(',')).join('\n')
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'applications-export.csv'
+      link.click()
+      URL.revokeObjectURL(url)
+    }
+
+    return { store, linkTo, navigateTo, search, filterTime, filterCrit, filterEntity, allEntities, sortBy, sortDir, filtered, totalCost, toggleSort, sortIcon, critClass, timeClass, showForm, onSaved, vendorNames, exportCsv }
   }
 }

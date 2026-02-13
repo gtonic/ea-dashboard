@@ -991,6 +991,9 @@ describe('Global Search', () => {
     store.data.vendors = undefined
     store.data.e2eProcesses = undefined
     store.data.demands = undefined
+    store.data.dataObjects = undefined
+    store.data.legalEntities = undefined
+    store.data.integrations = undefined
     expect(store.globalSearch('test')).toEqual([])
   })
 })
@@ -1819,5 +1822,97 @@ describe('Data Object Global Search', () => {
     const results = store.globalSearch('vertraulich')
     const doResults = results.filter(r => r.type === 'DataObject')
     expect(doResults).toHaveLength(1)
+  })
+})
+
+// ─── totalIntegrations Getter ─────────────────────────────
+
+describe('totalIntegrations Getter', () => {
+  it('returns 0 when no integrations', () => {
+    store.data.integrations = []
+    expect(store.totalIntegrations).toBe(0)
+  })
+
+  it('returns correct count', () => {
+    store.data.integrations = [
+      { id: 'INT-001', sourceAppId: 'APP-001', targetAppId: 'APP-002' },
+      { id: 'INT-002', sourceAppId: 'APP-002', targetAppId: 'APP-003' }
+    ]
+    expect(store.totalIntegrations).toBe(2)
+  })
+
+  it('handles undefined gracefully', () => {
+    store.data.integrations = undefined
+    expect(store.totalIntegrations).toBe(0)
+  })
+})
+
+// ─── Global Search: Legal Entities & Integrations ─────────
+
+describe('Global Search – Legal Entities', () => {
+  beforeEach(() => {
+    store.data.legalEntities = [
+      { id: 'ENT-001', name: 'Metallwerk Vorarlberg GmbH', shortName: 'MW Vorarlberg', description: 'Konzernsitz', country: 'AT', city: 'Dornbirn', region: 'Headquarters' }
+    ]
+  })
+
+  it('finds legal entities by name', () => {
+    const results = store.globalSearch('Metallwerk')
+    const entResults = results.filter(r => r.type === 'Entity')
+    expect(entResults).toHaveLength(1)
+    expect(entResults[0].id).toBe('ENT-001')
+    expect(entResults[0].route).toBe('/entities/ENT-001')
+  })
+
+  it('finds legal entities by shortName', () => {
+    const results = store.globalSearch('MW Vorarlberg')
+    const entResults = results.filter(r => r.type === 'Entity')
+    expect(entResults).toHaveLength(1)
+  })
+
+  it('finds legal entities by city', () => {
+    const results = store.globalSearch('Dornbirn')
+    const entResults = results.filter(r => r.type === 'Entity')
+    expect(entResults).toHaveLength(1)
+  })
+
+  it('includes city and country in detail', () => {
+    const results = store.globalSearch('Metallwerk')
+    const entResults = results.filter(r => r.type === 'Entity')
+    expect(entResults[0].detail).toBe('Dornbirn, AT')
+  })
+})
+
+describe('Global Search – Integrations', () => {
+  beforeEach(() => {
+    store.data.integrations = [
+      { id: 'INT-001', sourceAppId: 'APP-001', targetAppId: 'APP-002', interfaceType: 'API', protocol: 'REST', description: 'Kundenstammdaten-Synchronisation', dataObjects: 'Kunden, Ansprechpartner', status: 'active' }
+    ]
+  })
+
+  it('finds integrations by description', () => {
+    const results = store.globalSearch('Kundenstammdaten')
+    const intResults = results.filter(r => r.type === 'Integration')
+    expect(intResults).toHaveLength(1)
+    expect(intResults[0].id).toBe('INT-001')
+    expect(intResults[0].route).toBe('/integration-map')
+  })
+
+  it('finds integrations by protocol', () => {
+    const results = store.globalSearch('REST')
+    const intResults = results.filter(r => r.type === 'Integration')
+    expect(intResults).toHaveLength(1)
+  })
+
+  it('finds integrations by interfaceType', () => {
+    const results = store.globalSearch('API')
+    const intResults = results.filter(r => r.type === 'Integration')
+    expect(intResults).toHaveLength(1)
+  })
+
+  it('handles missing legalEntities and integrations arrays gracefully', () => {
+    store.data.legalEntities = undefined
+    store.data.integrations = undefined
+    expect(store.globalSearch('test')).toEqual([])
   })
 })
