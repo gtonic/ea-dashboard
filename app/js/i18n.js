@@ -51,6 +51,7 @@ const translations = {
     'nav.processes': 'Prozesse',
     'nav.entities': 'Rechtliche Entitäten',
     'nav.integrations': 'Integrationen',
+    'nav.dataObjects': 'Datenobjekte',
 
     // ── Nav Items – Projects ──
     'nav.demands': 'Demand-Backlog',
@@ -141,6 +142,8 @@ const translations = {
     'page.eaHealthScore': 'EA Health Score',
     'page.appLifecycleTimeline': 'App-Lifecycle-Timeline',
     'page.tcoCalculator': 'TCO-Rechner',
+    'page.dataObjects': 'Datenobjekte',
+    'page.dataObjectDetail': 'Datenobjekt-Detail',
 
     // ── Nav Items – Phase 7 ──
     'nav.appLifecycleTimeline': 'App-Lifecycle-Timeline',
@@ -383,6 +386,7 @@ const translations = {
     'nav.processes': 'Processes',
     'nav.entities': 'Legal Entities',
     'nav.integrations': 'Integrations',
+    'nav.dataObjects': 'Data Objects',
 
     // ── Nav Items – Projects ──
     'nav.demands': 'Demand Backlog',
@@ -473,6 +477,8 @@ const translations = {
     'page.eaHealthScore': 'EA Health Score',
     'page.appLifecycleTimeline': 'App Lifecycle Timeline',
     'page.tcoCalculator': 'TCO Calculator',
+    'page.dataObjects': 'Data Objects',
+    'page.dataObjectDetail': 'Data Object Detail',
 
     // ── Nav Items – Phase 7 ──
     'nav.appLifecycleTimeline': 'App Lifecycle Timeline',

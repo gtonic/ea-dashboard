@@ -32,6 +32,9 @@ import VendorScorecard from './components/vendor-scorecard.js'
 import EntityList from './components/entity-list.js'
 import EntityDetail from './components/entity-detail.js'
 import EntityForm from './components/entity-form.js'
+import DataObjectList from './components/data-object-list.js'
+import DataObjectDetail from './components/data-object-detail.js'
+import DataObjectForm from './components/data-object-form.js'
 import DemandList from './components/demand-list.js'
 import DemandDetail from './components/demand-detail.js'
 import DemandForm from './components/demand-form.js'
@@ -92,6 +95,9 @@ app.component('vendor-scorecard', VendorScorecard)
 app.component('entity-list', EntityList)
 app.component('entity-detail', EntityDetail)
 app.component('entity-form', EntityForm)
+app.component('data-object-list', DataObjectList)
+app.component('data-object-detail', DataObjectDetail)
+app.component('data-object-form', DataObjectForm)
 app.component('demand-list', DemandList)
 app.component('demand-detail', DemandDetail)
 app.component('demand-form', DemandForm)

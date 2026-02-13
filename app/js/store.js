@@ -965,7 +965,7 @@ export function startWatching () {
 // ────────────────────────────────────────────
 // Load — from localStorage or seed JSON
 // ────────────────────────────────────────────
-const CACHE_VERSION = 'v7-2026-02-12-phase-c2'
+const CACHE_VERSION = 'v8-2026-02-13-data-objects'
 
 export async function loadData () {
   // 0. Force reload from seed when cache version changes

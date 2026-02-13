@@ -222,6 +222,7 @@ export const api = {
   integrations: entityApi('integrations'),
   processes: entityApi('processes'),
   entities: entityApi('entities'),
+  dataObjects: entityApi('data-objects'),
   compliance: entityApi('compliance'),
   kpis: entityApi('kpis'),
   mappings: entityApi('capability-mappings'),

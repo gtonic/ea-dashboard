@@ -16,6 +16,8 @@ function createTestState() {
     demands: [],
     integrations: [],
     legalEntities: [],
+    complianceAssessments: [],
+    dataObjects: [],
     enums: {}
   }
 }
@@ -1676,5 +1678,146 @@ describe('Domain Templates', () => {
     expect(ids).toContain('retail')
     expect(ids).toContain('technology')
     expect(ids).toContain('public-sector')
+  })
+})
+
+// ─── Data Object CRUD ─────────────────────────────────────
+
+describe('Data Object CRUD', () => {
+  beforeEach(() => {
+    store.data = createTestState()
+    store.data.dataObjects = [
+      { id: 'DO-001', name: 'Kundenstammdaten', description: 'Zentrale Kundendaten', classification: 'vertraulich', owner: 'Thomas Berger', steward: 'Maria Fischer', sourceAppIds: ['APP-001'], consumingAppIds: ['APP-002', 'APP-004'], qualityScore: 4, retentionPeriod: '10 Jahre', personalData: true, format: 'structured', domain: 2 },
+      { id: 'DO-002', name: 'Finanzbuchhaltung', description: 'Buchungsdaten', classification: 'strengVertraulich', owner: 'Stefan Huber', steward: 'Anna Steiner', sourceAppIds: ['APP-003'], consumingAppIds: ['APP-001'], qualityScore: 5, retentionPeriod: '10 Jahre', personalData: false, format: 'structured', domain: 3 }
+    ]
+    store.data.applications = [
+      { id: 'APP-001', name: 'ERP', vendor: 'SAP', criticality: 'Mission-Critical' },
+      { id: 'APP-002', name: 'CRM', vendor: 'SF', criticality: 'Business-Critical' },
+      { id: 'APP-003', name: 'FiBu', vendor: 'SAP', criticality: 'Mission-Critical' },
+      { id: 'APP-004', name: 'Webshop', vendor: 'Custom', criticality: 'Business-Operational' }
+    ]
+  })
+
+  it('totalDataObjects returns count', () => {
+    expect(store.totalDataObjects).toBe(2)
+  })
+
+  it('totalDataObjects handles missing array', () => {
+    store.data.dataObjects = undefined
+    expect(store.totalDataObjects).toBe(0)
+  })
+
+  it('dataObjectById finds object by id', () => {
+    const obj = store.dataObjectById('DO-001')
+    expect(obj).toBeDefined()
+    expect(obj.name).toBe('Kundenstammdaten')
+  })
+
+  it('dataObjectById returns undefined for unknown id', () => {
+    expect(store.dataObjectById('DO-999')).toBeUndefined()
+  })
+
+  it('addDataObject auto-generates id', () => {
+    store.addDataObject({ name: 'Testdaten', classification: 'intern' })
+    expect(store.data.dataObjects).toHaveLength(3)
+    expect(store.data.dataObjects[2].id).toBe('DO-003')
+  })
+
+  it('addDataObject preserves given id', () => {
+    store.addDataObject({ id: 'DO-100', name: 'Custom' })
+    expect(store.dataObjectById('DO-100')).toBeDefined()
+  })
+
+  it('addDataObject initializes array if missing', () => {
+    store.data.dataObjects = undefined
+    store.addDataObject({ name: 'New' })
+    expect(store.data.dataObjects).toHaveLength(1)
+    expect(store.data.dataObjects[0].id).toBe('DO-001')
+  })
+
+  it('updateDataObject patches properties', () => {
+    store.updateDataObject('DO-001', { name: 'Updated', qualityScore: 5 })
+    const obj = store.dataObjectById('DO-001')
+    expect(obj.name).toBe('Updated')
+    expect(obj.qualityScore).toBe(5)
+    expect(obj.classification).toBe('vertraulich')
+  })
+
+  it('updateDataObject does nothing for unknown id', () => {
+    store.updateDataObject('DO-999', { name: 'Nope' })
+    expect(store.data.dataObjects).toHaveLength(2)
+  })
+
+  it('deleteDataObject removes object', () => {
+    store.deleteDataObject('DO-001')
+    expect(store.data.dataObjects).toHaveLength(1)
+    expect(store.dataObjectById('DO-001')).toBeUndefined()
+  })
+
+  it('deleteDataObject handles missing array', () => {
+    store.data.dataObjects = undefined
+    store.deleteDataObject('DO-001')
+    // no error
+  })
+
+  it('dataObjectsForApp returns objects where app is source or consumer', () => {
+    const objs = store.dataObjectsForApp('APP-001')
+    expect(objs).toHaveLength(2)
+  })
+
+  it('dataObjectsForApp returns only consuming objects', () => {
+    const objs = store.dataObjectsForApp('APP-002')
+    expect(objs).toHaveLength(1)
+    expect(objs[0].id).toBe('DO-001')
+  })
+
+  it('dataObjectsForApp returns empty for unknown app', () => {
+    expect(store.dataObjectsForApp('APP-999')).toHaveLength(0)
+  })
+
+  it('appsForDataObject returns source and consuming apps', () => {
+    const { source, consuming } = store.appsForDataObject('DO-001')
+    expect(source).toHaveLength(1)
+    expect(source[0].id).toBe('APP-001')
+    expect(consuming).toHaveLength(2)
+    expect(consuming.map(a => a.id)).toContain('APP-002')
+    expect(consuming.map(a => a.id)).toContain('APP-004')
+  })
+
+  it('appsForDataObject returns empty for unknown id', () => {
+    const { source, consuming } = store.appsForDataObject('DO-999')
+    expect(source).toHaveLength(0)
+    expect(consuming).toHaveLength(0)
+  })
+})
+
+// ─── Data Object Global Search ─────────────────────────────────────
+
+describe('Data Object Global Search', () => {
+  beforeEach(() => {
+    store.data = createTestState()
+    store.data.dataObjects = [
+      { id: 'DO-001', name: 'Kundenstammdaten', description: 'Zentrale Kundendaten', classification: 'vertraulich', owner: 'Thomas Berger' }
+    ]
+  })
+
+  it('globalSearch finds data objects by name', () => {
+    const results = store.globalSearch('Kundenstamm')
+    const doResults = results.filter(r => r.type === 'DataObject')
+    expect(doResults).toHaveLength(1)
+    expect(doResults[0].id).toBe('DO-001')
+    expect(doResults[0].route).toBe('/data-objects/DO-001')
+  })
+
+  it('globalSearch finds data objects by owner', () => {
+    const results = store.globalSearch('Thomas Berger')
+    const doResults = results.filter(r => r.type === 'DataObject')
+    expect(doResults).toHaveLength(1)
+  })
+
+  it('globalSearch finds data objects by classification', () => {
+    const results = store.globalSearch('vertraulich')
+    const doResults = results.filter(r => r.type === 'DataObject')
+    expect(doResults).toHaveLength(1)
   })
 })

@@ -27,6 +27,8 @@ const routes = [
   { pattern: /^\/vendors\/(VND-\d+)$/,       component: 'vendor-detail',   paramNames: ['id'] },
   { pattern: /^\/entities$/,                   component: 'entity-list' },
   { pattern: /^\/entities\/(ENT-\d+)$/,        component: 'entity-detail',   paramNames: ['id'] },
+  { pattern: /^\/data-objects$/,                  component: 'data-object-list' },
+  { pattern: /^\/data-objects\/(DO-\d+)$/,        component: 'data-object-detail', paramNames: ['id'] },
   { pattern: /^\/vendor-scorecard$/,          component: 'vendor-scorecard' },
   { pattern: /^\/demands$/,                   component: 'demand-list' },
   { pattern: /^\/demands\/(DEM-\d+)$/,        component: 'demand-detail',   paramNames: ['id'] },

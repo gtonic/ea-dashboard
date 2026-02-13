@@ -330,4 +330,19 @@ describe('initRouter and route resolution', () => {
     expect(router.path).toBe('/compliance-audit')
     expect(router.component).toBe('compliance-audit')
   })
+
+  it('resolves /data-objects path', () => {
+    window.location.hash = '#/data-objects'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/data-objects')
+    expect(router.component).toBe('data-object-list')
+  })
+
+  it('resolves /data-objects/DO-001 path', () => {
+    window.location.hash = '#/data-objects/DO-001'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(router.path).toBe('/data-objects/DO-001')
+    expect(router.component).toBe('data-object-detail')
+    expect(router.params.id).toBe('DO-001')
+  })
 })
