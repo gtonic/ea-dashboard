@@ -23,6 +23,7 @@ function createEmptyState () {
     integrations: [],
     legalEntities: [],
     complianceAssessments: [],
+    dataObjects: [],
     enums: {}
   }
 }
@@ -786,6 +787,51 @@ export const store = reactive({
     if (kpi) Object.assign(kpi, patch)
   },
 
+  // ── Data Object CRUD ──
+
+  get totalDataObjects () { return (this.data.dataObjects || []).length },
+
+  dataObjectById (id) {
+    return (this.data.dataObjects || []).find(d => d.id === id)
+  },
+
+  addDataObject (obj) {
+    if (!this.data.dataObjects) this.data.dataObjects = []
+    if (!obj.id) {
+      const maxNum = this.data.dataObjects.reduce((m, d) => {
+        const n = d.id && d.id.match(/^DO-(\d+)$/)
+        return n ? Math.max(m, parseInt(n[1], 10)) : m
+      }, 0)
+      obj.id = 'DO-' + String(maxNum + 1).padStart(3, '0')
+    }
+    this.data.dataObjects.push(obj)
+  },
+
+  updateDataObject (id, patch) {
+    const d = this.dataObjectById(id)
+    if (d) Object.assign(d, patch)
+  },
+
+  deleteDataObject (id) {
+    if (!this.data.dataObjects) return
+    this.data.dataObjects = this.data.dataObjects.filter(d => d.id !== id)
+  },
+
+  dataObjectsForApp (appId) {
+    return (this.data.dataObjects || []).filter(d =>
+      (d.sourceAppIds && d.sourceAppIds.includes(appId)) ||
+      (d.consumingAppIds && d.consumingAppIds.includes(appId))
+    )
+  },
+
+  appsForDataObject (dataObjectId) {
+    const obj = this.dataObjectById(dataObjectId)
+    if (!obj) return { source: [], consuming: [] }
+    const source = (obj.sourceAppIds || []).map(id => this.appById(id)).filter(Boolean)
+    const consuming = (obj.consumingAppIds || []).map(id => this.appById(id)).filter(Boolean)
+    return { source, consuming }
+  },
+
   // ── Global Full-Text Search ──
 
   globalSearch (query) {
@@ -845,6 +891,14 @@ export const store = reactive({
       const fields = [d.id, d.title, d.description, d.category, d.status, d.requestedBy, d.businessCase].filter(Boolean).join(' ')
       if (fields.toLowerCase().includes(q)) {
         results.push({ type: 'Demand', id: d.id, name: d.title, detail: [d.category, d.status].filter(Boolean).join(' · '), route: '/demands/' + d.id })
+      }
+    })
+
+    // Data Objects
+    ;(this.data.dataObjects || []).forEach(d => {
+      const fields = [d.id, d.name, d.description, d.classification, d.owner, d.steward].filter(Boolean).join(' ')
+      if (fields.toLowerCase().includes(q)) {
+        results.push({ type: 'DataObject', id: d.id, name: d.name, detail: [d.classification, d.owner].filter(Boolean).join(' · '), route: '/data-objects/' + d.id })
       }
     })
 
